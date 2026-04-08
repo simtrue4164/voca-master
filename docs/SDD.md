@@ -161,8 +161,7 @@ CREATE TABLE exams (
   -- 총 50문항 고정 (day당 25문항)
   duration_min SMALLINT NOT NULL DEFAULT 8,
   starts_at    TIMESTAMPTZ NOT NULL,
-  ends_at      TIMESTAMPTZ GENERATED ALWAYS AS
-                 (starts_at + (duration_min || ' minutes')::INTERVAL) STORED,
+  ends_at      TIMESTAMPTZ NOT NULL,  -- 트리거로 자동 계산: starts_at + duration_min분
   status       TEXT NOT NULL DEFAULT 'scheduled'
                  CHECK (status IN ('scheduled', 'active', 'closed')),
   created_by   UUID NOT NULL REFERENCES profiles(id),
@@ -663,8 +662,17 @@ src/components/
 │
 ├── vocabulary/
 │   ├── FlashCard.tsx           # 'use client' - 플립 애니메이션 (motion/react)
+│   │                           #   앞: 영어 단어 / 뒤: 품사별 의미 + 동의어
+│   │                           #   버튼: 알겠어요(memorized) / 모르겠어요(failed)
+│   ├── SelfTestCard.tsx        # 'use client' - 셀프 테스트 카드
+│   │                           #   영어 단어 표시 + 뜻 입력 + 즉시 채점
+│   │                           #   정답/오답 표시 후 다음 이동
+│   ├── StudyModeToggle.tsx     # 'use client' - [플래시카드] [셀프 테스트] 탭
+│   ├── StudyProgress.tsx       # 'use client' - 문항 네비게이터 (완료/미완료)
+│   ├── StudyComplete.tsx       # 'use client' - 완료 화면 (학습율, 오답 바로가기)
+│   ├── DayList.tsx             # Server - Day 목록 (진도·학습율 표시)
 │   ├── WordList.tsx            # Server - 단어 목록
-│   └── WordEditModal.tsx       # 'use client' - 의미/동의어 CRUD
+│   └── WordEditModal.tsx       # 'use client' - 의미/동의어 CRUD (관리자용)
 │
 ├── exam/
 │   ├── QuestionCard.tsx        # 'use client' - 영어 단어 + 한국어 뜻 입력
@@ -755,13 +763,14 @@ Response schema (streamObject):
 → word_meanings, word_synonyms 테이블에 일괄 upsert
 ```
 
-### 7-4. 대시보드 AI 인사이트
+### 7-4. 관리자 대시보드 AI 인사이트
 
 ```
 GET /api/admin/dashboard/insight
 
 캐시 전략:
-  1. dashboard_cache WHERE admin_id = X AND cache_type = 'insight' AND generated_at > now() - interval '24h'
+  1. dashboard_cache WHERE user_id = X AND cache_type = 'admin_insight'
+     AND generated_at > now() - interval '24h'
   2. 캐시 있으면 반환, 없으면 Gemini 호출 후 캐시 저장
 
 System: 당신은 학원 교육 관리 AI입니다.
@@ -791,6 +800,73 @@ SQL:
   JOIN avg_7d a ON a.student_id = p.id
   WHERE a.avg_count > 5   -- 평소 학습하던 학생
     AND [최근 2일 학습 0]
+```
+
+### 7-6. 학생 AI 학습 코치
+
+```
+GET /api/student/dashboard/coaching
+
+캐시 전략:
+  dashboard_cache WHERE user_id = student_id AND cache_type = 'student_coaching'
+  AND generated_at > now() - interval '24h'
+  → 캐시 없으면 Gemini 호출 후 저장
+
+입력 데이터:
+  {
+    name: string,
+    current_day: number,
+    progress_rate: number,       // 학습진도
+    learning_rate: number,       // 학습율
+    streak_days: number,
+    failed_words: string[],      // 최근 오답 단어 최대 10개
+    next_exam: { day_1, day_2, starts_at } | null,
+    weak_exam_days: number[]     // 다음 시험 범위 중 학습율 70% 미만 day
+  }
+
+System: 당신은 편입 영어 수험생의 AI 학습 코치입니다.
+        학생의 데이터를 분석하여 오늘 해야 할 학습을 구체적으로 안내합니다.
+
+User: 다음 학생의 학습 현황을 분석하고 오늘의 학습 코칭 메시지를
+      3문장 이내 한국어로 작성하세요.
+      반복 오답 단어, 다음 시험 대비 취약 범위, 학습 연속성을 고려하세요.
+      [입력 데이터]
+
+→ 매일 첫 대시보드 접속 시 생성
+```
+
+### 7-7. 학생 목표 달성 예측 (서버 계산, Gemini 미사용)
+
+```
+GET /api/student/dashboard/prediction
+
+계산 로직:
+  현재 추이 예측:
+    daily_avg = memorized_count / days_elapsed   // 하루 평균 암기 단어 수
+    predicted_rate_current = (memorized_count + daily_avg × remaining_days)
+                             / 3000 × 100
+
+  매일 학습 시 예측:
+    ideal_daily = 50 words/day
+    predicted_rate_daily = MIN(100,
+      (memorized_count + ideal_daily × remaining_days) / 3000 × 100
+    )
+
+  weak_exam_days:
+    다음 시험의 day_1, day_2 중
+    해당 day의 학습율(memorized / 50) < 70% 인 day 목록
+```
+
+### 7-8. 오늘 추천 학습 순서 (서버 계산, Gemini 미사용)
+
+```
+GET /api/student/dashboard/recommendation
+
+우선순위 로직:
+  1. failed_count > 0  → 복습 추가 (/student/review)
+  2. 오늘 day 미학습   → 학습 추가 (/student/study/{today_day})
+  3. 오늘 day 학습율 < 70% → 셀프 테스트 추가 (/student/study/{today_day}?mode=test)
+  4. 다음 시험 weak_exam_days 존재 → 해당 day 복습 추가
 ```
 
 ---
