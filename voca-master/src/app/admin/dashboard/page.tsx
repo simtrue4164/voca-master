@@ -291,6 +291,20 @@ export default async function AdminDashboardPage() {
         <p className="text-sm text-gray-500 mt-1">{profile?.name} · {roleLabel[role] ?? role}</p>
       </div>
 
+      {/* AI 인사이트 */}
+      <DashboardInsightCard
+        userId={user!.id}
+        cachedInsight={insightCache?.content?.summary ?? null}
+        cachedAt={insightCache?.generated_at ?? null}
+        isStale={isInsightStale}
+        stats={{
+          totalStudents,
+          todayActive,
+          atRiskCount: atRiskStudents.length,
+          recentExamAvg: examSummaries[0]?.avgScore ?? null,
+        }}
+      />
+
       {/* 요약 카드 */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         <StatCard label="총 학생" value={String(totalStudents)} sub="명" color="blue" />
@@ -407,19 +421,6 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
-      {/* AI 인사이트 */}
-      <DashboardInsightCard
-        userId={user!.id}
-        cachedInsight={insightCache?.content?.summary ?? null}
-        cachedAt={insightCache?.generated_at ?? null}
-        isStale={isInsightStale}
-        stats={{
-          totalStudents,
-          todayActive,
-          atRiskCount: atRiskStudents.length,
-          recentExamAvg: examSummaries[0]?.avgScore ?? null,
-        }}
-      />
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { createStudent } from '@/app/actions/students';
 type ClassOption = {
   id: string;
   name: string;
-  branches: { name: string } | { name: string }[] | null;
+  branches?: { name: string } | { name: string }[] | null;
 };
 
 const initialState = { error: null, success: false };
