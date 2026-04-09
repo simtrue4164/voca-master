@@ -176,7 +176,11 @@ export default async function AdminStudentsPage({
   });
 
   // 반 추가 폼용 전체 반 (필터된 연도 기준)
-  const allClassOptions = (allClasses ?? []).map((c: any) => ({ id: c.id, name: c.name }));
+  const allClassOptions = (allClasses ?? []).map((c: any) => ({
+    id: c.id,
+    name: c.name,
+    branches: c.branches
+  }));
 
   return (
     <div className="space-y-6">

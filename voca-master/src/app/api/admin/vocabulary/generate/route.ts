@@ -81,7 +81,7 @@ ${batch.map((w) => w.word).join('\n')}
         similar:  w.similar,
         antonyms: w.antonyms,
       };
-    }).filter(Boolean) as NonNullable<ReturnType<typeof object.words.map>>[];
+    }).filter((r): r is Exclude<typeof r, null> => r !== null);
 
     const admin = createAdminClient();
 

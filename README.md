@@ -207,6 +207,7 @@ voca-master/              ← 리포지토리 루트
 ## 문서
 
 - [시스템 설계 문서 (SDD)](docs/SDD.md)
+- [Vercel 배포 매뉴얼](docs/DEPLOY.md)
 
 ---
 

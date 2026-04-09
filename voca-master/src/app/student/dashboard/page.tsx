@@ -38,7 +38,7 @@ export default async function StudentDashboardPage() {
 
   const studiedPerDay: Record<number, number> = {};
   for (const log of studiedLogs ?? []) {
-    const day = (log.vocab as { day: number } | null)?.day;
+    const day = (log.vocab as unknown as { day: number } | null)?.day;
     if (day) studiedPerDay[day] = (studiedPerDay[day] ?? 0) + 1;
   }
 
