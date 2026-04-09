@@ -1,7 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getStudentProgress } from '@/app/actions/learning';
 import { logout } from '@/app/actions/auth';
 import Link from 'next/link';
+import StudentPredictionCard from '@/components/student/StudentPredictionCard';
 
 export default async function StudentDashboardPage() {
   const supabase = await createClient();
@@ -14,6 +16,19 @@ export default async function StudentDashboardPage() {
     .single();
 
   const progress = await getStudentProgress();
+
+  // AI 성과 예측 캐시 조회
+  const todayKST = new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const adminClient = createAdminClient();
+  const { data: predictionCache } = await adminClient
+    .from('dashboard_cache')
+    .select('content, generated_at')
+    .eq('user_id', user!.id)
+    .eq('cache_type', 'student_prediction')
+    .maybeSingle();
+
+  const cachedDate = predictionCache?.content?.cached_date ?? null;
+  const isPredictionStale = cachedDate !== todayKST;
 
   // Day별 학습 완료 단어 수 집계
   const { data: studiedLogs } = await supabase
@@ -62,6 +77,17 @@ export default async function StudentDashboardPage() {
           </button>
         </form>
       </div>
+
+      {/* AI 성과 예측 */}
+      <StudentPredictionCard
+        progressRate={progress.progress_rate}
+        learningRate={progress.learning_rate}
+        streakDays={progress.streak_days}
+        currentDay={progress.current_day}
+        failedCount={progress.failed_count}
+        cached={isPredictionStale ? null : (predictionCache?.content ?? null)}
+        isStale={isPredictionStale}
+      />
 
       {/* 진도 요약 카드 */}
       <div className="grid grid-cols-2 gap-3 mb-4">

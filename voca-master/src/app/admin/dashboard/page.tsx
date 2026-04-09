@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import DashboardInsightCard from '@/components/admin/DashboardInsightCard';
+import DashboardRiskCard from '@/components/admin/DashboardRiskCard';
 import { getAdminYear } from '@/lib/adminYear';
 
 export default async function AdminDashboardPage() {
@@ -325,31 +326,7 @@ export default async function AdminDashboardPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* 위험 학생 목록 */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-700">위험 학생</h2>
-            <span className="text-xs text-gray-400">3일 이상 미학습</span>
-          </div>
-          {atRiskStudents.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-6">위험 학생 없음</p>
-          ) : (
-            <div className="space-y-2">
-              {atRiskStudents.slice(0, 5).map((s) => (
-                <div key={s.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
-                  <div>
-                    <Link href={`/admin/students/${s.id}`} className="text-sm font-medium text-gray-900 hover:text-blue-600">
-                      {s.name}
-                    </Link>
-                    <p className="text-xs text-gray-400">{s.className} · {s.exam_no}</p>
-                  </div>
-                  <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full">
-                    {s.missedDays}일+ 미학습
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <DashboardRiskCard atRiskStudents={atRiskStudents} />
 
         {/* 당일 상담 예약 목록 */}
         <div className="bg-white rounded-xl border border-gray-200 p-5">

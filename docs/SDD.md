@@ -242,8 +242,7 @@ CREATE TABLE dashboard_cache (
   id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id      UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   cache_type   TEXT NOT NULL CHECK (cache_type IN (
-                 'admin_insight','admin_anomalies','admin_goal_prediction',
-                 'student_coaching','student_prediction'
+                 'admin_insight','student_coaching','student_prediction'
                )),
   content      JSONB NOT NULL,
   generated_at TIMESTAMPTZ DEFAULT now(),
@@ -573,11 +572,26 @@ User: 다음 영어 단어들의 품사별 한국어 뜻과 동의어/유의어/
 → word_meanings, word_synonyms, word_similar, word_antonyms 테이블에 일괄 upsert
 ```
 
-### 9-2. 상담 추천 엔진 (미구현)
+### 9-2. 상담 추천 엔진 ✅ 구현됨
 
 ```
-위험도(risk_score > 0.5) 학생 자동 선별
-→ counseling_recommendations 테이블에 upsert
+POST /api/admin/counseling/recommend
+Body: { studentIds: string[] }
+
+학생별 수집 데이터:
+- learning_logs: 학습 진도율, 오답률
+- learning_logs: 연속 미학습일 (마지막 학습일 기준)
+- exam_results: 최근 5회 시험 점수 추세
+
+→ Gemini(generateObject)로 risk_score(0~1) + reason 생성
+→ counseling_recommendations 테이블 insert
+→ risk_score > 0.5이고 기존 pending/scheduled AI 요청 없을 시
+   counseling_requests(source='ai') 자동 생성
+
+UI: DashboardRiskCard.tsx (대시보드 위험 학생 섹션)
+    - "AI 상담 추천" 버튼 클릭 시 실행
+    - 분석 후 학생별 위험도 배지 + reason 인라인 표시
+    - 생성된 상담 요청 수 안내 + /admin/counseling 바로가기
 ```
 
 ### 9-3. 상담 이력 요약 ✅ 구현됨
@@ -587,11 +601,59 @@ GET /api/counseling/[student_id]/history-summary
 → streamText로 스트리밍 반환 (상담 상세 페이지)
 ```
 
-### 9-4. 관리자 대시보드 AI 인사이트 (미구현)
+### 9-4. 관리자 대시보드 AI 인사이트 ✅ 구현됨
 
 ```
-dashboard_cache 24시간 캐시 전략
-→ 반 학습 현황 분석 코멘트 생성
+POST /api/admin/dashboard/insight
+Body: { stats: { totalStudents, todayActive, atRiskCount, recentExamAvg } }
+
+→ Gemini(generateText)로 3문장 이내 학급 인사이트 생성
+→ dashboard_cache(cache_type: admin_insight) upsert
+→ 당일(KST) 기준 캐시 신선도 판단, 만료 시 페이지 진입 시 자동 재생성
+
+UI: DashboardInsightCard.tsx
+```
+
+### 9-5. 학생 AI 코칭 메시지 ✅ 구현됨
+
+```
+POST /api/student/exam/[id]/coaching
+Body: { score, total, wrongWords: string[] }
+
+수집 데이터:
+- 시험 점수 / 총 문항 / 오답 단어 목록
+- learning_logs: 전체 학습 진도율 (3,000단어 기준)
+
+→ Gemini(generateText)로 3~4문장 맞춤 코칭 메시지 생성
+→ dashboard_cache(cache_type: student_coaching) upsert
+
+UI: ExamCoachingCard.tsx (시험 결과 점수 카드 바로 아래)
+    - 페이지 진입 시 자동 생성 (재생성 버튼 포함)
+    - 미응시(isAbsent)일 때는 표시하지 않음
+```
+
+### 9-6. 학생 성과 예측 ✅ 구현됨
+
+```
+POST /api/student/dashboard/prediction
+Body: { progressRate, learningRate, streakDays, currentDay, failedCount }
+
+수집 데이터:
+- learning_logs: 전체 학습 진도율, 셀프테스트 정답률, 오답 누적 수
+- 연속 학습일(streak), 현재 Day
+- exam_results: 최근 3회 시험 점수 및 추세
+
+→ Gemini(generateObject)로 구조화된 예측 생성:
+   - next_exam_score_min / max: 다음 시험 예상 점수 범위 (50점 만점)
+   - completion_probability: 60일 커리큘럼 완주 가능성 (%)
+   - message: 수치 기반 맞춤 피드백 (3문장)
+   - action: 지금 바로 할 행동 1가지
+→ dashboard_cache(cache_type: student_prediction) upsert (당일 KST 기준 캐시)
+
+UI: StudentPredictionCard.tsx (학생 대시보드 최상단)
+    - 페이지 진입 시 자동 생성 (당일 캐시 있으면 재사용)
+    - 예상 점수 범위 + 완주 가능성 수치 카드
+    - 재생성 버튼 포함
 ```
 
 ---

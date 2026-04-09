@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
+import ExamCoachingCard from '@/components/student/ExamCoachingCard';
 
 export default async function ExamResultPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -36,6 +37,13 @@ export default async function ExamResultPage({ params }: { params: Promise<{ id:
     ? total
     : (questions ?? []).filter((q: any) => !scores[q.id]).length;
 
+  const wrongWords = isAbsent
+    ? []
+    : (questions ?? [])
+        .filter((q: any) => !scores[q.id])
+        .map((q: any) => q.vocabulary?.word ?? '')
+        .filter(Boolean);
+
   return (
     <div className="max-w-lg mx-auto px-4 py-6">
       {/* 점수 카드 */}
@@ -70,6 +78,16 @@ export default async function ExamResultPage({ params }: { params: Promise<{ id:
           </>
         )}
       </div>
+
+      {/* AI 코칭 메시지 */}
+      {!isAbsent && (
+        <ExamCoachingCard
+          examId={id}
+          score={score}
+          total={total}
+          wrongWords={wrongWords}
+        />
+      )}
 
       {/* 전체 문항 목록 */}
       <div className="bg-white rounded-xl border border-gray-200 p-4 mb-4">

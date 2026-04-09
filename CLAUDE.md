@@ -17,7 +17,7 @@
 
 ---
 
-## 현재 구현 상태 (2026-04-07 기준)
+## 현재 구현 상태 (2026-04-09 기준, 최종)
 
 ### 완료된 항목
 - [x] `docs/SDD.md` — 전체 설계 확정 (DB 스키마, 타입, API, 페이지 구조)
@@ -31,9 +31,10 @@
 - [x] `/student/study/[day]` — 플래시카드 + 셀프테스트 (motion/react 애니메이션)
 - [x] `/student/review` + `/student/review/session` — 오답 복습
 - [x] `/student/exam` + `/student/exam/[id]` — CBT 시험 (타이머, 답안 입력, 강제 종료)
-- [x] `/student/exam/[id]/result` — 시험 결과
+- [x] `/student/exam/[id]/result` — 시험 결과 + AI 코칭 메시지 (점수 카드 바로 아래)
 - [x] `/student/counseling` — 학생 상담 신청 (슬롯 선택, 신청 이력)
-- [x] `/admin/dashboard` — 관리자 대시보드 (요약 카드)
+- [x] `/student/dashboard` — AI 성과 예측 카드 (최상단, 다음 시험 점수 예측 + 완주 가능성)
+- [x] `/admin/dashboard` — 관리자 대시보드 (요약 카드, AI 학급 인사이트, AI 상담 추천)
 - [x] `/admin/branches` — 지점 관리 (추가/인라인 수정/삭제)
 - [x] `/admin/classes` — 반 관리 (지점 필터, 추가/삭제)
 - [x] `/admin/admins` — 관리자 관리 (초대/비활성화)
@@ -42,6 +43,23 @@
 - [x] `/admin/vocabulary` — 어휘 관리 (Day 필터, AI 의미 일괄 생성, 편집 모달)
 - [x] `/admin/counseling` + `/admin/counseling/[id]` — 상담 관리 (목록/시간대/상세)
 - [x] `docs/seed_test_data.js` — 테스트 데이터 시드 (지점 2, 반 3, 관리자 2, 학생 4)
+
+### AI 기능 구현 현황
+- [x] `POST /api/admin/vocabulary/generate` — 어휘 AI 자동 채우기 (Gemini, generateObject)
+- [x] `POST /api/admin/dashboard/insight` — 관리자 AI 학급 인사이트 (dashboard_cache 24h)
+- [x] `POST /api/admin/counseling/recommend` — AI 상담 추천 엔진
+  - 위험 학생의 진도율/오답률/연속미학습일/시험추세 분석
+  - counseling_recommendations upsert + risk_score > 0.5 시 counseling_requests(source='ai') 자동 생성
+  - `DashboardRiskCard.tsx`: 대시보드 위험 학생 섹션에 "AI 상담 추천" 버튼
+- [x] `POST /api/student/exam/[id]/coaching` — 학생 AI 코칭 메시지
+  - 시험 점수·오답 단어·학습 진도율 기반 맞춤 코칭 (3~4문장)
+  - dashboard_cache(cache_type: student_coaching) 저장
+  - `ExamCoachingCard.tsx`: 시험 결과 점수 카드 바로 아래 자동 표시
+- [x] `POST /api/student/dashboard/prediction` — 학생 AI 성과 예측
+  - 진도율·정답률·연속학습일·오답수·시험추세 → 다음 시험 점수 범위 + 완주 가능성 + 실천 행동
+  - dashboard_cache(cache_type: student_prediction) 당일 캐시
+  - `StudentPredictionCard.tsx`: 학생 대시보드 최상단 자동 표시
+- [x] `GET /api/counseling/[student_id]/history-summary` — 상담 이력 요약 (streamText)
 
 ### Supabase에서 수동 실행 필요한 SQL
 ```sql
@@ -59,9 +77,7 @@ $$;
 - 학생: 수험번호 1001~1004 / 비밀번호 1234
 
 ### 남은 작업
-- [ ] 어휘 의미 AI 생성 실행 (관리자 로그인 → 어휘 관리 → AI 의미 일괄 생성)
-- [ ] AI 상담 추천 생성 기능 (관리자 대시보드 → 위험 학생 감지)
-- [ ] 관리자 대시보드 고도화 (Gemini 인사이트, 실시간 시험 현황)
+- [ ] 어휘 의미 AI 생성 실행 (관리자 로그인 → 어휘 관리 → AI 의미 일괄 생성) ← 데이터 작업, 개발 불필요
 
 ---
 
