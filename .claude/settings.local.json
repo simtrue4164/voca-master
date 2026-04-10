@@ -4,7 +4,8 @@
       "Bash(mv todo.md README.md voca-master/HANDOFF.md voca-master/README.md etc/)",
       "Bash(mv node_modules package.json package-lock.json etc/)",
       "Bash(mv voca-master/public/file.svg voca-master/public/globe.svg voca-master/public/next.svg voca-master/public/vercel.svg voca-master/public/window.svg etc/)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(cat:*)"
     ]
   }
 }
