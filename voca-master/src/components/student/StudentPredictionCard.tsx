@@ -58,73 +58,58 @@ export default function StudentPredictionCard({
     }
   }
 
-  function getCompletionColor(prob: number) {
-    if (prob >= 80) return 'text-green-600';
-    if (prob >= 50) return 'text-blue-600';
-    return 'text-orange-500';
-  }
-
-  function getScoreColor(score: number) {
-    if (score / 50 >= 0.8) return 'text-green-600';
-    if (score / 50 >= 0.6) return 'text-blue-600';
-    return 'text-orange-500';
-  }
-
   return (
-    <div className="bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 rounded-xl p-5 mb-4">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <span className="text-lg">🔮</span>
-          <h2 className="text-sm font-semibold text-indigo-800">AI 성과 예측</h2>
-          {isGenerating && (
-            <span className="text-xs text-indigo-400 animate-pulse">분석 중...</span>
-          )}
-        </div>
+    <div className="bg-white rounded-2xl p-6 mb-3 shadow-sm">
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-[13px] text-[#6e6e73]">AI 성과 예측</p>
         {!isGenerating && (
           <button
             onClick={generate}
-            className="text-xs px-3 py-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            className="text-[12px] text-[#0071e3] hover:opacity-70 transition-opacity"
           >
-            재생성
+            새로 분석
           </button>
         )}
       </div>
 
       {isGenerating ? (
-        <div className="space-y-2 py-1">
-          <div className="h-3.5 bg-indigo-100 rounded animate-pulse w-full" />
-          <div className="h-3.5 bg-indigo-100 rounded animate-pulse w-5/6" />
-          <div className="h-3.5 bg-indigo-100 rounded animate-pulse w-4/6" />
+        <div className="space-y-2.5 py-2">
+          <div className="h-8 bg-[#f5f5f7] rounded-lg animate-pulse w-1/2" />
+          <div className="h-3 bg-[#f5f5f7] rounded animate-pulse w-full mt-4" />
+          <div className="h-3 bg-[#f5f5f7] rounded animate-pulse w-4/5" />
+          <div className="h-3 bg-[#f5f5f7] rounded animate-pulse w-3/5" />
         </div>
       ) : error ? (
-        <p className="text-sm text-indigo-400 text-center py-2">{error}</p>
+        <p className="text-[13px] text-[#6e6e73] py-2">{error}</p>
       ) : prediction ? (
-        <div className="space-y-3">
-          {/* 예측 수치 */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-white rounded-lg p-3 text-center">
-              <p className="text-xs text-gray-400 mb-1">다음 시험 예상</p>
-              <p className={`text-xl font-black ${getScoreColor((prediction.next_exam_score_min + prediction.next_exam_score_max) / 2)}`}>
-                {prediction.next_exam_score_min}~{prediction.next_exam_score_max}
-                <span className="text-sm font-normal text-gray-400">/50점</span>
+        <div>
+          {/* 핵심 수치 */}
+          <div className="grid grid-cols-2 gap-4 mb-5">
+            <div>
+              <p className="text-[32px] font-semibold text-[#1d1d1f] leading-none">
+                {prediction.next_exam_score_min}
+                <span className="text-lg font-normal text-[#6e6e73]">~{prediction.next_exam_score_max}</span>
               </p>
+              <p className="text-[12px] text-[#6e6e73] mt-1">예상 점수 / 50점</p>
             </div>
-            <div className="bg-white rounded-lg p-3 text-center">
-              <p className="text-xs text-gray-400 mb-1">커리큘럼 완주</p>
-              <p className={`text-xl font-black ${getCompletionColor(prediction.completion_probability)}`}>
+            <div>
+              <p className="text-[32px] font-semibold text-[#1d1d1f] leading-none">
                 {prediction.completion_probability}
-                <span className="text-sm font-normal text-gray-400">%</span>
+                <span className="text-lg font-normal text-[#6e6e73]">%</span>
               </p>
+              <p className="text-[12px] text-[#6e6e73] mt-1">완주 가능성</p>
             </div>
           </div>
 
-          {/* 예측 메시지 */}
-          <p className="text-sm text-indigo-900 leading-relaxed">{prediction.message}</p>
+          {/* 메시지 */}
+          <p className="text-[13px] text-[#1d1d1f] leading-relaxed mb-4">
+            {prediction.message}
+          </p>
 
           {/* 실천 행동 */}
-          <div className="bg-indigo-600 text-white rounded-lg px-3 py-2">
-            <p className="text-xs font-medium opacity-80 mb-0.5">지금 바로 할 일</p>
-            <p className="text-sm font-medium">{prediction.action}</p>
+          <div className="border-t border-[#f5f5f7] pt-4">
+            <p className="text-[11px] text-[#6e6e73] mb-1">지금 바로 할 일</p>
+            <p className="text-[13px] font-semibold text-[#1d1d1f]">{prediction.action}</p>
           </div>
         </div>
       ) : null}

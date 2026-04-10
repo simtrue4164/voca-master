@@ -104,12 +104,12 @@ export default function StudentTable({
           placeholder="이름 또는 수험번호 검색"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 min-w-40 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 min-w-40 px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm focus:outline-none focus:border-[#1d1d1f]"
         />
         <select
           value={filterClass}
           onChange={(e) => setFilterClass(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm bg-white focus:outline-none focus:border-[#1d1d1f]"
         >
           <option value="">전체 반</option>
           {classes.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -117,61 +117,61 @@ export default function StudentTable({
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm bg-white focus:outline-none focus:border-[#1d1d1f]"
         >
           <option value="">전체 상태</option>
           <option value="active">활성</option>
           <option value="inactive">비활성</option>
         </select>
-        <span className="text-sm text-gray-400">{filtered.length}명</span>
-        <span className="text-xs text-gray-300 ml-auto">{tableYear}년도 배정 현황</span>
+        <span className="text-sm text-[#6e6e73]">{filtered.length}명</span>
+        <span className="text-xs text-[#c7c7cc] ml-auto">{tableYear}년도 배정 현황</span>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-x-auto">
+      <div className="bg-white rounded-2xl shadow-sm overflow-x-auto">
         <table className="w-full text-sm" style={{ minWidth: '860px' }}>
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-[#f5f5f7] border-b border-[#e5e5ea]">
             <tr>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium whitespace-nowrap">수험번호</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium whitespace-nowrap">이름</th>
-              <th className="text-left px-3 py-3 text-gray-600 font-medium whitespace-nowrap">소속 반</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium whitespace-nowrap">수험번호</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium whitespace-nowrap">이름</th>
+              <th className="text-left px-3 py-3 text-[#6e6e73] font-medium whitespace-nowrap">소속 반</th>
               {MONTHS.map((mm, i) => (
                 <th key={mm} className="px-1 py-2 text-center w-9">
                   <div className="flex flex-col items-center gap-0.5">
-                    <span className="text-xs text-gray-500 font-medium leading-none">{i + 1}</span>
+                    <span className="text-xs text-[#6e6e73] font-medium leading-none">{i + 1}</span>
                     <input
                       type="checkbox"
                       checked={isAllMonthChecked(mm)}
                       onChange={() => handleAllMonthToggle(mm)}
                       title={`${i + 1}월 전체`}
-                      className="w-3.5 h-3.5 rounded border-gray-300 text-blue-600 cursor-pointer"
+                      className="w-3.5 h-3.5 rounded border-[#e5e5ea] text-[#0071e3] cursor-pointer"
                     />
                   </div>
                 </th>
               ))}
-              <th className="text-left px-3 py-3 text-gray-600 font-medium whitespace-nowrap">상태</th>
+              <th className="text-left px-3 py-3 text-[#6e6e73] font-medium whitespace-nowrap">상태</th>
               <th className="px-3 py-3 w-12" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-[#f5f5f7]">
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={17} className="text-center py-8 text-gray-400">
+                <td colSpan={17} className="text-center py-8 text-[#6e6e73]">
                   {students.length === 0 ? '등록된 학생이 없습니다' : '검색 결과가 없습니다'}
                 </td>
               </tr>
             )}
             {filtered.map((s) => (
-              <tr key={s.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2.5 font-mono text-gray-700 whitespace-nowrap">{s.exam_no}</td>
+              <tr key={s.id} className="hover:bg-[#f5f5f7]">
+                <td className="px-4 py-2.5 font-mono text-[#1d1d1f] whitespace-nowrap">{s.exam_no}</td>
                 <td className="px-4 py-2.5 whitespace-nowrap">
-                  <Link href={`/admin/students/${s.id}`} className="font-medium text-gray-900 hover:text-blue-600">
+                  <Link href={`/admin/students/${s.id}`} className="font-medium text-[#1d1d1f] hover:text-[#0071e3]">
                     {s.name}
                   </Link>
                 </td>
-                <td className="px-3 py-2.5 text-gray-500 text-xs whitespace-nowrap">
+                <td className="px-3 py-2.5 text-[#6e6e73] text-xs whitespace-nowrap">
                   {s.class_names.length > 0
                     ? s.class_names.join(', ')
-                    : <span className="text-gray-300">-</span>}
+                    : <span className="text-[#c7c7cc]">-</span>}
                 </td>
                 {MONTHS.map((mm) => (
                   <td key={mm} className="px-1 py-2.5 text-center">
@@ -181,19 +181,19 @@ export default function StudentTable({
                       onChange={() => handleMonthToggle(s, mm)}
                       disabled={s.class_ids.length === 0 && !isMonthChecked(s.id, mm)}
                       title={s.class_ids.length === 0 && !isMonthChecked(s.id, mm) ? '배정된 반 없음' : ''}
-                      className="w-3.5 h-3.5 rounded border-gray-300 text-blue-600 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                      className="w-3.5 h-3.5 rounded border-[#e5e5ea] text-[#0071e3] cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                     />
                   </td>
                 ))}
                 <td className="px-3 py-2.5">
                   <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                    s.is_active ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'
+                    s.is_active ? 'bg-green-50 text-green-700' : 'bg-[#f5f5f7] text-[#6e6e73]'
                   }`}>
                     {s.is_active ? '활성' : '비활성'}
                   </span>
                 </td>
                 <td className="px-3 py-2.5 text-right">
-                  <button onClick={() => setEditing(s)} className="text-xs text-blue-600 hover:text-blue-800 font-medium">
+                  <button onClick={() => setEditing(s)} className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity">
                     수정
                   </button>
                 </td>
@@ -261,12 +261,12 @@ function StudentEditModal({
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-        <div className="p-5 border-b border-gray-200 flex items-center justify-between">
+        <div className="p-5 border-b border-[#e5e5ea] flex items-center justify-between">
           <div>
-            <h2 className="text-base font-bold text-gray-900">학생 수정</h2>
-            <p className="text-xs text-gray-400 mt-0.5">수험번호: {student.exam_no}</p>
+            <h2 className="text-base font-bold text-[#1d1d1f]">학생 수정</h2>
+            <p className="text-xs text-[#6e6e73] mt-0.5">수험번호: {student.exam_no}</p>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl">×</button>
+          <button onClick={onClose} className="text-[#6e6e73] hover:text-[#6e6e73] text-xl">×</button>
         </div>
 
         <div className="p-5 space-y-5">
@@ -283,15 +283,15 @@ function StudentEditModal({
             ))}
 
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">이름</label>
+              <label className="block text-xs font-medium text-[#6e6e73] mb-1">이름</label>
               <input name="name" defaultValue={student.name} required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                className="w-full px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm focus:outline-none focus:border-[#1d1d1f]" />
             </div>
 
             <div className="flex items-center justify-between py-1">
-              <span className="text-xs font-medium text-gray-600">계정 상태</span>
+              <span className="text-xs font-medium text-[#6e6e73]">계정 상태</span>
               <button type="button" onClick={() => setIsActive((v) => !v)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isActive ? 'bg-blue-600' : 'bg-gray-200'}`}>
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${isActive ? 'bg-[#1d1d1f]' : 'bg-[#e5e5ea]'}`}>
                 <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isActive ? 'translate-x-6' : 'translate-x-1'}`} />
               </button>
             </div>
@@ -299,48 +299,48 @@ function StudentEditModal({
             {/* 반 배정: 학년도 + 월 체크박스 */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-medium text-gray-600">반 배정</span>
+                <span className="text-xs font-medium text-[#6e6e73]">반 배정</span>
                 <input
                   type="number"
                   value={selectedYear}
                   onChange={(e) => handleYearChange(e.target.value)}
                   min="2020" max="2035"
-                  className="w-20 px-2 py-1 border border-gray-300 rounded text-sm text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-20 px-2 py-1 border border-[#e5e5ea] rounded text-sm text-center focus:outline-none focus:border-[#1d1d1f]"
                 />
-                <span className="text-xs text-gray-400">학년도</span>
+                <span className="text-xs text-[#6e6e73]">학년도</span>
               </div>
 
               {/* 월 체크박스 */}
-              <div className="grid grid-cols-4 gap-1 mb-3 p-2 bg-gray-50 rounded-lg">
+              <div className="grid grid-cols-4 gap-1 mb-3 p-2 bg-[#f5f5f7] rounded-lg">
                 {['01','02','03','04','05','06','07','08','09','10','11','12'].map((mm, i) => (
                   <label key={mm} className="flex items-center gap-1.5 px-1 py-1 rounded cursor-pointer hover:bg-white">
                     <input
                       type="checkbox"
                       checked={selectedMonths.includes(mm)}
                       onChange={() => toggleMonth(mm)}
-                      className="rounded border-gray-300 text-blue-600"
+                      className="rounded border-[#e5e5ea] text-[#0071e3]"
                     />
-                    <span className="text-xs text-gray-700">{i + 1}월</span>
+                    <span className="text-xs text-[#1d1d1f]">{i + 1}월</span>
                   </label>
                 ))}
               </div>
 
               {/* 반 체크박스 */}
-              <div className="border border-gray-200 rounded-lg p-2 max-h-28 overflow-y-auto space-y-1">
+              <div className="border border-[#e5e5ea] rounded-lg p-2 max-h-28 overflow-y-auto space-y-1">
                 {classes.map((c) => (
-                  <label key={c.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded">
+                  <label key={c.id} className="flex items-center gap-2 cursor-pointer hover:bg-[#f5f5f7] px-2 py-1 rounded">
                     <input
                       type="checkbox"
                       checked={selectedClassIds.includes(c.id)}
                       onChange={() => toggleClass(c.id)}
-                      className="rounded border-gray-300 text-blue-600"
+                      className="rounded border-[#e5e5ea] text-[#0071e3]"
                     />
-                    <span className="text-sm text-gray-700">{c.name}</span>
+                    <span className="text-sm text-[#1d1d1f]">{c.name}</span>
                   </label>
                 ))}
-                {classes.length === 0 && <p className="text-xs text-gray-400 px-2">반이 없습니다</p>}
+                {classes.length === 0 && <p className="text-xs text-[#6e6e73] px-2">반이 없습니다</p>}
               </div>
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs text-[#6e6e73] mt-1">
                 선택한 월에 위 반이 일괄 배정됩니다. 체크 해제된 월의 기존 배정은 삭제됩니다.
               </p>
             </div>
@@ -348,25 +348,25 @@ function StudentEditModal({
             {state.error && <p className="text-sm text-red-500">{state.error}</p>}
             <div className="flex gap-2">
               <button type="submit" disabled={isPending}
-                className="flex-1 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50">
+                className="flex-1 py-2 bg-[#1d1d1f] text-white text-sm font-medium rounded-lg hover:opacity-80 disabled:opacity-50">
                 {isPending ? '저장 중...' : '저장'}
               </button>
               <button type="button" onClick={onClose}
-                className="flex-1 py-2 bg-gray-100 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-200">
+                className="flex-1 py-2 bg-[#f5f5f7] text-[#6e6e73] text-sm font-medium rounded-lg hover:opacity-80">
                 취소
               </button>
             </div>
           </form>
 
           {/* 비밀번호 초기화 */}
-          <div className="border-t border-gray-100 pt-4">
-            <p className="text-xs font-medium text-gray-600 mb-2">비밀번호 초기화</p>
+          <div className="border-t border-[#f5f5f7] pt-4">
+            <p className="text-xs font-medium text-[#6e6e73] mb-2">비밀번호 초기화</p>
             <form action={pwAction} className="flex gap-2">
               <input type="hidden" name="user_id" value={student.id} />
               <input name="password" type="text" placeholder="새 비밀번호" required
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                className="flex-1 px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm focus:outline-none focus:border-[#1d1d1f]" />
               <button type="submit" disabled={pwIsPending}
-                className="px-3 py-2 bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-800 disabled:opacity-50">
+                className="px-3 py-2 bg-[#1d1d1f] text-white text-sm font-medium rounded-lg hover:bg-[#1d1d1f] disabled:opacity-50">
                 {pwIsPending ? '...' : '변경'}
               </button>
             </form>

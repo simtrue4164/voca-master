@@ -174,8 +174,8 @@ export default async function AdminCounselingPage({
   return (
     <div>
       <div className="mb-5">
-        <h1 className="text-xl font-bold text-gray-900">상담 관리</h1>
-        <p className="text-sm text-gray-500 mt-1">AI 추천 및 학생 신청 상담 관리</p>
+        <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">상담 관리</h1>
+        <p className="text-[13px] text-[#6e6e73] mt-0.5">AI 추천 및 학생 신청 상담 관리</p>
       </div>
 
       {/* 통계 카드 */}

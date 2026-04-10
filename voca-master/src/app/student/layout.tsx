@@ -21,7 +21,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
   if (profile.role !== 'student') redirect('/admin/dashboard');
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-16">
+    <div className="min-h-screen bg-[#f5f5f7] pb-16">
       {children}
       <BottomNav />
     </div>

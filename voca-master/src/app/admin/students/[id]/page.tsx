@@ -193,23 +193,21 @@ export default async function StudentDetailPage({
   }
 
   return (
-    <div className="space-y-5 max-w-3xl">
+    <div className="space-y-4 max-w-3xl">
       {/* 브레드크럼 */}
-      <div className="flex items-center gap-2 text-sm">
-        <Link href="/admin/students" className="text-gray-400 hover:text-gray-600">← 학생 목록</Link>
-      </div>
+      <Link href="/admin/students" className="text-[12px] text-[#6e6e73] hover:text-[#1d1d1f] block">← 학생 목록</Link>
 
       {/* 기본 정보 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-5">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-xl font-bold text-gray-900">{student.name}</h1>
-            <p className="text-sm text-gray-500 mt-0.5">
+            <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">{student.name}</h1>
+            <p className="text-[13px] text-[#6e6e73] mt-0.5">
               수험번호 {student.exam_no ?? '-'} · {branch?.name ?? ''} {cls?.name ?? ''}
             </p>
           </div>
-          <span className={`text-xs px-3 py-1 rounded-full font-medium ${
-            student.is_active ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'
+          <span className={`text-[11px] px-2.5 py-1 rounded-full font-medium ${
+            student.is_active ? 'bg-[#f5f5f7] text-[#34c759]' : 'bg-[#f5f5f7] text-[#c7c7cc]'
           }`}>
             {student.is_active ? '활성' : '비활성'}
           </span>
@@ -223,10 +221,10 @@ export default async function StudentDetailPage({
             { label: '연속 학습일', value: `${streakDays}일`, sub: '오늘 기준' },
             { label: '오답 단어', value: `${failed}개`, sub: '복습 필요' },
           ].map((s) => (
-            <div key={s.label} className="bg-gray-50 rounded-xl p-3">
-              <p className="text-xs text-gray-400 mb-1">{s.label}</p>
-              <p className="text-xl font-bold text-gray-900">{s.value}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{s.sub}</p>
+            <div key={s.label} className="bg-[#f5f5f7] rounded-xl p-3">
+              <p className="text-[11px] text-[#6e6e73] mb-1">{s.label}</p>
+              <p className="text-[18px] font-semibold text-[#1d1d1f]">{s.value}</p>
+              <p className="text-[11px] text-[#6e6e73] mt-0.5">{s.sub}</p>
             </div>
           ))}
         </div>
@@ -234,27 +232,27 @@ export default async function StudentDetailPage({
 
       {/* 학습 히트맵 */}
       {heatmapData.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">60일 학습 히트맵</h2>
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <h2 className="text-[13px] font-semibold text-[#1d1d1f] mb-4">60일 학습 히트맵</h2>
           <StudentHeatmap data={heatmapData} startDate={cls.start_date} />
         </div>
       )}
 
       {/* 시험 점수 추이 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h2 className="text-sm font-semibold text-gray-700 mb-4">시험 점수 추이</h2>
+      <div className="bg-white rounded-2xl shadow-sm p-5">
+        <h2 className="text-[13px] font-semibold text-[#1d1d1f] mb-4">시험 점수 추이</h2>
         {scoreHistory.length === 0 ? (
-          <p className="text-sm text-gray-400 text-center py-6">응시한 시험이 없습니다</p>
+          <p className="text-[13px] text-[#6e6e73] text-center py-6">응시한 시험이 없습니다</p>
         ) : (
           <StudentScoreChart data={scoreHistory} />
         )}
       </div>
 
       {/* 관련 단어 학습 현황 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-5">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-semibold text-gray-700">관련 단어 학습 현황</h2>
-          <span className="text-xs text-gray-400">동의어 · 유의어 · 반의어</span>
+          <h2 className="text-[13px] font-semibold text-[#1d1d1f]">관련 단어 학습 현황</h2>
+          <span className="text-[12px] text-[#6e6e73]">동의어 · 유의어 · 반의어</span>
         </div>
         <StudentRelatedProgress
           days={relatedDays}
@@ -268,16 +266,16 @@ export default async function StudentDetailPage({
       </div>
 
       {/* 취약 단어 Top 10 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">취약 단어 ({Math.min(weakWords.length, 10)}개)</h2>
+      <div className="bg-white rounded-2xl shadow-sm p-5">
+        <h2 className="text-[13px] font-semibold text-[#1d1d1f] mb-3">취약 단어 ({Math.min(weakWords.length, 10)}개)</h2>
         {weakWords.length === 0 ? (
-          <p className="text-sm text-gray-400">오답 단어가 없습니다</p>
+          <p className="text-[13px] text-[#6e6e73]">오답 단어가 없습니다</p>
         ) : (
           <div className="flex flex-wrap gap-2">
             {weakWords.map((w) => (
-              <span key={w.word} className="inline-flex items-center gap-1.5 bg-red-50 text-red-700 text-sm px-3 py-1.5 rounded-full border border-red-100">
+              <span key={w.word} className="inline-flex items-center gap-1.5 bg-[#f5f5f7] text-[#1d1d1f] text-[12px] px-3 py-1.5 rounded-lg">
                 <span className="font-medium">{w.word}</span>
-                <span className="text-xs opacity-60">Day {w.day}</span>
+                <span className="text-[#6e6e73]">Day {w.day}</span>
               </span>
             ))}
           </div>
@@ -285,33 +283,33 @@ export default async function StudentDetailPage({
       </div>
 
       {/* 상담 이력 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-5">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold text-gray-700">상담 이력</h2>
+          <h2 className="text-[13px] font-semibold text-[#1d1d1f]">상담 이력</h2>
           <Link
             href={`/admin/counseling?status=all`}
-            className="text-xs text-blue-600 hover:text-blue-800"
+            className="text-[12px] text-[#0071e3]"
           >
             전체 보기
           </Link>
         </div>
         {!counselingHistory || counselingHistory.length === 0 ? (
-          <p className="text-sm text-gray-400">상담 이력이 없습니다</p>
+          <p className="text-[13px] text-[#6e6e73]">상담 이력이 없습니다</p>
         ) : (
           <div className="space-y-3">
             {counselingHistory.map((h: any) => (
-              <div key={h.id} className="p-3 bg-gray-50 rounded-lg text-sm">
+              <div key={h.id} className="p-3 bg-[#f5f5f7] rounded-xl text-[13px]">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs text-gray-400">
+                  <span className="text-[12px] text-[#6e6e73]">
                     {new Date(h.created_at).toLocaleDateString('ko-KR')}
                   </span>
                   {h.outcome && (
-                    <span className="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">
+                    <span className="text-[11px] bg-white text-[#6e6e73] px-2 py-0.5 rounded-full">
                       {h.outcome}
                     </span>
                   )}
                 </div>
-                <p className="text-gray-700 line-clamp-2">{h.content}</p>
+                <p className="text-[#1d1d1f] line-clamp-2">{h.content}</p>
               </div>
             ))}
           </div>

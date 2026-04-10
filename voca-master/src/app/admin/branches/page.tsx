@@ -28,8 +28,8 @@ export default async function AdminBranchesPage() {
   }));
 
   return (
-    <div>
-      <h1 className="text-xl font-bold text-gray-900 mb-6">지점 관리</h1>
+    <div className="space-y-4">
+      <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">지점 관리</h1>
       <BranchTable branches={rows} />
     </div>
   );

@@ -25,22 +25,22 @@ export default function CreateExamForm({ classes }: { classes: ClassOption[] }) 
     <form action={action} className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-medium text-gray-600 mb-1">시험명</label>
+          <label className="block text-xs font-medium text-[#6e6e73] mb-1">시험명</label>
           <input
             name="title"
             type="text"
             required
             placeholder="예: 1회 실전 모의고사"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm focus:outline-none focus:border-[#1d1d1f]"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-600 mb-1">대상 반</label>
+          <label className="block text-xs font-medium text-[#6e6e73] mb-1">대상 반</label>
           <select
             name="class_id"
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm bg-white focus:outline-none focus:border-[#1d1d1f]"
           >
             <option value="">반 선택</option>
             {classes.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -52,8 +52,8 @@ export default function CreateExamForm({ classes }: { classes: ClassOption[] }) 
       {/* Day 선택 그리드 */}
       <div>
         <div className="flex items-center justify-between mb-2">
-          <label className="text-xs font-medium text-gray-600">
-            시험 범위 Day 선택 <span className="text-gray-400">(2개 선택 · 각 25문항)</span>
+          <label className="text-xs font-medium text-[#6e6e73]">
+            시험 범위 Day 선택 <span className="text-[#6e6e73]">(2개 선택 · 각 25문항)</span>
           </label>
           <div className="flex gap-3 text-xs">
             {day1 !== null && (
@@ -67,7 +67,7 @@ export default function CreateExamForm({ classes }: { classes: ClassOption[] }) 
               </span>
             )}
             {selectedDays.length === 0 && (
-              <span className="text-gray-400">아직 선택 안됨</span>
+              <span className="text-[#6e6e73]">아직 선택 안됨</span>
             )}
           </div>
         </div>
@@ -85,10 +85,10 @@ export default function CreateExamForm({ classes }: { classes: ClassOption[] }) 
                 onClick={() => toggleDay(day)}
                 className={`py-1.5 rounded text-xs font-medium transition-colors border ${
                   isFirst
-                    ? 'bg-blue-600 border-blue-600 text-white'
+                    ? 'bg-[#1d1d1f] border-blue-600 text-white'
                     : isSecond
                     ? 'bg-indigo-600 border-indigo-600 text-white'
-                    : 'bg-white border-gray-200 text-gray-600 hover:border-blue-400 hover:text-blue-600'
+                    : 'bg-white border-[#e5e5ea] text-[#6e6e73] hover:border-blue-400 hover:text-[#0071e3]'
                 }`}
               >
                 {day}
@@ -97,7 +97,7 @@ export default function CreateExamForm({ classes }: { classes: ClassOption[] }) 
           })}
         </div>
 
-        <p className="text-xs text-gray-400 mt-2">
+        <p className="text-xs text-[#6e6e73] mt-2">
           순서대로 선택 · 3번째 선택 시 첫 번째 Day가 교체됩니다
         </p>
       </div>
@@ -106,7 +106,7 @@ export default function CreateExamForm({ classes }: { classes: ClassOption[] }) 
       <input type="hidden" name="day_1" value={day1 ?? ''} />
       <input type="hidden" name="day_2" value={day2 ?? ''} />
 
-      <p className="text-xs text-gray-400">총 50문항 · 8분 고정 · 기출 빈도 낮은 단어 우선 출제</p>
+      <p className="text-xs text-[#6e6e73]">총 50문항 · 8분 고정 · 기출 빈도 낮은 단어 우선 출제</p>
 
       {state.error && <p className="text-sm text-red-500">{state.error}</p>}
       {state.success && <p className="text-sm text-green-600">시험이 출제되었습니다.</p>}
@@ -114,7 +114,7 @@ export default function CreateExamForm({ classes }: { classes: ClassOption[] }) 
       <button
         type="submit"
         disabled={isPending || selectedDays.length < 2}
-        className="px-6 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="px-6 py-2 bg-[#1d1d1f] text-white text-sm font-medium rounded-lg hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isPending ? '출제 중...' : `시험 출제 (Day ${day1 ?? '?'} + Day ${day2 ?? '?'})`}
       </button>

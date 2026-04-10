@@ -68,23 +68,22 @@ export default function DashboardInsightCard({
     : null;
 
   return (
-    <div className="bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-100 rounded-xl p-5">
+    <div className="bg-white rounded-2xl shadow-sm p-5">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <span className="text-lg">✨</span>
-          <h2 className="text-sm font-semibold text-purple-800">AI 학급 인사이트</h2>
+          <h2 className="text-[13px] font-semibold text-[#1d1d1f]">AI 학급 인사이트</h2>
           {isGenerating && (
-            <span className="text-xs text-purple-400 animate-pulse">생성 중...</span>
+            <span className="text-[11px] text-[#6e6e73] animate-pulse">생성 중...</span>
           )}
         </div>
         <div className="flex items-center gap-2">
           {timeAgo && !isGenerating && (
-            <span className="text-xs text-purple-400">{timeAgo}</span>
+            <span className="text-[11px] text-[#6e6e73]">{timeAgo}</span>
           )}
           <button
             onClick={generateInsight}
             disabled={isGenerating}
-            className="text-xs px-3 py-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="text-[11px] px-3 py-1.5 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
           >
             {isGenerating ? '생성 중...' : '재생성'}
           </button>
@@ -93,14 +92,14 @@ export default function DashboardInsightCard({
 
       {isGenerating ? (
         <div className="space-y-2 py-1">
-          <div className="h-3.5 bg-purple-100 rounded animate-pulse w-full" />
-          <div className="h-3.5 bg-purple-100 rounded animate-pulse w-4/5" />
-          <div className="h-3.5 bg-purple-100 rounded animate-pulse w-3/5" />
+          <div className="h-3 bg-[#f5f5f7] rounded animate-pulse w-full" />
+          <div className="h-3 bg-[#f5f5f7] rounded animate-pulse w-4/5" />
+          <div className="h-3 bg-[#f5f5f7] rounded animate-pulse w-3/5" />
         </div>
       ) : insight ? (
-        <p className="text-sm text-purple-900 leading-relaxed whitespace-pre-line">{insight}</p>
+        <p className="text-[13px] text-[#1d1d1f] leading-relaxed whitespace-pre-line">{insight}</p>
       ) : (
-        <p className="text-sm text-purple-400 text-center py-4">
+        <p className="text-[13px] text-[#6e6e73] text-center py-4">
           인사이트를 불러올 수 없습니다. 재생성 버튼을 눌러주세요.
         </p>
       )}

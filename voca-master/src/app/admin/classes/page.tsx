@@ -96,8 +96,8 @@ export default async function AdminClassesPage({
   const { data: branchList } = await branchListQuery;
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-xl font-bold text-gray-900">반 관리</h1>
+    <div className="space-y-4">
+      <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">반 관리</h1>
       <Suspense>
         <ProgressFilterBar
           branches={branches}

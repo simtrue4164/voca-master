@@ -109,14 +109,14 @@ export default function VocabularyManager({ day, words, totalDays }: {
         <select
           value={day}
           onChange={(e) => changeDay(Number(e.target.value))}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-[#e5e5ea] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1d1d1f]"
         >
           {Array.from({ length: totalDays }, (_, i) => i + 1).map((d) => (
             <option key={d} value={d}>Day {d}</option>
           ))}
         </select>
 
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-[#6e6e73]">
           {words.length}개 단어
           {incompleteCount > 0 && (
             <span className="ml-1 text-orange-500">/ 미완성 {incompleteCount}개</span>
@@ -142,30 +142,30 @@ export default function VocabularyManager({ day, words, totalDays }: {
       )}
 
       {/* 단어 목록 */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-[#f5f5f7] border-b border-[#e5e5ea]">
             <tr>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium w-8">#</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">단어</th>
-              <th className="text-center px-3 py-3 text-gray-600 font-medium">의미</th>
-              <th className="text-center px-3 py-3 text-gray-600 font-medium">동의어</th>
-              <th className="text-center px-3 py-3 text-gray-600 font-medium">유의어</th>
-              <th className="text-center px-3 py-3 text-gray-600 font-medium">반의어</th>
-              <th className="text-center px-3 py-3 text-gray-600 font-medium">기출</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium w-8">#</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">단어</th>
+              <th className="text-center px-3 py-3 text-[#6e6e73] font-medium">의미</th>
+              <th className="text-center px-3 py-3 text-[#6e6e73] font-medium">동의어</th>
+              <th className="text-center px-3 py-3 text-[#6e6e73] font-medium">유의어</th>
+              <th className="text-center px-3 py-3 text-[#6e6e73] font-medium">반의어</th>
+              <th className="text-center px-3 py-3 text-[#6e6e73] font-medium">기출</th>
               <th className="px-4 py-3"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-[#f5f5f7]">
             {words.map((word, idx) => (
-              <tr key={word.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 text-gray-400">{(day - 1) * 50 + idx + 1}</td>
-                <td className="px-4 py-3 font-medium text-gray-900">{word.word}</td>
+              <tr key={word.id} className="hover:bg-[#f5f5f7] transition-colors">
+                <td className="px-4 py-3 text-[#6e6e73]">{(day - 1) * 50 + idx + 1}</td>
+                <td className="px-4 py-3 font-medium text-[#1d1d1f]">{word.word}</td>
                 <td className="px-3 py-3 text-center">
                   <CountBadge count={word.meaning_count} emptyColor="bg-red-100 text-red-700" />
                 </td>
                 <td className="px-3 py-3 text-center">
-                  <CountBadge count={word.synonym_count} filledColor="bg-blue-50 text-blue-600" />
+                  <CountBadge count={word.synonym_count} filledColor="bg-blue-50 text-[#0071e3]" />
                 </td>
                 <td className="px-3 py-3 text-center">
                   <CountBadge count={word.similar_count} filledColor="bg-teal-50 text-teal-600" />
@@ -173,11 +173,11 @@ export default function VocabularyManager({ day, words, totalDays }: {
                 <td className="px-3 py-3 text-center">
                   <CountBadge count={word.antonym_count} filledColor="bg-orange-50 text-orange-600" />
                 </td>
-                <td className="px-3 py-3 text-center text-gray-500">{word.exam_count}회</td>
+                <td className="px-3 py-3 text-center text-[#6e6e73]">{word.exam_count}회</td>
                 <td className="px-4 py-3 text-right">
                   <button
                     onClick={() => openDetail(word)}
-                    className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+                    className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity"
                   >
                     편집
                   </button>
@@ -210,7 +210,7 @@ export default function VocabularyManager({ day, words, totalDays }: {
 function CountBadge({
   count,
   filledColor = 'bg-green-100 text-green-700',
-  emptyColor = 'bg-gray-100 text-gray-400',
+  emptyColor = 'bg-[#f5f5f7] text-[#6e6e73]',
 }: {
   count: number;
   filledColor?: string;
@@ -238,7 +238,7 @@ function TagList({
           <button onClick={() => { if (!confirm(`'${item.label}'을(를) 삭제하시겠습니까?`)) return; onDelete(item.id); }} className="opacity-60 hover:opacity-100 hover:text-red-500">×</button>
         </span>
       ))}
-      {items.length === 0 && <span className="text-xs text-gray-400">{label} 없음</span>}
+      {items.length === 0 && <span className="text-xs text-[#6e6e73]">{label} 없음</span>}
     </div>
   );
 }
@@ -270,59 +270,59 @@ function WordEditModal({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
         {/* 헤더 */}
-        <div className="p-5 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
+        <div className="p-5 border-b border-[#e5e5ea] flex items-center justify-between sticky top-0 bg-white">
           <div>
-            <h2 className="text-lg font-bold text-gray-900">{word.word}</h2>
-            <p className="text-xs text-gray-400">기출 {word.exam_count}회</p>
+            <h2 className="text-lg font-bold text-[#1d1d1f]">{word.word}</h2>
+            <p className="text-xs text-[#6e6e73]">기출 {word.exam_count}회</p>
           </div>
           <div className="flex gap-2 items-center">
-            <button onClick={() => { if (!confirm('기출 횟수를 0으로 초기화하시겠습니까?')) return; act(() => resetExamCount(word.id)); }} className="text-xs text-gray-400 hover:text-gray-600">기출 리셋</button>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl leading-none">×</button>
+            <button onClick={() => { if (!confirm('기출 횟수를 0으로 초기화하시겠습니까?')) return; act(() => resetExamCount(word.id)); }} className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#6e6e73] rounded-lg hover:opacity-80 transition-opacity">기출 리셋</button>
+            <button onClick={onClose} className="text-[#6e6e73] hover:text-[#6e6e73] text-xl leading-none">×</button>
           </div>
         </div>
 
         <div className="p-5 space-y-6">
           {/* 의미 */}
           <section>
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">의미</h3>
+            <h3 className="text-sm font-semibold text-[#1d1d1f] mb-2">의미</h3>
             <div className="space-y-2 mb-3">
               {meanings.map((m) => (
                 <div key={m.id} className="flex items-center gap-2">
-                  <span className="text-xs font-mono bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded shrink-0">{m.pos}</span>
+                  <span className="text-xs font-mono bg-[#f5f5f7] text-[#6e6e73] px-1.5 py-0.5 rounded shrink-0">{m.pos}</span>
                   {editingId === m.id ? (
                     <>
                       <input value={editingValue} onChange={(e) => setEditingValue(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && act(() => updateWordMeaning(m.id, editingValue.trim()).then(() => setEditingId(null)))}
-                        className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" autoFocus />
-                      <button onClick={() => act(async () => { await updateWordMeaning(m.id, editingValue.trim()); setEditingId(null); })} className="text-xs text-blue-600">저장</button>
-                      <button onClick={() => setEditingId(null)} className="text-xs text-gray-400">취소</button>
+                        className="flex-1 border border-[#e5e5ea] rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:border-[#1d1d1f]" autoFocus />
+                      <button onClick={() => act(async () => { await updateWordMeaning(m.id, editingValue.trim()); setEditingId(null); })} className="text-[11px] px-2.5 py-1 bg-[#1d1d1f] text-white rounded-lg hover:opacity-80 transition-opacity">저장</button>
+                      <button onClick={() => setEditingId(null)} className="text-[11px] px-2.5 py-1 bg-[#f5f5f7] text-[#6e6e73] rounded-lg hover:opacity-80 transition-opacity">취소</button>
                     </>
                   ) : (
                     <>
-                      <span className="flex-1 text-sm text-gray-800">{m.meaning_ko}</span>
-                      <button onClick={() => { setEditingId(m.id); setEditingValue(m.meaning_ko); }} className="text-xs text-gray-400 hover:text-gray-600">수정</button>
-                      <button onClick={() => { if (!confirm('이 의미를 삭제하시겠습니까?')) return; act(() => deleteWordMeaning(m.id)); }} className="text-xs text-red-400 hover:text-red-600">삭제</button>
+                      <span className="flex-1 text-sm text-[#1d1d1f]">{m.meaning_ko}</span>
+                      <button onClick={() => { setEditingId(m.id); setEditingValue(m.meaning_ko); }} className="text-[11px] px-2.5 py-1 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity">수정</button>
+                      <button onClick={() => { if (!confirm('이 의미를 삭제하시겠습니까?')) return; act(() => deleteWordMeaning(m.id)); }} className="text-[11px] px-2.5 py-1 bg-[#f5f5f7] text-[#6e6e73] rounded-lg hover:opacity-80 transition-opacity">삭제</button>
                     </>
                   )}
                 </div>
               ))}
             </div>
             <div className="flex gap-2">
-              <select value={newPos} onChange={(e) => setNewPos(e.target.value)} className="border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none">
+              <select value={newPos} onChange={(e) => setNewPos(e.target.value)} className="border border-[#e5e5ea] rounded px-2 py-1 text-sm focus:outline-none">
                 {POS_OPTIONS.map((p) => <option key={p} value={p}>{p}</option>)}
               </select>
               <input value={newMeaning} onChange={(e) => setNewMeaning(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && newMeaning.trim() && act(async () => { await addWordMeaning(word.id, newPos, newMeaning.trim(), meanings.length); setNewMeaning(''); })}
-                placeholder="한국어 뜻" className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                placeholder="한국어 뜻" className="flex-1 border border-[#e5e5ea] rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:border-[#1d1d1f]" />
               <button disabled={isPending || !newMeaning.trim()}
                 onClick={() => act(async () => { await addWordMeaning(word.id, newPos, newMeaning.trim(), meanings.length); setNewMeaning(''); })}
-                className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50">추가</button>
+                className="px-3 py-1 bg-[#1d1d1f] text-white text-sm rounded hover:opacity-80 disabled:opacity-50">추가</button>
             </div>
           </section>
 
           {/* 동의어 */}
           <section>
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">동의어 <span className="text-xs text-gray-400 font-normal">(뜻이 같은 영어 단어)</span></h3>
+            <h3 className="text-sm font-semibold text-[#1d1d1f] mb-2">동의어 <span className="text-xs text-[#6e6e73] font-normal">(뜻이 같은 영어 단어)</span></h3>
             <TagList
               items={synonyms.map((s) => ({ id: s.id, label: s.synonym }))}
               label="동의어" color="bg-blue-50 text-blue-700"
@@ -331,16 +331,16 @@ function WordEditModal({
             <div className="flex gap-2 mt-2">
               <input value={newSynonym} onChange={(e) => setNewSynonym(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && newSynonym.trim() && act(async () => { await addWordSynonym(word.id, newSynonym.trim(), synonyms.length); setNewSynonym(''); })}
-                placeholder="동의어 입력" className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                placeholder="동의어 입력" className="flex-1 border border-[#e5e5ea] rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:border-[#1d1d1f]" />
               <button disabled={isPending || !newSynonym.trim()}
                 onClick={() => act(async () => { await addWordSynonym(word.id, newSynonym.trim(), synonyms.length); setNewSynonym(''); })}
-                className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 disabled:opacity-50">추가</button>
+                className="px-3 py-1 bg-[#1d1d1f] text-white text-sm rounded hover:opacity-80 disabled:opacity-50">추가</button>
             </div>
           </section>
 
           {/* 유의어 */}
           <section>
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">유의어 <span className="text-xs text-gray-400 font-normal">(뜻이 비슷한 영어 단어)</span></h3>
+            <h3 className="text-sm font-semibold text-[#1d1d1f] mb-2">유의어 <span className="text-xs text-[#6e6e73] font-normal">(뜻이 비슷한 영어 단어)</span></h3>
             <TagList
               items={similar.map((s) => ({ id: s.id, label: s.similar_word }))}
               label="유의어" color="bg-teal-50 text-teal-700"
@@ -349,7 +349,7 @@ function WordEditModal({
             <div className="flex gap-2 mt-2">
               <input value={newSimilar} onChange={(e) => setNewSimilar(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && newSimilar.trim() && act(async () => { await addWordSimilar(word.id, newSimilar.trim(), similar.length); setNewSimilar(''); })}
-                placeholder="유의어 입력" className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                placeholder="유의어 입력" className="flex-1 border border-[#e5e5ea] rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:border-[#1d1d1f]" />
               <button disabled={isPending || !newSimilar.trim()}
                 onClick={() => act(async () => { await addWordSimilar(word.id, newSimilar.trim(), similar.length); setNewSimilar(''); })}
                 className="px-3 py-1 bg-teal-600 text-white text-sm rounded hover:bg-teal-700 disabled:opacity-50">추가</button>
@@ -358,7 +358,7 @@ function WordEditModal({
 
           {/* 반의어 */}
           <section>
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">반의어 <span className="text-xs text-gray-400 font-normal">(뜻이 반대인 영어 단어)</span></h3>
+            <h3 className="text-sm font-semibold text-[#1d1d1f] mb-2">반의어 <span className="text-xs text-[#6e6e73] font-normal">(뜻이 반대인 영어 단어)</span></h3>
             <TagList
               items={antonyms.map((a) => ({ id: a.id, label: a.antonym }))}
               label="반의어" color="bg-orange-50 text-orange-700"
@@ -367,7 +367,7 @@ function WordEditModal({
             <div className="flex gap-2 mt-2">
               <input value={newAntonym} onChange={(e) => setNewAntonym(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && newAntonym.trim() && act(async () => { await addWordAntonym(word.id, newAntonym.trim(), antonyms.length); setNewAntonym(''); })}
-                placeholder="반의어 입력" className="flex-1 border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                placeholder="반의어 입력" className="flex-1 border border-[#e5e5ea] rounded px-2 py-1 text-sm focus:outline-none focus:ring-1 focus:border-[#1d1d1f]" />
               <button disabled={isPending || !newAntonym.trim()}
                 onClick={() => act(async () => { await addWordAntonym(word.id, newAntonym.trim(), antonyms.length); setNewAntonym(''); })}
                 className="px-3 py-1 bg-orange-500 text-white text-sm rounded hover:bg-orange-600 disabled:opacity-50">추가</button>

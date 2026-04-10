@@ -92,17 +92,17 @@ export default async function AdminExamsPage({
 
   const statusLabel: Record<string, string> = { scheduled: '예정', active: '진행중', closed: '종료' };
   const statusColor: Record<string, string> = {
-    scheduled: 'bg-blue-50 text-blue-700',
-    active: 'bg-red-50 text-red-700',
-    closed: 'bg-gray-100 text-gray-500',
+    scheduled: 'bg-[#f5f5f7] text-[#6e6e73]',
+    active: 'bg-[#1d1d1f] text-white',
+    closed: 'bg-[#f5f5f7] text-[#c7c7cc]',
   };
 
   // 시험 출제 폼용 반 목록 (전체 담당 범위)
   const allClassOptions = (allClasses ?? []).map((c: any) => ({ id: c.id, name: c.name }));
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-xl font-bold text-gray-900">시험 관리</h1>
+    <div className="space-y-4">
+      <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">시험 관리</h1>
 
       <Suspense>
         <ProgressFilterBar
@@ -116,35 +116,35 @@ export default async function AdminExamsPage({
         />
       </Suspense>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-base font-semibold text-gray-800 mb-4">시험 출제</h2>
+      <div className="bg-white rounded-2xl shadow-sm p-6">
+        <h2 className="text-[13px] font-semibold text-[#1d1d1f] mb-4">시험 출제</h2>
         <CreateExamForm classes={allClassOptions} />
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-200">
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+        <table className="w-full text-[13px]">
+          <thead className="bg-[#f5f5f7] border-b border-[#e5e5ea]">
             <tr>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">시험명</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">반</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">범위</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">시작</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">상태</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">시험명</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">반</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">범위</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">시작</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">상태</th>
               <th className="px-4 py-3" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-[#f5f5f7]">
             {(!exams || exams.length === 0) && (
-              <tr><td colSpan={6} className="text-center py-8 text-gray-400">출제된 시험이 없습니다</td></tr>
+              <tr><td colSpan={6} className="text-center py-8 text-[#6e6e73]">출제된 시험이 없습니다</td></tr>
             )}
             {exams?.map((exam) => (
-              <tr key={exam.id} className="hover:bg-gray-50">
-                <td className="px-4 py-3 font-medium text-gray-900">
-                  <Link href={`/admin/exams/${exam.id}`} className="hover:text-blue-600">
+              <tr key={exam.id} className="hover:bg-[#f5f5f7] transition-colors">
+                <td className="px-4 py-3 font-medium text-[#1d1d1f]">
+                  <Link href={`/admin/exams/${exam.id}`} className="hover:text-[#0071e3] transition-colors">
                     {exam.title}
                   </Link>
                 </td>
-                <td className="px-4 py-3 text-gray-500">
+                <td className="px-4 py-3 text-[#6e6e73]">
                   {Array.isArray(exam.classes) ? (exam.classes[0] as any)?.name : (exam.classes as any)?.name}
                 </td>
                 <td className="px-4 py-3 text-gray-500">Day {exam.day_1} + {exam.day_2}</td>

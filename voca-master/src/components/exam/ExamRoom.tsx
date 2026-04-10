@@ -101,7 +101,7 @@ export default function ExamRoom({
       <div className="bg-gray-800 px-4 py-3 flex items-center justify-between">
         <span className="text-white font-semibold text-sm">{title}</span>
         <div className="flex items-center gap-3">
-          <span className="text-gray-400 text-sm">{answered}/{questions.length} 답변</span>
+          <span className="text-[#6e6e73] text-sm">{answered}/{questions.length} 답변</span>
           <span className={`font-mono text-xl font-bold ${isUrgent ? 'text-red-400 animate-pulse' : 'text-white'}`}>
             {mm}:{ss}
           </span>
@@ -143,12 +143,12 @@ export default function ExamRoom({
         {/* 문항 영역 */}
         <div className="flex-1 flex flex-col items-center justify-center p-6">
           <div className="w-full max-w-lg">
-            <p className="text-gray-400 text-sm mb-2">문항 {current.question_no} / {questions.length}</p>
+            <p className="text-[#6e6e73] text-sm mb-2">문항 {current.question_no} / {questions.length}</p>
 
             {/* 단어 카드 */}
             <div className="bg-white rounded-2xl p-10 text-center mb-6 shadow-lg">
-              <p className="text-4xl font-bold text-gray-900">{current.word}</p>
-              <p className="text-gray-400 text-sm mt-3">이 단어의 한국어 뜻을 입력하세요</p>
+              <p className="text-4xl font-bold text-[#1d1d1f]">{current.word}</p>
+              <p className="text-[#6e6e73] text-sm mt-3">이 단어의 한국어 뜻을 입력하세요</p>
             </div>
 
             {/* 답안 입력 */}
@@ -180,7 +180,7 @@ export default function ExamRoom({
               <button
                 onClick={() => setCurrentIndex((i) => Math.min(questions.length - 1, i + 1))}
                 disabled={currentIndex === questions.length - 1}
-                className="flex-1 py-3 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-700 disabled:opacity-30"
+                className="flex-1 py-3 bg-[#1d1d1f] text-white rounded-xl text-sm font-medium hover:opacity-80 disabled:opacity-30"
               >
                 다음
               </button>
@@ -193,17 +193,17 @@ export default function ExamRoom({
       {showSubmitConfirm && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-sm">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">시험 종료</h3>
+            <h3 className="text-lg font-bold text-[#1d1d1f] mb-2">시험 종료</h3>
             {unanswered > 0 && (
               <p className="text-amber-600 text-sm mb-2">미답 문항이 {unanswered}개 있습니다.</p>
             )}
-            <p className="text-gray-600 text-sm mb-6">
+            <p className="text-[#6e6e73] text-sm mb-6">
               지금까지 입력한 답변을 제출하고 채점합니다.<br />제출 후에는 수정할 수 없습니다.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowSubmitConfirm(false)}
-                className="flex-1 py-3 bg-gray-100 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-200"
+                className="flex-1 py-3 bg-[#f5f5f7] text-[#1d1d1f] rounded-xl text-sm font-medium hover:bg-[#e5e5ea]"
               >
                 계속 풀기
               </button>
@@ -223,8 +223,8 @@ export default function ExamRoom({
       {submitting && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl px-8 py-6 text-center">
-            <p className="text-base font-semibold text-gray-900 mb-1">채점 중...</p>
-            <p className="text-sm text-gray-500">잠시만 기다려주세요</p>
+            <p className="text-base font-semibold text-[#1d1d1f] mb-1">채점 중...</p>
+            <p className="text-sm text-[#6e6e73]">잠시만 기다려주세요</p>
           </div>
         </div>
       )}

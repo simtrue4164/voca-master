@@ -45,31 +45,29 @@ export default async function ExamResultPage({ params }: { params: Promise<{ id:
         .filter(Boolean);
 
   return (
-    <div className="max-w-lg mx-auto px-4 py-6">
+    <div className="max-w-xl mx-auto px-5 py-8">
       {/* 점수 카드 */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center mb-6">
-        <h1 className="text-lg font-bold text-gray-900 mb-1">{exam?.title}</h1>
-        <p className="text-xs text-gray-400 mb-3">
+      <div className="bg-white rounded-2xl shadow-sm p-8 text-center mb-4">
+        <h1 className="text-[15px] font-semibold text-[#1d1d1f] mb-1">{exam?.title}</h1>
+        <p className="text-[12px] text-[#6e6e73] mb-4">
           Day {exam?.day_1} + Day {exam?.day_2}
         </p>
 
         {isAbsent ? (
           <div className="py-4">
-            <p className="text-5xl font-black text-orange-400 mb-2">미응시</p>
-            <p className="text-sm text-gray-400">시험에 응시하지 않았습니다</p>
+            <p className="text-[40px] font-semibold text-[#6e6e73] mb-2">미응시</p>
+            <p className="text-[13px] text-[#6e6e73]">시험에 응시하지 않았습니다</p>
           </div>
         ) : (
           <>
             {result?.is_forced && (
-              <p className="text-xs text-red-500 mb-3">강제 종료로 제출됨</p>
+              <p className="text-[11px] text-[#6e6e73] mb-3">강제 종료로 제출됨</p>
             )}
-            <div className={`text-6xl font-black mb-2 ${
-              percentage >= 80 ? 'text-green-500' : percentage >= 60 ? 'text-blue-500' : 'text-red-500'
-            }`}>
-              {score}<span className="text-3xl text-gray-400">/{total}</span>
-            </div>
-            <p className="text-gray-500 text-sm">{percentage}점</p>
-            <p className="text-xs text-gray-400 mt-2">
+            <p className="text-[56px] font-semibold text-[#1d1d1f] leading-none mb-1">
+              {score}<span className="text-[28px] text-[#6e6e73]">/{total}</span>
+            </p>
+            <p className="text-[13px] text-[#6e6e73]">{percentage}%</p>
+            <p className="text-[12px] text-[#6e6e73] mt-2">
               제출 {new Date(result!.submitted_at).toLocaleString('ko-KR', {
                 month: 'numeric', day: 'numeric',
                 hour: '2-digit', minute: '2-digit',
@@ -90,13 +88,13 @@ export default async function ExamResultPage({ params }: { params: Promise<{ id:
       )}
 
       {/* 전체 문항 목록 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4 mb-4">
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">
+      <div className="bg-white rounded-2xl shadow-sm p-5 mb-4">
+        <h2 className="text-[13px] font-semibold text-[#1d1d1f] mb-3">
           {isAbsent
             ? `전체 문항 (${total}개)`
             : `문항별 결과 (정답 ${score}개 / 오답 ${wrongCount}개)`}
         </h2>
-        <div className="space-y-3">
+        <div className="space-y-2">
           {(questions ?? []).map((q: any) => {
             const accepted = q.accepted_answers as Array<{ pos: string; meaning_ko: string }>;
             const isCorrect = !isAbsent && scores[q.id] === true;
@@ -106,37 +104,35 @@ export default async function ExamResultPage({ params }: { params: Promise<{ id:
             return (
               <div
                 key={q.id}
-                className={`rounded-lg p-3 border ${
+                className={`rounded-xl p-3 ${
                   isCorrect
-                    ? 'bg-green-50 border-green-200'
+                    ? 'bg-[#f0faf4]'
                     : isWrong
-                    ? 'bg-red-50 border-red-200'
-                    : 'bg-gray-50 border-gray-200'
+                    ? 'bg-[#fff5f5]'
+                    : 'bg-[#f5f5f7]'
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className={`text-xs font-bold w-5 text-center ${
-                      isCorrect ? 'text-green-600' : isWrong ? 'text-red-500' : 'text-gray-400'
+                    <span className={`text-[11px] font-semibold w-5 text-center ${
+                      isCorrect ? 'text-[#34c759]' : isWrong ? 'text-[#ff3b30]' : 'text-[#c7c7cc]'
                     }`}>
                       {q.question_no}
                     </span>
-                    <span className="font-semibold text-gray-900">{q.vocabulary?.word}</span>
+                    <span className="text-[13px] font-semibold text-[#1d1d1f]">{q.vocabulary?.word}</span>
                   </div>
                   {!isAbsent && (
-                    <span className={`text-xs shrink-0 font-medium ${
-                      isCorrect ? 'text-green-600' : 'text-red-500'
+                    <span className={`text-[11px] shrink-0 font-medium ${
+                      isCorrect ? 'text-[#34c759]' : 'text-[#ff3b30]'
                     }`}>
                       {isCorrect ? '정답' : `내 답: ${myAnswer || '(미입력)'}`}
                     </span>
                   )}
                 </div>
-                <div className="mt-1.5 ml-7 space-y-0.5">
+                <div className="mt-1 ml-7 space-y-0.5">
                   {accepted.map((a, i) => (
-                    <p key={i} className={`text-sm ${
-                      isCorrect ? 'text-green-700' : isWrong ? 'text-red-700' : 'text-gray-600'
-                    }`}>
-                      <span className="text-xs opacity-60 mr-1">{a.pos}</span>
+                    <p key={i} className="text-[12px] text-[#6e6e73]">
+                      <span className="opacity-60 mr-1">{a.pos}</span>
                       {a.meaning_ko}
                     </p>
                   ))}
@@ -148,18 +144,18 @@ export default async function ExamResultPage({ params }: { params: Promise<{ id:
       </div>
 
       {/* 하단 버튼 */}
-      <div className="flex gap-3">
+      <div className="flex gap-2">
         <Link
           href={`/student/exam/${id}/review`}
-          className="flex-1 py-3 bg-red-50 text-red-600 font-medium rounded-xl text-center text-sm hover:bg-red-100 transition-colors"
+          className="flex-1 py-3 bg-[#f5f5f7] text-[#1d1d1f] font-semibold rounded-xl text-center text-[14px] hover:opacity-80 transition-opacity"
         >
           {isAbsent
             ? '단어 복습하기'
-            : `단어 복습하기${wrongCount > 0 ? ` (오답 ${wrongCount})` : ''}`}
+            : `복습하기${wrongCount > 0 ? ` (${wrongCount})` : ''}`}
         </Link>
         <Link
           href="/student/exam"
-          className="flex-1 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl text-center text-sm hover:bg-gray-200 transition-colors"
+          className="flex-1 py-3 bg-[#1d1d1f] text-white font-semibold rounded-xl text-center text-[14px] hover:opacity-80 transition-opacity"
         >
           목록으로
         </Link>

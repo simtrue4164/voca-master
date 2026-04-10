@@ -183,10 +183,10 @@ export default async function AdminStudentsPage({
   }));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-gray-900">학생 관리</h1>
-        <span className="text-sm text-gray-500">총 {studentRows.length}명</span>
+        <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">학생 관리</h1>
+        <span className="text-[13px] text-[#6e6e73]">총 {studentRows.length}명</span>
       </div>
 
       <Suspense>

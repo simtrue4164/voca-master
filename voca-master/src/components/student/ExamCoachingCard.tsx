@@ -45,19 +45,18 @@ export default function ExamCoachingCard({
   }
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-5 mb-4">
+    <div className="bg-white rounded-2xl shadow-sm p-5 mb-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <span className="text-lg">🤖</span>
-          <h2 className="text-sm font-semibold text-blue-800">AI 코칭 메시지</h2>
+          <h2 className="text-[13px] font-semibold text-[#1d1d1f]">AI 코칭 메시지</h2>
           {isGenerating && (
-            <span className="text-xs text-blue-400 animate-pulse">분석 중...</span>
+            <span className="text-[11px] text-[#6e6e73] animate-pulse">분석 중...</span>
           )}
         </div>
         {!isGenerating && (
           <button
             onClick={generate}
-            className="text-xs px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="text-[11px] px-3 py-1.5 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity"
           >
             재생성
           </button>
@@ -66,14 +65,14 @@ export default function ExamCoachingCard({
 
       {isGenerating ? (
         <div className="space-y-2 py-1">
-          <div className="h-3.5 bg-blue-100 rounded animate-pulse w-full" />
-          <div className="h-3.5 bg-blue-100 rounded animate-pulse w-5/6" />
-          <div className="h-3.5 bg-blue-100 rounded animate-pulse w-4/6" />
+          <div className="h-3 bg-[#f5f5f7] rounded animate-pulse w-full" />
+          <div className="h-3 bg-[#f5f5f7] rounded animate-pulse w-5/6" />
+          <div className="h-3 bg-[#f5f5f7] rounded animate-pulse w-4/6" />
         </div>
       ) : error ? (
-        <p className="text-sm text-blue-400 text-center py-2">{error}</p>
+        <p className="text-[13px] text-[#6e6e73] text-center py-2">{error}</p>
       ) : message ? (
-        <p className="text-sm text-blue-900 leading-relaxed whitespace-pre-line">{message}</p>
+        <p className="text-[13px] text-[#1d1d1f] leading-relaxed whitespace-pre-line">{message}</p>
       ) : null}
     </div>
   );

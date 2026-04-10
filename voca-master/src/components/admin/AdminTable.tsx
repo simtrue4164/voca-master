@@ -38,19 +38,19 @@ export default function AdminTable({
 
   return (
     <>
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-[#f5f5f7] border-b border-[#e5e5ea]">
             <tr>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">사번</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">이름</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">역할</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">담당</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">상태</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">사번</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">이름</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">역할</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">담당</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">상태</th>
               <th className="px-4 py-3" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-[#f5f5f7]">
             {admins.map((adm) => (
               <AdminRow
                 key={adm.id}
@@ -100,36 +100,34 @@ function AdminRow({ adm, isSelf, onEdit }: { adm: AdminRow; isSelf: boolean; onE
   }
 
   return (
-    <tr className="hover:bg-gray-50">
-      <td className="px-4 py-3 font-mono text-gray-500 text-xs">{adm.employee_no ?? '-'}</td>
-      <td className="px-4 py-3 font-medium text-gray-900">{adm.name}</td>
-      <td className="px-4 py-3 text-gray-500">{ROLE_LABEL[adm.role] ?? adm.role}</td>
-      <td className="px-4 py-3 text-gray-500 text-xs">
+    <tr className="hover:bg-[#f5f5f7]">
+      <td className="px-4 py-3 font-mono text-[#6e6e73] text-xs">{adm.employee_no ?? '-'}</td>
+      <td className="px-4 py-3 font-medium text-[#1d1d1f]">{adm.name}</td>
+      <td className="px-4 py-3 text-[#6e6e73]">{ROLE_LABEL[adm.role] ?? adm.role}</td>
+      <td className="px-4 py-3 text-[#6e6e73] text-xs">
         {adm.branch_name ? (
-          <span className="font-medium text-gray-700">{adm.branch_name}</span>
+          <span className="font-medium text-[#1d1d1f]">{adm.branch_name}</span>
         ) : (
-          <span className="text-gray-300">전체</span>
+          <span className="text-[#c7c7cc]">전체</span>
         )}
       </td>
       <td className="px-4 py-3">
         <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-          adm.is_active ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-400'
+          adm.is_active ? 'bg-green-50 text-green-700' : 'bg-[#f5f5f7] text-[#6e6e73]'
         }`}>
           {adm.is_active ? '활성' : '비활성'}
         </span>
       </td>
       <td className="px-4 py-3">
-        <div className="flex items-center gap-3 justify-end">
-          <button onClick={onEdit} className="text-xs text-blue-600 hover:text-blue-800 font-medium">
+        <div className="flex items-center gap-2 justify-end">
+          <button onClick={onEdit} className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity">
             수정
           </button>
           {!isSelf && (
             <button
               onClick={handleToggle}
               disabled={isPending}
-              className={`text-xs font-medium disabled:opacity-50 ${
-                adm.is_active ? 'text-red-400 hover:text-red-600' : 'text-blue-500 hover:text-blue-700'
-              }`}
+              className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#6e6e73] rounded-lg hover:opacity-80 disabled:opacity-40 transition-opacity"
             >
               {isPending ? '처리중...' : adm.is_active ? '비활성화' : '활성화'}
             </button>
@@ -161,30 +159,30 @@ function AdminEditModal({
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
-        <div className="p-5 border-b border-gray-200 flex items-center justify-between">
-          <h2 className="text-base font-bold text-gray-900">관리자 수정</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl">×</button>
+        <div className="p-5 border-b border-[#e5e5ea] flex items-center justify-between">
+          <h2 className="text-base font-bold text-[#1d1d1f]">관리자 수정</h2>
+          <button onClick={onClose} className="text-[#6e6e73] hover:text-[#6e6e73] text-xl">×</button>
         </div>
         <form action={action} className="p-5 space-y-4">
           <input type="hidden" name="id" value={admin.id} />
 
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">이름</label>
+            <label className="block text-xs font-medium text-[#6e6e73] mb-1">이름</label>
             <input
               name="name"
               defaultValue={admin.name}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm focus:outline-none focus:border-[#1d1d1f]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">역할</label>
+            <label className="block text-xs font-medium text-[#6e6e73] mb-1">역할</label>
             <select
               name="role"
               value={selectedRole}
               onChange={(e) => { setSelectedRole(e.target.value); setSelectedBranch(''); }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm bg-white focus:outline-none focus:border-[#1d1d1f]"
             >
               {ROLE_OPTIONS.map((r) => (
                 <option key={r.value} value={r.value}>{r.label}</option>
@@ -194,13 +192,13 @@ function AdminEditModal({
 
           {(selectedRole === 'admin_branch' || selectedRole === 'admin_class') && (
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">담당 지점</label>
+              <label className="block text-xs font-medium text-[#6e6e73] mb-1">담당 지점</label>
               <select
                 name="branch_id"
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm bg-white focus:outline-none focus:border-[#1d1d1f]"
               >
                 <option value="">지점 선택</option>
                 {branches.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
@@ -214,11 +212,11 @@ function AdminEditModal({
             <button
               type="submit"
               disabled={isPending}
-              className="flex-1 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              className="flex-1 py-2 bg-[#1d1d1f] text-white text-sm font-medium rounded-lg hover:opacity-80 disabled:opacity-50"
             >
               {isPending ? '저장 중...' : '저장'}
             </button>
-            <button type="button" onClick={onClose} className="flex-1 py-2 bg-gray-100 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-200">
+            <button type="button" onClick={onClose} className="flex-1 py-2 bg-[#f5f5f7] text-[#6e6e73] text-sm font-medium rounded-lg hover:opacity-80">
               취소
             </button>
           </div>

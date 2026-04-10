@@ -129,8 +129,8 @@ export default function StudySession({
 
   if (words.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-400">단어 데이터를 불러올 수 없습니다.</p>
+      <div className="min-h-screen flex items-center justify-center bg-[#f5f5f7]">
+        <p className="text-[#6e6e73]">단어 데이터를 불러올 수 없습니다.</p>
       </div>
     );
   }
@@ -141,13 +141,13 @@ export default function StudySession({
     const rTotal = relatedWords.length;
     const rRate = rTotal > 0 ? Math.round((rMemorized / rTotal) * 100) : 0;
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gray-50">
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-[#f5f5f7]">
         <div className="w-full max-w-sm bg-white rounded-2xl p-8 shadow-sm text-center">
           <div className="text-4xl mb-4">✨</div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">관련 단어 학습 완료!</h2>
+          <h2 className="text-xl font-bold text-[#1d1d1f] mb-2">관련 단어 학습 완료!</h2>
           <div className="my-6">
             <div className="text-5xl font-bold text-purple-600 mb-1">{rRate}%</div>
-            <p className="text-sm text-gray-500">학습율 ({rMemorized}/{rTotal}개)</p>
+            <p className="text-sm text-[#6e6e73]">학습율 ({rMemorized}/{rTotal}개)</p>
             <div className="flex justify-center gap-4 mt-3 text-sm">
               <span className="text-green-600 font-medium">알겠어요 {rMemorized}</span>
               <span className="text-red-500 font-medium">모르겠어요 {rTotal - rMemorized}</span>
@@ -155,7 +155,7 @@ export default function StudySession({
           </div>
           <button
             onClick={() => router.push(backHref ?? '/student/study')}
-            className="w-full py-3 bg-blue-600 text-white font-medium rounded-xl"
+            className="w-full py-3 bg-[#1d1d1f] text-white font-medium rounded-xl"
           >
             학습 목록으로
           </button>
@@ -171,14 +171,14 @@ export default function StudySession({
     const rate = answeredCount > 0 ? Math.round((memorized / answeredCount) * 100) : 0;
 
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gray-50">
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-[#f5f5f7]">
         <div className="w-full max-w-sm bg-white rounded-2xl p-8 shadow-sm text-center">
           <div className="text-4xl mb-4">🎉</div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">{title ?? `Day ${day}`} 완료!</h2>
+          <h2 className="text-xl font-bold text-[#1d1d1f] mb-2">{title ?? `Day ${day}`} 완료!</h2>
           {mode === 'selftest' && (
             <div className="my-6">
-              <div className="text-5xl font-bold text-blue-600 mb-1">{rate}%</div>
-              <p className="text-sm text-gray-500">학습율</p>
+              <div className="text-5xl font-bold text-[#0071e3] mb-1">{rate}%</div>
+              <p className="text-sm text-[#6e6e73]">학습율</p>
               <div className="flex justify-center gap-6 mt-4 text-sm">
                 <span className="text-green-600 font-medium">정답 {memorized}</span>
                 <span className="text-red-500 font-medium">오답 {failed}</span>
@@ -204,7 +204,7 @@ export default function StudySession({
             )}
             <button
               onClick={() => router.push(backHref ?? '/student/study')}
-              className="w-full py-3 bg-blue-600 text-white font-medium rounded-xl"
+              className="w-full py-3 bg-[#1d1d1f] text-white font-medium rounded-xl"
             >
               {backHref ? '결과 페이지로' : '학습 목록으로'}
             </button>
@@ -224,18 +224,18 @@ export default function StudySession({
       antonym: 'bg-orange-100 text-orange-700',
     };
     return (
-      <div className="min-h-screen flex flex-col bg-gray-50">
+      <div className="min-h-screen flex flex-col bg-[#f5f5f7]">
         <div className="flex items-center gap-3 px-4 pt-6 pb-3">
           <button onClick={() => { setMode('flashcard'); setDone(true); }} className="p-1">
-            <svg className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-6 h-6 text-[#6e6e73]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <span className="text-base font-semibold text-gray-900">관련 단어 학습</span>
-          <span className="ml-auto text-sm text-gray-400">{relatedIndex + 1} / {relatedWords.length}</span>
+          <span className="text-base font-semibold text-[#1d1d1f]">관련 단어 학습</span>
+          <span className="ml-auto text-sm text-[#6e6e73]">{relatedIndex + 1} / {relatedWords.length}</span>
         </div>
         <div className="px-4 mb-4">
-          <div className="w-full bg-gray-200 rounded-full h-1.5">
+          <div className="w-full bg-[#e5e5ea] rounded-full h-1.5">
             <div className="bg-purple-500 h-1.5 rounded-full transition-all"
               style={{ width: `${(relatedIndex / relatedWords.length) * 100}%` }} />
           </div>
@@ -249,13 +249,13 @@ export default function StudySession({
                 transition={{ duration: 0.4, type: 'spring', stiffness: 200, damping: 20 }}
                 style={{ transformStyle: 'preserve-3d' }}>
                 {/* 앞면 */}
-                <div className="absolute inset-0 bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center p-6 gap-3"
+                <div className="absolute inset-0 bg-white rounded-2xl shadow-sm border border-[#e5e5ea] flex flex-col items-center justify-center p-6 gap-3"
                   style={{ backfaceVisibility: 'hidden' }}>
                   <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${typeBadgeColor[rw.type]}`}>
                     {rw.baseWord}의 {typeLabel[rw.type]}
                   </span>
-                  <p className="text-3xl font-bold text-gray-900 text-center">{rw.word}</p>
-                  <p className="text-sm text-gray-400">탭하여 기준 단어 확인</p>
+                  <p className="text-3xl font-bold text-[#1d1d1f] text-center">{rw.word}</p>
+                  <p className="text-sm text-[#6e6e73]">탭하여 기준 단어 확인</p>
                 </div>
                 {/* 뒷면 */}
                 <div className="absolute inset-0 bg-purple-600 rounded-2xl shadow-sm flex flex-col justify-center p-5 gap-2"
@@ -302,23 +302,23 @@ export default function StudySession({
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-[#f5f5f7]">
       <div className="flex items-center gap-3 px-4 pt-6 pb-3">
         <button onClick={() => router.back()} className="p-1">
-          <svg className="w-6 h-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-6 h-6 text-[#6e6e73]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <span className="text-base font-semibold text-gray-900">{title ?? `Day ${day}`}</span>
-        <span className="ml-auto text-sm text-gray-400">{index + 1} / {total}</span>
+        <span className="text-base font-semibold text-[#1d1d1f]">{title ?? `Day ${day}`}</span>
+        <span className="ml-auto text-sm text-[#6e6e73]">{index + 1} / {total}</span>
       </div>
 
       <div className="px-4 mb-4">
-        <div className="flex rounded-lg bg-gray-100 p-1">
+        <div className="flex rounded-lg bg-[#f5f5f7] p-1">
           {(['flashcard', 'selftest'] as Mode[]).map((m) => (
             <button key={m}
               onClick={() => { setMode(m); setIndex(0); setFlipped(false); setSelfTestInput(''); setSelfTestResult(null); setResults({}); setDone(false); }}
-              className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${mode === m ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}>
+              className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${mode === m ? 'bg-white text-[#1d1d1f] shadow-sm' : 'text-[#6e6e73]'}`}>
               {m === 'flashcard' ? '플래시카드' : '셀프 테스트'}
             </button>
           ))}
@@ -326,11 +326,11 @@ export default function StudySession({
       </div>
 
       <div className="px-4 mb-4">
-        <div className="flex justify-between text-xs text-gray-400 mb-1">
+        <div className="flex justify-between text-xs text-[#6e6e73] mb-1">
           <span>{Math.round((index / total) * 100)}%</span>
           <span>{index} / {total} 단어</span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-1.5">
+        <div className="w-full bg-[#e5e5ea] rounded-full h-1.5">
           <div className="bg-blue-500 h-1.5 rounded-full transition-all" style={{ width: `${(index / total) * 100}%` }} />
         </div>
       </div>
@@ -358,10 +358,10 @@ function FlashCard({ word, flipped, onFlip, onKnow, onDontKnow }: {
           animate={{ rotateY: flipped ? 180 : 0 }}
           transition={{ duration: 0.4, type: 'spring', stiffness: 200, damping: 20 }}
           style={{ transformStyle: 'preserve-3d' }}>
-          <div className="absolute inset-0 bg-white rounded-2xl shadow-sm border border-gray-200 flex flex-col items-center justify-center p-6"
+          <div className="absolute inset-0 bg-white rounded-2xl shadow-sm border border-[#e5e5ea] flex flex-col items-center justify-center p-6"
             style={{ backfaceVisibility: 'hidden' }}>
-            <p className="text-3xl font-bold text-gray-900 text-center">{word.word}</p>
-            <p className="text-sm text-gray-400 mt-3">탭하여 뜻 확인</p>
+            <p className="text-3xl font-bold text-[#1d1d1f] text-center">{word.word}</p>
+            <p className="text-sm text-[#6e6e73] mt-3">탭하여 뜻 확인</p>
           </div>
           <div className="absolute inset-0 bg-blue-600 rounded-2xl shadow-sm flex flex-col justify-center p-4 gap-1.5"
             style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
@@ -418,14 +418,14 @@ function SelfTestCard({ word, input, result, onInputChange, onSubmit, onNext }: 
 }) {
   return (
     <div className="w-full max-w-sm flex flex-col gap-4">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center">
-        <p className="text-3xl font-bold text-gray-900">{word.word}</p>
-        <p className="text-sm text-gray-400 mt-2">한국어 뜻을 입력하세요</p>
+      <div className="bg-white rounded-2xl shadow-sm border border-[#e5e5ea] p-8 text-center">
+        <p className="text-3xl font-bold text-[#1d1d1f]">{word.word}</p>
+        <p className="text-sm text-[#6e6e73] mt-2">한국어 뜻을 입력하세요</p>
       </div>
       <input type="text" value={input} onChange={(e) => onInputChange(e.target.value)}
         onKeyDown={(e) => { if (e.key === 'Enter' && !result) onSubmit(); }}
         disabled={result !== null} placeholder="뜻을 입력하세요"
-        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50" />
+        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-[#f5f5f7]" />
       <AnimatePresence>
         {result && (
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
@@ -436,8 +436,8 @@ function SelfTestCard({ word, input, result, onInputChange, onSubmit, onNext }: 
             <div className="space-y-0.5">
               {word.meanings.map((m) => (
                 <div key={m.id} className="flex gap-2 text-sm">
-                  <span className="text-gray-400 shrink-0">{m.pos}</span>
-                  <span className="text-gray-700">{m.meaning_ko}</span>
+                  <span className="text-[#6e6e73] shrink-0">{m.pos}</span>
+                  <span className="text-[#1d1d1f]">{m.meaning_ko}</span>
                 </div>
               ))}
             </div>
@@ -446,7 +446,7 @@ function SelfTestCard({ word, input, result, onInputChange, onSubmit, onNext }: 
       </AnimatePresence>
       {result === null ? (
         <button onClick={onSubmit} disabled={!input.trim()}
-          className="w-full py-4 bg-blue-600 text-white font-semibold rounded-xl disabled:opacity-40">확인</button>
+          className="w-full py-4 bg-[#1d1d1f] text-white font-semibold rounded-xl disabled:opacity-40">확인</button>
       ) : (
         <button onClick={onNext} className="w-full py-4 bg-gray-900 text-white font-semibold rounded-xl">다음 단어</button>
       )}

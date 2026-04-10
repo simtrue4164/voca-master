@@ -100,11 +100,11 @@ export default async function CounselingDetailPage({
   return (
     <div>
       <div className="flex items-center gap-2 mb-5">
-        <Link href="/admin/counseling" className="text-gray-400 hover:text-gray-600 text-sm">
+        <Link href="/admin/counseling" className="text-[#6e6e73] hover:text-[#6e6e73] text-sm">
           ← 목록
         </Link>
-        <span className="text-gray-300">/</span>
-        <span className="text-sm text-gray-600">상담 상세</span>
+        <span className="text-[#c7c7cc]">/</span>
+        <span className="text-sm text-[#6e6e73]">상담 상세</span>
       </div>
 
       <CounselingDetail

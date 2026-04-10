@@ -83,16 +83,16 @@ export default function ExamWaitRoom({ examId, title, day1, day2, startsAt }: Pr
     return (
       <div className="min-h-screen flex items-center justify-center bg-blue-50">
         <div className="text-center">
-          <p className="text-2xl font-bold text-blue-600 animate-pulse mb-2">시험 시작!</p>
-          <p className="text-sm text-gray-500">시험 화면으로 이동 중...</p>
+          <p className="text-2xl font-bold text-[#0071e3] animate-pulse mb-2">시험 시작!</p>
+          <p className="text-sm text-[#6e6e73]">시험 화면으로 이동 중...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gray-50">
-      <div className="w-full max-w-sm bg-white rounded-2xl border border-gray-200 shadow-sm p-8 text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-[#f5f5f7]">
+      <div className="w-full max-w-sm bg-white rounded-2xl border border-[#e5e5ea] shadow-sm p-8 text-center">
 
         {/* 아이콘 */}
         <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-5">
@@ -102,8 +102,8 @@ export default function ExamWaitRoom({ examId, title, day1, day2, startsAt }: Pr
           </svg>
         </div>
 
-        <h1 className="text-lg font-bold text-gray-900 mb-1">{title}</h1>
-        <p className="text-sm text-gray-400 mb-6">
+        <h1 className="text-lg font-bold text-[#1d1d1f] mb-1">{title}</h1>
+        <p className="text-sm text-[#6e6e73] mb-6">
           Day {day1} + Day {day2} &middot; 25문항 &middot; 8분
         </p>
 
@@ -115,7 +115,7 @@ export default function ExamWaitRoom({ examId, title, day1, day2, startsAt }: Pr
         </div>
 
         {/* 대기 상태 표시 */}
-        <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+        <div className="flex items-center justify-center gap-2 text-sm text-[#6e6e73]">
           <span className="relative flex h-2.5 w-2.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />

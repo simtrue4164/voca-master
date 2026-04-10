@@ -27,8 +27,8 @@ const STATUS_COLOR: Record<string, string> = {
   scheduled: 'bg-blue-50 text-blue-700',
   confirmed: 'bg-indigo-50 text-indigo-700',
   completed: 'bg-green-50 text-green-700',
-  cancelled: 'bg-gray-100 text-gray-500',
-  dismissed: 'bg-gray-100 text-gray-500',
+  cancelled: 'bg-[#f5f5f7] text-[#6e6e73]',
+  dismissed: 'bg-[#f5f5f7] text-[#6e6e73]',
 };
 
 export default function CounselingDetail({
@@ -87,11 +87,11 @@ export default function CounselingDetail({
   return (
     <div className="space-y-5 max-w-2xl">
       {/* 기본 정보 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-5">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h2 className="text-lg font-bold text-gray-900">{request.student?.name ?? '-'}</h2>
-            <p className="text-sm text-gray-500">수험번호: {request.student?.exam_no ?? '-'}</p>
+            <h2 className="text-lg font-bold text-[#1d1d1f]">{request.student?.name ?? '-'}</h2>
+            <p className="text-sm text-[#6e6e73]">수험번호: {request.student?.exam_no ?? '-'}</p>
           </div>
           <span className={`text-xs px-3 py-1 rounded-full font-semibold ${STATUS_COLOR[request.status]}`}>
             {STATUS_LABEL[request.status] ?? request.status}
@@ -100,20 +100,20 @@ export default function CounselingDetail({
 
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div>
-            <p className="text-xs text-gray-400 mb-0.5">신청 구분</p>
-            <p className="font-medium text-gray-800">
+            <p className="text-xs text-[#6e6e73] mb-0.5">신청 구분</p>
+            <p className="font-medium text-[#1d1d1f]">
               {request.source === 'ai' ? 'AI 추천' : '학생 직접 신청'}
             </p>
           </div>
           <div>
-            <p className="text-xs text-gray-400 mb-0.5">신청일</p>
-            <p className="font-medium text-gray-800">
+            <p className="text-xs text-[#6e6e73] mb-0.5">신청일</p>
+            <p className="font-medium text-[#1d1d1f]">
               {new Date(request.created_at).toLocaleDateString('ko-KR')}
             </p>
           </div>
           {request.slot && (
             <div className="col-span-2">
-              <p className="text-xs text-gray-400 mb-0.5">예약 일시</p>
+              <p className="text-xs text-[#6e6e73] mb-0.5">예약 일시</p>
               <p className="font-medium text-blue-700">
                 {request.slot.slot_date} {request.slot.slot_hour}:00
               </p>
@@ -139,11 +139,11 @@ export default function CounselingDetail({
 
       {/* 일정 선택 (예약 가능 상태일 때) */}
       {isEditable && (
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">상담 일정 선택</h3>
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-[#1d1d1f] mb-4">상담 일정 선택</h3>
 
           {availableDates.size === 0 ? (
-            <p className="text-sm text-gray-400">예약 가능한 슬롯이 없습니다. 시간대 관리에서 슬롯을 활성화해주세요.</p>
+            <p className="text-sm text-[#6e6e73]">예약 가능한 슬롯이 없습니다. 시간대 관리에서 슬롯을 활성화해주세요.</p>
           ) : (
             <>
               <SlotCalendar
@@ -154,7 +154,7 @@ export default function CounselingDetail({
 
               {selectedDate && hoursForDate.length > 0 && (
                 <div className="mt-4">
-                  <p className="text-xs font-medium text-gray-500 mb-2">{selectedDate} 가능 시간</p>
+                  <p className="text-xs font-medium text-[#6e6e73] mb-2">{selectedDate} 가능 시간</p>
                   <div className="flex gap-2 flex-wrap">
                     {hoursForDate.map((slot) => (
                       <button
@@ -162,8 +162,8 @@ export default function CounselingDetail({
                         onClick={() => setSelectedSlotId(slot.id)}
                         className={`px-4 py-2 rounded-lg text-sm border-2 font-medium transition-colors ${
                           selectedSlotId === slot.id
-                            ? 'border-blue-600 bg-blue-600 text-white'
-                            : 'border-gray-200 text-gray-600 hover:border-blue-300'
+                            ? 'border-blue-600 bg-[#1d1d1f] text-white'
+                            : 'border-[#e5e5ea] text-[#6e6e73] hover:border-blue-300'
                         }`}
                       >
                         {slot.slot_hour}:00
@@ -191,7 +191,7 @@ export default function CounselingDetail({
                 run(() => reserveSlot(request.id, selectedSlotId));
               }}
               disabled={!selectedSlotId || isPending}
-              className="px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-40"
+              className="px-5 py-2 bg-[#1d1d1f] text-white text-sm font-semibold rounded-lg hover:opacity-80 disabled:opacity-40"
             >
               {isPending ? '처리 중...' : request.status === 'confirmed' ? '일정 변경' : '예약'}
             </button>
@@ -213,7 +213,7 @@ export default function CounselingDetail({
                 run(() => cancelRequest(request.id));
               }}
               disabled={isPending}
-              className="px-4 py-2 bg-gray-100 text-gray-600 text-sm font-medium rounded-lg hover:bg-red-50 hover:text-red-600 disabled:opacity-40"
+              className="px-4 py-2 bg-[#f5f5f7] text-[#6e6e73] text-sm font-medium rounded-lg hover:bg-red-50 hover:text-red-600 disabled:opacity-40"
             >
               취소
             </button>
@@ -223,9 +223,9 @@ export default function CounselingDetail({
 
       {/* 확정 상태: 완료 처리 버튼 노출 */}
       {request.status === 'confirmed' && !isFinal && (
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="mb-4">
-            <h3 className="text-sm font-semibold text-gray-700">상담 완료 처리</h3>
+            <h3 className="text-sm font-semibold text-[#1d1d1f]">상담 완료 처리</h3>
           </div>
           <RecordForm
             content={content}
@@ -248,26 +248,26 @@ export default function CounselingDetail({
 
       {/* 완료 상태: 기록 열람 */}
       {request.status === 'completed' && (
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3">상담 기록</h3>
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-[#1d1d1f] mb-3">상담 기록</h3>
           <RecordForm content={content} outcome={outcome} readonly={!!record} onChange={() => {}} />
         </div>
       )}
 
       {/* 이전 상담 이력 */}
       {history.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3">이전 상담 이력 ({history.length}건)</h3>
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <h3 className="text-sm font-semibold text-[#1d1d1f] mb-3">이전 상담 이력 ({history.length}건)</h3>
           <div className="space-y-3">
             {history.map((h) => (
-              <div key={h.id} className="p-3 bg-gray-50 rounded-lg text-sm">
+              <div key={h.id} className="p-3 bg-[#f5f5f7] rounded-lg text-sm">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs text-gray-400">{new Date(h.created_at).toLocaleDateString('ko-KR')}</span>
+                  <span className="text-xs text-[#6e6e73]">{new Date(h.created_at).toLocaleDateString('ko-KR')}</span>
                   {h.outcome && (
-                    <span className="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">{h.outcome}</span>
+                    <span className="text-xs bg-[#e5e5ea] text-[#6e6e73] px-2 py-0.5 rounded-full">{h.outcome}</span>
                   )}
                 </div>
-                <p className="text-gray-700">{h.content}</p>
+                <p className="text-[#1d1d1f]">{h.content}</p>
               </div>
             ))}
           </div>
@@ -306,10 +306,10 @@ function RecordForm({
         placeholder="상담 내용을 입력하세요..."
         rows={5}
         readOnly={readonly}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+        className="w-full border border-[#e5e5ea] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1d1d1f] resize-none"
       />
       <div className="mt-3">
-        <p className="text-xs text-gray-500 mb-2">상담 결과</p>
+        <p className="text-xs text-[#6e6e73] mb-2">상담 결과</p>
         <div className="flex gap-2">
           {['정상복귀', '집중관리', '기타'].map((o) => (
             <button
@@ -319,7 +319,7 @@ function RecordForm({
               className={`px-3 py-1.5 text-xs rounded-full border-2 font-medium transition-colors ${
                 outcome === o
                   ? 'border-blue-600 bg-blue-50 text-blue-700'
-                  : 'border-gray-200 text-gray-500 hover:border-gray-300'
+                  : 'border-[#e5e5ea] text-[#6e6e73] hover:border-[#e5e5ea]'
               }`}
             >
               {o}

@@ -145,17 +145,17 @@ export default async function ProgressDetailPage({
     <div className="space-y-5 max-w-3xl">
       {/* 브레드크럼 */}
       <div className="flex items-center gap-2 text-sm">
-        <Link href="/admin/progress" className="text-gray-400 hover:text-gray-600">← 학습 진도</Link>
-        <span className="text-gray-300">/</span>
-        <span className="text-gray-600">{student.name}</span>
+        <Link href="/admin/progress" className="text-[#6e6e73] hover:text-[#6e6e73]">← 학습 진도</Link>
+        <span className="text-[#c7c7cc]">/</span>
+        <span className="text-[#6e6e73]">{student.name}</span>
       </div>
 
       {/* 학생 기본 정보 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-5">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-xl font-bold text-gray-900">{student.name}</h1>
-            <p className="text-sm text-gray-500 mt-0.5">
+            <h1 className="text-xl font-bold text-[#1d1d1f]">{student.name}</h1>
+            <p className="text-sm text-[#6e6e73] mt-0.5">
               수험번호 {student.exam_no ?? '-'} · {branch?.name ?? ''} {cls?.name ?? ''}
             </p>
           </div>
@@ -186,7 +186,7 @@ export default async function ProgressDetailPage({
               label: '현재 진행 Day',
               value: `Day ${currentDay}`,
               sub: `60일 커리큘럼`,
-              color: 'bg-gray-50 text-gray-700',
+              color: 'bg-[#f5f5f7] text-[#1d1d1f]',
             },
           ].map((s) => (
             <div key={s.label} className={`${s.color} rounded-xl p-3`}>
@@ -199,14 +199,14 @@ export default async function ProgressDetailPage({
       </div>
 
       {/* 어휘 진도 바 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">어휘 학습 진도</h2>
+      <div className="bg-white rounded-2xl shadow-sm p-5">
+        <h2 className="text-sm font-semibold text-[#1d1d1f] mb-3">어휘 학습 진도</h2>
         <div className="space-y-2">
-          <div className="flex justify-between text-xs text-gray-500">
+          <div className="flex justify-between text-xs text-[#6e6e73]">
             <span>전체 진도</span>
             <span>{totalStudied} / {targetWords}단어 ({vocabRate}%)</span>
           </div>
-          <div className="w-full bg-gray-100 rounded-full h-3">
+          <div className="w-full bg-[#f5f5f7] rounded-full h-3">
             <div className="bg-blue-500 h-3 rounded-full transition-all" style={{ width: `${vocabRate}%` }} />
           </div>
           {/* DAY별 미니 진도 */}
@@ -216,22 +216,22 @@ export default async function ProgressDetailPage({
                 key={d.day}
                 title={`Day ${d.day}: ${d.vocabDone ? '완료' : '미완료'}`}
                 className={`w-4 h-4 rounded-sm text-[8px] flex items-center justify-center font-bold ${
-                  d.vocabDone ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-300'
+                  d.vocabDone ? 'bg-blue-500 text-white' : 'bg-[#f5f5f7] text-[#c7c7cc]'
                 }`}
               >
                 {d.day}
               </div>
             ))}
           </div>
-          <p className="text-xs text-gray-400 mt-1">파란 칸 = 해당 Day 50단어 모두 학습 완료</p>
+          <p className="text-xs text-[#6e6e73] mt-1">파란 칸 = 해당 Day 50단어 모두 학습 완료</p>
         </div>
       </div>
 
       {/* 관련 단어 DAY별 상세 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-5">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-semibold text-gray-700">관련 단어 학습 현황</h2>
-          <span className="text-xs text-gray-400">동의어 · 유의어 · 반의어</span>
+          <h2 className="text-sm font-semibold text-[#1d1d1f]">관련 단어 학습 현황</h2>
+          <span className="text-xs text-[#6e6e73]">동의어 · 유의어 · 반의어</span>
         </div>
         <StudentRelatedProgress
           days={relatedDays}

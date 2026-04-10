@@ -13,7 +13,6 @@ export default async function ReviewPage() {
 
   const failedWords = logs ?? [];
 
-  // Day별 그룹화
   const byDay: Record<number, typeof failedWords> = {};
   failedWords.forEach((log: any) => {
     const day = log.vocabulary?.day;
@@ -26,40 +25,42 @@ export default async function ReviewPage() {
   const sortedDays = Object.keys(byDay).map(Number).sort((a, b) => a - b);
 
   return (
-    <div className="max-w-lg mx-auto px-4 py-6">
-      <h1 className="text-xl font-bold text-gray-900 mb-1">복습</h1>
-      <p className="text-sm text-gray-500 mb-6">오답 단어 {failedWords.length}개</p>
+    <div className="max-w-xl mx-auto px-5 py-8">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">복습</h1>
+        <p className="text-[13px] text-[#6e6e73] mt-0.5">오답 단어 {failedWords.length}개</p>
+      </div>
 
       {failedWords.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">
-          <p className="text-4xl mb-3">🎉</p>
-          <p className="font-medium">오답 단어가 없습니다!</p>
-          <p className="text-sm mt-1">학습을 계속 진행해보세요</p>
+        <div className="bg-white rounded-2xl p-10 shadow-sm text-center">
+          <p className="text-3xl mb-3">✓</p>
+          <p className="text-[15px] font-semibold text-[#1d1d1f]">오답 단어가 없습니다</p>
+          <p className="text-[13px] text-[#6e6e73] mt-1">학습을 계속 진행해보세요</p>
         </div>
       ) : (
         <>
           <Link
             href="/student/review/session"
-            className="block w-full py-4 bg-blue-600 text-white font-semibold rounded-xl text-center mb-4"
+            className="block w-full py-3.5 bg-[#1d1d1f] text-white font-semibold rounded-xl text-center text-[14px] mb-4 hover:opacity-80 transition-opacity"
           >
             전체 복습 시작 ({failedWords.length}단어)
           </Link>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             {sortedDays.map((day) => (
-              <div key={day} className="bg-white rounded-xl border border-gray-200 p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-semibold text-gray-700">Day {day}</span>
-                  <span className="text-xs text-red-500">{byDay[day].length}단어</span>
+              <div key={day} className="bg-white rounded-2xl p-5 shadow-sm">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[13px] font-semibold text-[#1d1d1f]">Day {day}</span>
+                  <span className="text-[11px] text-[#6e6e73]">{byDay[day].length}단어</span>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {byDay[day].slice(0, 8).map((log: any) => (
-                    <span key={log.vocab_id} className="text-xs bg-red-50 text-red-700 px-2 py-1 rounded">
+                    <span key={log.vocab_id} className="text-[12px] bg-[#f5f5f7] text-[#1d1d1f] px-2.5 py-1 rounded-lg">
                       {log.vocabulary?.word}
                     </span>
                   ))}
                   {byDay[day].length > 8 && (
-                    <span className="text-xs text-gray-400">+{byDay[day].length - 8}개</span>
+                    <span className="text-[12px] text-[#6e6e73] px-2 py-1">+{byDay[day].length - 8}</span>
                   )}
                 </div>
               </div>

@@ -54,7 +54,6 @@ export default async function StudentDashboardPage() {
     .limit(1)
     .single();
 
-  // Day 상태 계산
   function getDayStatus(day: number): 'done' | 'today' | 'partial' | 'missed' | 'locked' {
     if (day > progress.current_day) return 'locked';
     if (studiedPerDay[day] >= 50) return 'done';
@@ -63,198 +62,167 @@ export default async function StudentDashboardPage() {
     return 'missed';
   }
 
+  const progressPct = Math.min(100, Math.round((progress.studied_count / 3000) * 100));
+
   return (
-    <div className="max-w-lg mx-auto px-4 py-6">
-      {/* 헤더 */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <p className="text-sm text-gray-500">안녕하세요</p>
-          <h1 className="text-xl font-bold text-gray-900">{profile?.name ?? '학생'} 님</h1>
+    <div className="min-h-screen bg-[#f5f5f7]">
+      <div className="max-w-xl mx-auto px-5 py-8">
+
+        {/* 헤더 */}
+        <div className="flex items-start justify-between mb-10">
+          <div>
+            <p className="text-[13px] text-[#6e6e73] mb-0.5">안녕하세요</p>
+            <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">
+              {profile?.name ?? '학생'}
+            </h1>
+          </div>
+          <form action={logout}>
+            <button type="submit" className="text-[13px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors mt-1">
+              로그아웃
+            </button>
+          </form>
         </div>
-        <form action={logout}>
-          <button type="submit" className="text-sm text-gray-400 hover:text-gray-600">
-            로그아웃
-          </button>
-        </form>
-      </div>
 
-      {/* AI 성과 예측 */}
-      <StudentPredictionCard
-        progressRate={progress.progress_rate}
-        learningRate={progress.learning_rate}
-        streakDays={progress.streak_days}
-        currentDay={progress.current_day}
-        failedCount={progress.failed_count}
-        cached={isPredictionStale ? null : (predictionCache?.content ?? null)}
-        isStale={isPredictionStale}
-      />
+        {/* AI 성과 예측 */}
+        <StudentPredictionCard
+          progressRate={progress.progress_rate}
+          learningRate={progress.learning_rate}
+          streakDays={progress.streak_days}
+          currentDay={progress.current_day}
+          failedCount={progress.failed_count}
+          cached={isPredictionStale ? null : (predictionCache?.content ?? null)}
+          isStale={isPredictionStale}
+        />
 
-      {/* 진도 요약 카드 */}
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <StatCard
-          label="학습 진도"
-          value={`${progress.progress_rate}%`}
-          sub={`${progress.studied_count} / ${progress.total_words}단어`}
-          color="blue"
-        />
-        <StatCard
-          label="학습율"
-          value={`${progress.learning_rate}%`}
-          sub="셀프테스트 정답률"
-          color="green"
-        />
-        <StatCard
-          label="연속 학습일"
-          value={`${progress.streak_days}일`}
-          sub="오늘도 화이팅!"
-          color="orange"
-        />
-        <StatCard
-          label="현재 Day"
-          value={`Day ${progress.current_day}`}
-          sub={`60일 중 ${progress.current_day}일차`}
-          color="purple"
-        />
-      </div>
-
-      {/* 다음 시험 */}
-      {nextExam && (
-        <div className={`rounded-xl p-4 mb-4 ${nextExam.status === 'active' ? 'bg-red-50 border border-red-200' : 'bg-blue-50 border border-blue-200'}`}>
-          <div className="flex items-center justify-between">
+        {/* 진도 요약 */}
+        <div className="bg-white rounded-2xl p-6 mb-3 shadow-sm">
+          <p className="text-[13px] text-[#6e6e73] mb-4">학습 현황</p>
+          <div className="grid grid-cols-2 gap-y-6">
             <div>
-              <p className="text-xs font-medium text-gray-500 mb-0.5">
-                {nextExam.status === 'active' ? '🔴 시험 진행중' : '📝 다음 시험'}
-              </p>
-              <p className="font-semibold text-gray-900">{nextExam.title}</p>
-              {nextExam.status === 'scheduled' && (
-                <p className="text-xs text-gray-500 mt-0.5">
-                  {new Date(nextExam.starts_at).toLocaleString('ko-KR', {
-                    month: 'numeric', day: 'numeric',
-                    hour: '2-digit', minute: '2-digit'
-                  })}
+              <p className="text-[32px] font-semibold text-[#1d1d1f] leading-none">{progressPct}<span className="text-lg font-normal text-[#6e6e73]">%</span></p>
+              <p className="text-[12px] text-[#6e6e73] mt-1">학습 진도</p>
+            </div>
+            <div>
+              <p className="text-[32px] font-semibold text-[#1d1d1f] leading-none">{progress.learning_rate}<span className="text-lg font-normal text-[#6e6e73]">%</span></p>
+              <p className="text-[12px] text-[#6e6e73] mt-1">정답률</p>
+            </div>
+            <div>
+              <p className="text-[32px] font-semibold text-[#1d1d1f] leading-none">{progress.streak_days}<span className="text-lg font-normal text-[#6e6e73]">일</span></p>
+              <p className="text-[12px] text-[#6e6e73] mt-1">연속 학습</p>
+            </div>
+            <div>
+              <p className="text-[32px] font-semibold text-[#1d1d1f] leading-none">Day <span className="text-[28px]">{progress.current_day}</span></p>
+              <p className="text-[12px] text-[#6e6e73] mt-1">60일 중</p>
+            </div>
+          </div>
+          {/* 전체 진도 바 */}
+          <div className="mt-6 pt-5 border-t border-[#f5f5f7]">
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-[12px] text-[#6e6e73]">전체 진도</p>
+              <p className="text-[12px] text-[#6e6e73]">{progress.studied_count.toLocaleString()} / 3,000단어</p>
+            </div>
+            <div className="w-full bg-[#f5f5f7] rounded-full h-1.5">
+              <div
+                className="bg-[#1d1d1f] h-1.5 rounded-full transition-all"
+                style={{ width: `${progressPct}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* 시험 알림 */}
+        {nextExam && (
+          <div className={`rounded-2xl p-5 mb-3 shadow-sm ${nextExam.status === 'active' ? 'bg-[#1d1d1f]' : 'bg-white'}`}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className={`text-[11px] font-medium mb-1 ${nextExam.status === 'active' ? 'text-[#f5f5f7]' : 'text-[#6e6e73]'}`}>
+                  {nextExam.status === 'active' ? '지금 시험 중' : '다음 시험'}
                 </p>
+                <p className={`font-semibold text-[15px] ${nextExam.status === 'active' ? 'text-white' : 'text-[#1d1d1f]'}`}>
+                  {nextExam.title}
+                </p>
+                {nextExam.status === 'scheduled' && (
+                  <p className="text-[12px] text-[#6e6e73] mt-0.5">
+                    {new Date(nextExam.starts_at).toLocaleString('ko-KR', {
+                      month: 'numeric', day: 'numeric',
+                      hour: '2-digit', minute: '2-digit'
+                    })}
+                  </p>
+                )}
+              </div>
+              {nextExam.status === 'active' && (
+                <Link
+                  href="/student/exam"
+                  className="px-4 py-2 bg-white text-[#1d1d1f] text-[13px] font-semibold rounded-full"
+                >
+                  입장
+                </Link>
               )}
             </div>
-            {nextExam.status === 'active' && (
-              <Link
-                href="/student/exam"
-                className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg"
-              >
-                입장하기
-              </Link>
-            )}
+          </div>
+        )}
+
+        {/* 오늘 학습 */}
+        <div className="bg-white rounded-2xl p-5 mb-3 shadow-sm">
+          <p className="text-[13px] text-[#6e6e73] mb-3">오늘 학습</p>
+          <div className="flex gap-2">
+            <Link
+              href={`/student/study/${progress.current_day}`}
+              className="flex-1 py-3 bg-[#1d1d1f] text-white text-[13px] font-semibold rounded-xl text-center transition-opacity hover:opacity-80"
+            >
+              Day {progress.current_day} 시작
+            </Link>
+            <Link
+              href="/student/review"
+              className="flex-1 py-3 bg-[#f5f5f7] text-[#1d1d1f] text-[13px] font-semibold rounded-xl text-center transition-opacity hover:opacity-70"
+            >
+              복습
+              {progress.failed_count > 0 && (
+                <span className="ml-1.5 text-[11px] text-[#6e6e73]">{progress.failed_count}</span>
+              )}
+            </Link>
           </div>
         </div>
-      )}
 
-      {/* 오늘 학습 바로가기 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4 mb-4">
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">오늘 학습</h2>
-        <div className="flex gap-2">
-          <Link
-            href={`/student/study/${progress.current_day}`}
-            className="flex-1 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg text-center"
-          >
-            Day {progress.current_day} 학습하기
-          </Link>
-          <Link
-            href="/student/review"
-            className="flex-1 py-3 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg text-center"
-          >
-            복습하기
-            {progress.failed_count > 0 && (
-              <span className="ml-1 text-red-500">({progress.failed_count})</span>
-            )}
-          </Link>
-        </div>
-      </div>
+        {/* 60일 그리드 */}
+        <div className="bg-white rounded-2xl p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-[13px] text-[#6e6e73]">60일 학습 현황</p>
+            <div className="flex items-center gap-3 text-[11px] text-[#6e6e73]">
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[#1d1d1f] inline-block" />완료</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[#0071e3] inline-block" />오늘</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[#d1d1d6] inline-block" />미완료</span>
+            </div>
+          </div>
+          <div className="grid grid-cols-10 gap-1.5">
+            {Array.from({ length: 60 }, (_, i) => i + 1).map((day) => {
+              const status = getDayStatus(day);
+              const isAccessible = day <= progress.current_day;
 
-      {/* 60일 Day 그리드 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4 mb-4">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold text-gray-700">60일 학습 현황</h2>
-          <div className="flex items-center gap-3 text-xs text-gray-500">
-            <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-sm bg-green-500 inline-block" />완료
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-sm bg-blue-500 inline-block" />오늘
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-sm bg-amber-400 inline-block" />진행중
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-sm bg-red-400 inline-block" />미학습
-            </span>
+              const cellClass = {
+                done:    'bg-[#1d1d1f] text-white',
+                today:   'bg-[#0071e3] text-white',
+                partial: 'bg-[#d1d1d6] text-[#1d1d1f]',
+                missed:  'bg-[#d1d1d6] text-[#1d1d1f]',
+                locked:  'bg-[#f5f5f7] text-[#c7c7cc]',
+              }[status];
+
+              const inner = (
+                <span className={`flex items-center justify-center w-full aspect-square rounded-md text-[10px] font-medium ${cellClass} ${isAccessible ? 'hover:opacity-70 transition-opacity' : 'cursor-default'}`}>
+                  {day}
+                </span>
+              );
+
+              return isAccessible ? (
+                <Link key={day} href={`/student/study/${day}`}>{inner}</Link>
+              ) : (
+                <div key={day}>{inner}</div>
+              );
+            })}
           </div>
         </div>
-        <div className="grid grid-cols-10 gap-1.5">
-          {Array.from({ length: 60 }, (_, i) => i + 1).map((day) => {
-            const status = getDayStatus(day);
-            const isAccessible = day <= progress.current_day;
 
-            const cellClass = {
-              done:    'bg-green-500 text-white',
-              today:   'bg-blue-500 text-white ring-2 ring-blue-300 ring-offset-1',
-              partial: 'bg-amber-400 text-white',
-              missed:  'bg-red-400 text-white',
-              locked:  'bg-gray-100 text-gray-300',
-            }[status];
-
-            const inner = (
-              <span className={`flex items-center justify-center w-full aspect-square rounded-md text-xs font-medium transition-opacity ${cellClass} ${isAccessible ? 'hover:opacity-80' : 'cursor-default'}`}>
-                {day}
-              </span>
-            );
-
-            return isAccessible ? (
-              <Link key={day} href={`/student/study/${day}`} title={`Day ${day}`}>
-                {inner}
-              </Link>
-            ) : (
-              <div key={day} title={`Day ${day} (잠금)`}>
-                {inner}
-              </div>
-            );
-          })}
-        </div>
       </div>
-
-      {/* 진도 바 */}
-      <div className="bg-white rounded-xl border border-gray-200 p-4">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-sm font-semibold text-gray-700">전체 진도</h2>
-          <span className="text-xs text-gray-500">{progress.studied_count} / 3,000단어</span>
-        </div>
-        <div className="w-full bg-gray-100 rounded-full h-2">
-          <div
-            className="bg-blue-500 h-2 rounded-full transition-all"
-            style={{ width: `${Math.min(100, (progress.studied_count / 3000) * 100)}%` }}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StatCard({
-  label, value, sub, color,
-}: {
-  label: string; value: string; sub: string;
-  color: 'blue' | 'green' | 'orange' | 'purple';
-}) {
-  const colors = {
-    blue:   'bg-blue-50 text-blue-700',
-    green:  'bg-green-50 text-green-700',
-    orange: 'bg-orange-50 text-orange-700',
-    purple: 'bg-purple-50 text-purple-700',
-  };
-
-  return (
-    <div className={`rounded-xl p-4 ${colors[color]}`}>
-      <p className="text-xs font-medium opacity-70 mb-1">{label}</p>
-      <p className="text-2xl font-bold">{value}</p>
-      <p className="text-xs opacity-60 mt-0.5">{sub}</p>
     </div>
   );
 }

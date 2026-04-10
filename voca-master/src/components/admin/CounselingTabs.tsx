@@ -45,8 +45,8 @@ const statusColors: Record<string, string> = {
   scheduled: 'bg-blue-50 text-blue-700',
   confirmed: 'bg-indigo-50 text-indigo-700',
   completed: 'bg-green-50 text-green-700',
-  cancelled: 'bg-gray-100 text-gray-500',
-  dismissed: 'bg-gray-100 text-gray-500',
+  cancelled: 'bg-[#f5f5f7] text-[#6e6e73]',
+  dismissed: 'bg-[#f5f5f7] text-[#6e6e73]',
 };
 
 const statusLabels: Record<string, string> = {
@@ -90,7 +90,7 @@ export default function CounselingTabs({
   return (
     <div>
       {/* 탭 헤더 */}
-      <div className="flex border-b border-gray-200 mb-5">
+      <div className="flex border-b border-[#e5e5ea] mb-5">
         {[
           { key: 'requests', label: '상담 신청 목록' },
           { key: 'slots', label: '시간대 관리' },
@@ -100,8 +100,8 @@ export default function CounselingTabs({
             onClick={() => changeTab(t.key)}
             className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
               tab === t.key
-                ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
+                ? 'border-blue-600 text-[#0071e3]'
+                : 'border-transparent text-[#6e6e73] hover:text-[#1d1d1f]'
             }`}
           >
             {t.label}
@@ -152,8 +152,8 @@ function RequestsTab({
             onClick={() => onStatusChange(s.value)}
             className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
               statusFilter === s.value
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-[#1d1d1f] text-white'
+                : 'bg-[#f5f5f7] text-[#6e6e73] hover:opacity-80'
             }`}
           >
             {s.label}
@@ -161,28 +161,28 @@ function RequestsTab({
         ))}
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-[#f5f5f7] border-b border-[#e5e5ea]">
             <tr>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">구분</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">학생</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">내용</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">예약일시</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">상태</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">구분</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">학생</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">내용</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">예약일시</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">상태</th>
               <th className="px-4 py-3"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-[#f5f5f7]">
             {requests.length === 0 && (
               <tr>
-                <td colSpan={6} className="text-center py-8 text-gray-400">
+                <td colSpan={6} className="text-center py-8 text-[#6e6e73]">
                   상담 신청이 없습니다
                 </td>
               </tr>
             )}
             {requests.map((req) => (
-              <tr key={req.id} className="hover:bg-gray-50 transition-colors">
+              <tr key={req.id} className="hover:bg-[#f5f5f7] transition-colors">
                 <td className="px-4 py-3">
                   <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                     req.source === 'ai' ? 'bg-purple-50 text-purple-700' : 'bg-blue-50 text-blue-700'
@@ -191,11 +191,11 @@ function RequestsTab({
                   </span>
                 </td>
                 <td className="px-4 py-3">
-                  <p className="font-medium text-gray-900">{req.student?.name ?? '-'}</p>
-                  <p className="text-xs text-gray-400">{req.student?.exam_no ?? ''}</p>
+                  <p className="font-medium text-[#1d1d1f]">{req.student?.name ?? '-'}</p>
+                  <p className="text-xs text-[#6e6e73]">{req.student?.exam_no ?? ''}</p>
                 </td>
                 <td className="px-4 py-3 max-w-xs">
-                  <p className="text-gray-700 text-xs truncate">
+                  <p className="text-[#1d1d1f] text-xs truncate">
                     {req.source === 'ai'
                       ? req.counseling_recommendations?.reason ?? 'AI 분석'
                       : req.request_note ?? '요청 내용 없음'}
@@ -206,7 +206,7 @@ function RequestsTab({
                     </p>
                   )}
                 </td>
-                <td className="px-4 py-3 text-xs text-gray-500">
+                <td className="px-4 py-3 text-xs text-[#6e6e73]">
                   {req.slot ? `${req.slot.slot_date} ${req.slot.slot_hour}:00` : '-'}
                 </td>
                 <td className="px-4 py-3">
@@ -217,7 +217,7 @@ function RequestsTab({
                 <td className="px-4 py-3">
                   <Link
                     href={`/admin/counseling/${req.id}`}
-                    className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+                    className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity"
                   >
                     상세
                   </Link>
@@ -305,51 +305,51 @@ function ClassAdminSlotsTab({
 
   return (
     <div className="space-y-4">
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
+      <div className="bg-white rounded-2xl shadow-sm p-5">
         <div className="flex items-center gap-3 mb-5 flex-wrap">
           <input
             type="date"
             value={slotDate}
             onChange={(e) => setSlotDate(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-[#e5e5ea] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#1d1d1f]"
           />
           <button
             onClick={bulkActivate}
             disabled={isLoading}
-            className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 bg-[#1d1d1f] text-white text-sm font-medium rounded-lg hover:opacity-80 disabled:opacity-50"
           >
             전체 활성화
           </button>
           <button
             onClick={bulkDeactivate}
             disabled={isLoading}
-            className="px-4 py-2 bg-gray-100 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-200 disabled:opacity-50"
+            className="px-4 py-2 bg-[#f5f5f7] text-[#6e6e73] text-sm font-medium rounded-lg hover:opacity-80 disabled:opacity-50"
           >
             전체 비활성화
           </button>
         </div>
 
         <SlotHourGrid slots={todaySlots} onToggle={toggleSlot} disabled={isLoading} />
-        <p className="text-xs text-gray-400 mt-4">활성화(파란색) 슬롯만 학생이 예약 가능합니다.</p>
+        <p className="text-xs text-[#6e6e73] mt-4">활성화(파란색) 슬롯만 학생이 예약 가능합니다.</p>
       </div>
 
       {Object.keys(slotsByDate).length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
-            <p className="text-xs font-medium text-gray-600">예약 가능 일정 요약</p>
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+          <div className="px-4 py-3 border-b border-[#f5f5f7] bg-[#f5f5f7]">
+            <p className="text-xs font-medium text-[#6e6e73]">예약 가능 일정 요약</p>
           </div>
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-[#f5f5f7] border-b border-[#e5e5ea]">
               <tr>
-                <th className="text-left px-4 py-3 text-gray-600 font-medium">날짜</th>
-                <th className="text-left px-4 py-3 text-gray-600 font-medium">활성 시간대</th>
+                <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">날짜</th>
+                <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">활성 시간대</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-[#f5f5f7]">
               {Object.entries(slotsByDate).sort(([a], [b]) => a.localeCompare(b)).map(([date, dateSlots]) => (
-                <tr key={date} className="hover:bg-gray-50 cursor-pointer" onClick={() => setSlotDate(date)}>
-                  <td className="px-4 py-3 text-gray-900">{date}</td>
-                  <td className="px-4 py-3 text-gray-500 text-xs">
+                <tr key={date} className="hover:bg-[#f5f5f7] cursor-pointer" onClick={() => setSlotDate(date)}>
+                  <td className="px-4 py-3 text-[#1d1d1f]">{date}</td>
+                  <td className="px-4 py-3 text-[#6e6e73] text-xs">
                     {dateSlots.filter((s) => s.is_active).map((s) => `${s.slot_hour}:00`).join(', ') || '없음'}
                   </td>
                 </tr>
@@ -445,7 +445,7 @@ function BranchSlotsTab({
 
   if (classTeachers.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-400 text-sm bg-white rounded-xl border border-gray-200">
+      <div className="text-center py-12 text-[#6e6e73] text-sm bg-white rounded-2xl shadow-sm">
         관리 가능한 반이 없습니다.
       </div>
     );
@@ -454,13 +454,13 @@ function BranchSlotsTab({
   return (
     <div className="space-y-3">
       {/* 날짜 선택 (전체 공통) */}
-      <div className="flex items-center gap-3 bg-white rounded-xl border border-gray-200 px-4 py-3">
-        <span className="text-sm text-gray-500 shrink-0">조회 날짜</span>
+      <div className="flex items-center gap-3 bg-white rounded-2xl shadow-sm px-4 py-3">
+        <span className="text-sm text-[#6e6e73] shrink-0">조회 날짜</span>
         <input
           type="date"
           value={slotDate}
           onChange={(e) => setSlotDate(e.target.value)}
-          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border border-[#e5e5ea] rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-[#1d1d1f]"
         />
       </div>
 
@@ -472,43 +472,43 @@ function BranchSlotsTab({
         const teacherDaySlots = getTeacherSlots(teacher.id).filter((s) => s.slot_date === slotDate);
 
         return (
-          <div key={teacher.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div key={teacher.id} className="bg-white rounded-2xl shadow-sm overflow-hidden">
             {/* 헤더 행 */}
             <button
               onClick={() => setExpandedId(isExpanded ? null : teacher.id)}
-              className="w-full flex items-center justify-between px-4 py-4 hover:bg-gray-50 transition-colors"
+              className="w-full flex items-center justify-between px-4 py-4 hover:bg-[#f5f5f7] transition-colors"
             >
               <div className="flex items-center gap-3 text-left">
                 <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-                  <span className="text-blue-600 text-xs font-bold">
+                  <span className="text-[#0071e3] text-xs font-bold">
                     {teacher.name ? teacher.name.charAt(0) : '?'}
                   </span>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">
+                  <p className="text-sm font-semibold text-[#1d1d1f]">
                     {teacher.name ?? '담임 미배정'}
                   </p>
-                  <p className="text-xs text-gray-400">{teacher.class_name}</p>
+                  <p className="text-xs text-[#6e6e73]">{teacher.class_name}</p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
                 {dateSummary ? (
-                  <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full max-w-32 truncate">
+                  <span className="text-xs text-[#0071e3] bg-blue-50 px-2 py-0.5 rounded-full max-w-32 truncate">
                     {dateSummary}
                   </span>
                 ) : (
-                  <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
+                  <span className="text-xs text-[#6e6e73] bg-[#f5f5f7] px-2 py-0.5 rounded-full">
                     해당일 없음
                   </span>
                 )}
                 <span className={`text-xs px-2 py-0.5 rounded-full ${
-                  activeCount > 0 ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-400'
+                  activeCount > 0 ? 'bg-green-50 text-green-600' : 'bg-[#f5f5f7] text-[#6e6e73]'
                 }`}>
                   전체 {activeCount}개
                 </span>
                 <svg
-                  className={`w-4 h-4 text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                  className={`w-4 h-4 text-[#6e6e73] transition-transform ${isExpanded ? 'rotate-180' : ''}`}
                   fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -518,19 +518,19 @@ function BranchSlotsTab({
 
             {/* 펼쳐진 슬롯 관리 영역 */}
             {isExpanded && (
-              <div className="border-t border-gray-100 bg-gray-50 p-4">
+              <div className="border-t border-[#f5f5f7] bg-[#f5f5f7] p-4">
                 <div className="flex gap-2 mb-4">
                   <button
                     onClick={() => bulkActivate(teacher.id)}
                     disabled={isLoading}
-                    className="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                    className="px-3 py-1.5 bg-[#1d1d1f] text-white text-xs font-medium rounded-lg hover:opacity-80 disabled:opacity-50"
                   >
                     전체 활성화
                   </button>
                   <button
                     onClick={() => bulkDeactivate(teacher.id)}
                     disabled={isLoading}
-                    className="px-3 py-1.5 bg-gray-200 text-gray-600 text-xs font-medium rounded-lg hover:bg-gray-300 disabled:opacity-50"
+                    className="px-3 py-1.5 bg-[#f5f5f7] text-[#6e6e73] text-xs font-medium rounded-lg hover:opacity-80 disabled:opacity-50 transition-opacity"
                   >
                     전체 비활성화
                   </button>
@@ -578,10 +578,10 @@ function SlotHourGrid({
             disabled={disabled}
             className={`py-2.5 rounded-xl text-xs font-medium transition-colors border-2 ${
               isActive
-                ? 'bg-blue-600 border-blue-600 text-white'
+                ? 'bg-[#1d1d1f] border-blue-600 text-white'
                 : slot
-                ? 'bg-gray-100 border-gray-200 text-gray-400 line-through'
-                : 'bg-white border-gray-200 text-gray-500 hover:border-blue-300'
+                ? 'bg-[#f5f5f7] border-[#e5e5ea] text-[#6e6e73] line-through'
+                : 'bg-white border-[#e5e5ea] text-[#6e6e73] hover:border-blue-300'
             }`}
           >
             {`${hour}:00`}
@@ -610,15 +610,15 @@ function TeacherScheduleSummary({
   if (sortedDates.length === 0) return null;
 
   return (
-    <div className="mt-4 pt-4 border-t border-gray-200">
-      <p className="text-xs font-medium text-gray-500 mb-2">등록된 일정</p>
+    <div className="mt-4 pt-4 border-t border-[#e5e5ea]">
+      <p className="text-xs font-medium text-[#6e6e73] mb-2">등록된 일정</p>
       <div className="space-y-1">
         {sortedDates.map((date) => {
           const active = slotsByDate[date].filter((s) => s.is_active);
           return (
             <div key={date} className="flex items-center justify-between text-xs">
-              <span className="text-gray-500">{date}</span>
-              <span className={active.length > 0 ? 'text-blue-600' : 'text-gray-300'}>
+              <span className="text-[#6e6e73]">{date}</span>
+              <span className={active.length > 0 ? 'text-[#0071e3]' : 'text-[#c7c7cc]'}>
                 {active.length > 0
                   ? active.map((s) => `${s.slot_hour}:00`).join(', ')
                   : '활성 없음'}

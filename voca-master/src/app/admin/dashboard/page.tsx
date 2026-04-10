@@ -285,10 +285,10 @@ export default async function AdminDashboardPage() {
   };
 
   return (
-    <div className="space-y-5">
-      <div>
-        <h1 className="text-xl font-bold text-gray-900">대시보드</h1>
-        <p className="text-sm text-gray-500 mt-1">{profile?.name} · {roleLabel[role] ?? role}</p>
+    <div className="space-y-4">
+      <div className="mb-2">
+        <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">대시보드</h1>
+        <p className="text-[13px] text-[#6e6e73] mt-0.5">{profile?.name} · {roleLabel[role] ?? role}</p>
       </div>
 
       {/* AI 인사이트 */}
@@ -307,28 +307,31 @@ export default async function AdminDashboardPage() {
 
       {/* 요약 카드 */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        <StatCard label="총 학생" value={String(totalStudents)} sub="명" color="blue" />
-        <StatCard label="오늘 학습" value={String(todayActive)} sub={`/ ${totalStudents}명`} color="green" />
-        <StatCard label="위험 학생" value={String(atRiskStudents.length)} sub="3일 이상 미학습" color="red" />
-        <StatCard label="상담 신청" value={String(activeCounselingCount)} sub="건 진행 중" color="yellow" />
-        <StatCard label="어휘 학습" value={`${totalStudents > 0 ? Math.round((todayActive / totalStudents) * 100) : 0}%`} sub="오늘 학습률" color="blue" />
-        <StatCard label="관련 단어" value={`${relatedProgressAvg}%`} sub="평균 학습률" color="purple" />
+        <StatCard label="총 학생" value={String(totalStudents)} sub="명" />
+        <StatCard label="오늘 학습" value={String(todayActive)} sub={`/ ${totalStudents}명`} />
+        <StatCard label="위험 학생" value={String(atRiskStudents.length)} sub="3일 이상 미학습" />
+        <StatCard label="상담 신청" value={String(activeCounselingCount)} sub="건 진행 중" />
+        <StatCard label="오늘 학습률" value={`${totalStudents > 0 ? Math.round((todayActive / totalStudents) * 100) : 0}%`} sub="활성 학생 기준" />
+        <StatCard label="관련어 학습" value={`${relatedProgressAvg}%`} sub="평균 진도율" />
       </div>
 
       {/* 진행 중 시험 */}
       {(activeExams ?? []).length > 0 && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-          <p className="text-sm font-semibold text-red-700 mb-2">🔴 진행 중인 시험</p>
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="w-2 h-2 rounded-full bg-[#ff3b30] animate-pulse" />
+            <p className="text-[13px] font-semibold text-[#1d1d1f]">진행 중인 시험</p>
+          </div>
           <div className="space-y-2">
             {activeExams!.map((exam) => (
               <div key={exam.id} className="flex items-center justify-between">
                 <div>
-                  <span className="text-sm font-medium text-red-900">{exam.title}</span>
-                  <span className="text-xs text-red-600 ml-2">{(exam.classes as any)?.name}</span>
+                  <span className="text-[13px] font-medium text-[#1d1d1f]">{exam.title}</span>
+                  <span className="text-[12px] text-[#6e6e73] ml-2">{(exam.classes as any)?.name}</span>
                 </div>
                 <Link
                   href={`/admin/exams/${exam.id}`}
-                  className="text-xs bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
+                  className="text-[12px] bg-[#1d1d1f] text-white px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
                 >
                   관리
                 </Link>
@@ -338,34 +341,34 @@ export default async function AdminDashboardPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* 위험 학생 목록 */}
         <DashboardRiskCard atRiskStudents={atRiskStudents} />
 
         {/* 당일 상담 예약 목록 */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-700">당일 상담 예약</h2>
-            <Link href="/admin/counseling" className="text-xs text-blue-600 hover:text-blue-800">전체 보기</Link>
+            <h2 className="text-[13px] font-semibold text-[#1d1d1f]">당일 상담 예약</h2>
+            <Link href="/admin/counseling" className="text-[12px] text-[#0071e3]">전체 보기</Link>
           </div>
           {todayCounselings.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-6">오늘 예약된 상담 없음</p>
+            <p className="text-[13px] text-[#6e6e73] text-center py-6">오늘 예약된 상담 없음</p>
           ) : (
             <div className="space-y-2">
               {todayCounselings.map((c) => (
-                <div key={c.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                <div key={c.id} className="flex items-center justify-between py-2 border-b border-[#f5f5f7] last:border-0">
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-[13px] font-medium text-[#1d1d1f]">
                       {c.slot_hour}:00 · {c.student_name}
                     </p>
-                    <p className="text-xs text-gray-400">{c.class_name} · {c.student_exam_no ?? '-'}</p>
+                    <p className="text-[12px] text-[#6e6e73]">{c.class_name} · {c.student_exam_no ?? '-'}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                      c.status === 'confirmed'  ? 'bg-indigo-50 text-indigo-700' :
-                      c.status === 'completed'  ? 'bg-green-50 text-green-700'  :
-                      c.status === 'cancelled'  ? 'bg-gray-100 text-gray-400'   :
-                      'bg-blue-50 text-blue-700'
+                    <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${
+                      c.status === 'confirmed'  ? 'bg-[#1d1d1f] text-white' :
+                      c.status === 'completed'  ? 'bg-[#f5f5f7] text-[#6e6e73]' :
+                      c.status === 'cancelled'  ? 'bg-[#f5f5f7] text-[#c7c7cc]' :
+                      'bg-[#f5f5f7] text-[#1d1d1f]'
                     }`}>
                       {c.status === 'confirmed' ? '확정' :
                        c.status === 'completed' ? '완료' :
@@ -373,7 +376,7 @@ export default async function AdminDashboardPage() {
                     </span>
                     <Link
                       href={`/admin/counseling/${c.id}`}
-                      className="text-xs text-gray-400 hover:text-blue-600"
+                      className="text-[12px] text-[#0071e3]"
                     >
                       상세 →
                     </Link>
@@ -385,34 +388,31 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* 최근 시험 결과 */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
+        <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-700">최근 시험 결과</h2>
-            <Link href="/admin/exams" className="text-xs text-blue-600 hover:text-blue-800">전체 보기</Link>
+            <h2 className="text-[13px] font-semibold text-[#1d1d1f]">최근 시험 결과</h2>
+            <Link href="/admin/exams" className="text-[12px] text-[#0071e3]">전체 보기</Link>
           </div>
           {examSummaries.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-6">종료된 시험 없음</p>
+            <p className="text-[13px] text-[#6e6e73] text-center py-6">종료된 시험 없음</p>
           ) : (
             <div className="space-y-3">
               {examSummaries.map((e, i) => (
-                <div key={i} className="py-2 border-b border-gray-100 last:border-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <p className="text-sm font-medium text-gray-900 truncate flex-1 mr-2">{e.title}</p>
-                    <span className={`text-sm font-bold ${
-                      e.avgScore / 50 >= 0.8 ? 'text-green-600' :
-                      e.avgScore / 50 >= 0.6 ? 'text-blue-600' : 'text-red-600'
-                    }`}>
+                <div key={i} className="py-2 border-b border-[#f5f5f7] last:border-0">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <p className="text-[13px] font-medium text-[#1d1d1f] truncate flex-1 mr-2">{e.title}</p>
+                    <span className="text-[13px] font-semibold text-[#1d1d1f]">
                       평균 {e.avgScore}점
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-gray-100 rounded-full h-1.5">
+                    <div className="flex-1 bg-[#f5f5f7] rounded-full h-1">
                       <div
-                        className="bg-blue-500 h-1.5 rounded-full"
+                        className="bg-[#1d1d1f] h-1 rounded-full"
                         style={{ width: `${Math.round((e.avgScore / 50) * 100)}%` }}
                       />
                     </div>
-                    <span className="text-xs text-gray-400">{e.submitCount}명 제출</span>
+                    <span className="text-[11px] text-[#6e6e73]">{e.submitCount}명 제출</span>
                   </div>
                 </div>
               ))}
@@ -425,24 +425,12 @@ export default async function AdminDashboardPage() {
   );
 }
 
-function StatCard({
-  label, value, sub, color,
-}: {
-  label: string; value: string; sub: string;
-  color: 'blue' | 'green' | 'red' | 'yellow' | 'purple';
-}) {
-  const colors = {
-    blue: 'bg-blue-50 text-blue-700',
-    green: 'bg-green-50 text-green-700',
-    red: 'bg-red-50 text-red-700',
-    yellow: 'bg-yellow-50 text-yellow-700',
-    purple: 'bg-purple-50 text-purple-700',
-  };
+function StatCard({ label, value, sub }: { label: string; value: string; sub: string }) {
   return (
-    <div className={`rounded-xl p-4 ${colors[color]}`}>
-      <p className="text-xs font-medium opacity-70 mb-1">{label}</p>
-      <p className="text-2xl font-bold">{value}</p>
-      <p className="text-xs opacity-60 mt-0.5">{sub}</p>
+    <div className="bg-white rounded-2xl shadow-sm p-4">
+      <p className="text-[11px] text-[#6e6e73] mb-1">{label}</p>
+      <p className="text-[24px] font-semibold text-[#1d1d1f] leading-none">{value}</p>
+      <p className="text-[11px] text-[#6e6e73] mt-1">{sub}</p>
     </div>
   );
 }

@@ -33,11 +33,11 @@ export default async function AdminAdminsPage() {
   }));
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-xl font-bold text-gray-900">관리자 관리</h1>
+    <div className="space-y-4">
+      <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">관리자 관리</h1>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-base font-semibold text-gray-800 mb-4">관리자 추가</h2>
+      <div className="bg-white rounded-2xl shadow-sm p-6">
+        <h2 className="text-[13px] font-semibold text-[#1d1d1f] mb-4">관리자 추가</h2>
         <CreateAdminForm branches={branches ?? []} />
       </div>
 

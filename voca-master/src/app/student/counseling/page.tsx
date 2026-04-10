@@ -71,8 +71,10 @@ export default async function StudentCounselingPage() {
     .limit(5);
 
   return (
-    <div className="max-w-lg mx-auto px-4 py-6">
-      <h1 className="text-xl font-bold text-gray-900 mb-6">상담 신청</h1>
+    <div className="max-w-xl mx-auto px-5 py-8">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">상담</h1>
+      </div>
 
       <StudentCounselingClient
         adminProfile={adminProfile as any}

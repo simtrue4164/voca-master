@@ -31,7 +31,7 @@ export default function ExamQRButton({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="text-xs px-2.5 py-1 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+        className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#1d1d1f] font-medium rounded-lg hover:opacity-80 transition-opacity"
         title="QR코드 보기"
       >
         QR
@@ -43,45 +43,42 @@ export default function ExamQRButton({
           onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}
         >
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm">
-            {/* 헤더 */}
-            <div className="px-6 pt-6 pb-4 border-b border-gray-100 flex items-start justify-between">
+            <div className="px-6 pt-6 pb-4 border-b border-[#f5f5f7] flex items-start justify-between">
               <div>
-                <h2 className="text-base font-bold text-gray-900">시험 입장 QR코드</h2>
-                <p className="text-xs text-gray-400 mt-0.5 truncate max-w-xs">{examTitle}</p>
+                <h2 className="text-[15px] font-semibold text-[#1d1d1f]">시험 입장 QR코드</h2>
+                <p className="text-[12px] text-[#6e6e73] mt-0.5 truncate max-w-xs">{examTitle}</p>
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="text-gray-400 hover:text-gray-600 text-xl leading-none ml-2"
+                className="text-[#6e6e73] hover:text-[#1d1d1f] text-xl leading-none ml-2 transition-colors"
               >
                 ×
               </button>
             </div>
 
-            {/* QR 코드 */}
             <div className="px-6 py-6 flex flex-col items-center gap-5">
-              <div className="p-4 bg-white border border-gray-200 rounded-xl">
+              <div className="p-4 bg-white border border-[#e5e5ea] rounded-2xl">
                 {origin ? (
                   <QRCode value={examUrl} size={200} />
                 ) : (
-                  <div className="w-[200px] h-[200px] flex items-center justify-center text-xs text-gray-400">
+                  <div className="w-[200px] h-[200px] flex items-center justify-center text-[12px] text-[#6e6e73]">
                     로딩 중...
                   </div>
                 )}
               </div>
 
-              {/* URL */}
               <div className="w-full">
-                <p className="text-xs font-medium text-gray-500 mb-1.5">시험 링크</p>
-                <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg border border-gray-200">
-                  <span className="text-xs text-gray-700 flex-1 break-all leading-relaxed">
+                <p className="text-[12px] font-medium text-[#6e6e73] mb-1.5">시험 링크</p>
+                <div className="flex items-center gap-2 px-3 py-2 bg-[#f5f5f7] rounded-xl">
+                  <span className="text-[12px] text-[#1d1d1f] flex-1 break-all leading-relaxed">
                     {examUrl}
                   </span>
                   <button
                     onClick={handleCopy}
-                    className={`text-xs font-medium shrink-0 px-2 py-1 rounded transition-colors ${
+                    className={`text-[11px] font-medium shrink-0 px-2.5 py-1 rounded-lg transition-opacity ${
                       copied
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-white text-blue-600 hover:bg-blue-50 border border-gray-200'
+                        ? 'bg-[#f0faf4] text-[#34c759]'
+                        : 'bg-white text-[#1d1d1f] hover:opacity-80'
                     }`}
                   >
                     {copied ? '복사됨' : '복사'}
@@ -89,7 +86,7 @@ export default function ExamQRButton({
                 </div>
               </div>
 
-              <p className="text-xs text-gray-400 text-center">
+              <p className="text-[12px] text-[#6e6e73] text-center">
                 학생이 QR코드를 스캔하면 로그인 후 바로 시험 화면으로 이동합니다
               </p>
             </div>

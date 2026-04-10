@@ -165,10 +165,10 @@ export default async function AdminProgressPage({
   });
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <div>
-        <h1 className="text-xl font-bold text-gray-900">학습 진도 관리</h1>
-        <p className="text-sm text-gray-500 mt-1">어휘 및 관련 단어 학습 현황</p>
+        <h1 className="text-2xl font-semibold text-[#1d1d1f] tracking-tight">학습 진도 관리</h1>
+        <p className="text-[13px] text-[#6e6e73] mt-0.5">어휘 및 관련 단어 학습 현황</p>
       </div>
 
       {/* 검색 필터 */}
@@ -185,7 +185,7 @@ export default async function AdminProgressPage({
       </Suspense>
 
       {rows.length === 0 ? (
-        <p className="text-sm text-gray-400 text-center py-16">
+        <p className="text-sm text-[#6e6e73] text-center py-16">
           {filteredClassIds.length === 0 ? '조건에 맞는 반이 없습니다.' : '등록된 학생이 없습니다.'}
         </p>
       ) : (
@@ -194,7 +194,7 @@ export default async function AdminProgressPage({
           {classStats.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {classStats.map((c) => (
-                <div key={c.id} className="bg-white rounded-xl border border-gray-200 p-4">
+                <div key={c.id} className="bg-white rounded-2xl shadow-sm p-4">
                   <div className="flex items-center justify-between mb-3">
                     <h2 className="text-sm font-semibold text-gray-800">{c.name}</h2>
                     <div className="flex items-center gap-2">
@@ -203,23 +203,23 @@ export default async function AdminProgressPage({
                           위험 {c.atRisk}명
                         </span>
                       )}
-                      <span className="text-xs text-gray-400">{c.count}명</span>
+                      <span className="text-xs text-[#6e6e73]">{c.count}명</span>
                     </div>
                   </div>
                   <div className="space-y-2">
                     <div>
-                      <div className="flex justify-between text-xs text-gray-500 mb-1">
+                      <div className="flex justify-between text-xs text-[#6e6e73] mb-1">
                         <span>어휘 평균</span><span>{c.avgVocab}%</span>
                       </div>
-                      <div className="w-full bg-gray-100 rounded-full h-2">
+                      <div className="w-full bg-[#f5f5f7] rounded-full h-2">
                         <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${c.avgVocab}%` }} />
                       </div>
                     </div>
                     <div>
-                      <div className="flex justify-between text-xs text-gray-500 mb-1">
+                      <div className="flex justify-between text-xs text-[#6e6e73] mb-1">
                         <span>관련 단어 평균</span><span>{c.avgRelated}%</span>
                       </div>
-                      <div className="w-full bg-gray-100 rounded-full h-2">
+                      <div className="w-full bg-[#f5f5f7] rounded-full h-2">
                         <div className="bg-purple-500 h-2 rounded-full" style={{ width: `${c.avgRelated}%` }} />
                       </div>
                     </div>
@@ -230,13 +230,13 @@ export default async function AdminProgressPage({
           )}
 
           {/* 학생 진도 테이블 */}
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div className="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-gray-700">
+          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+            <div className="px-5 py-3 border-b border-[#f5f5f7] flex items-center justify-between">
+              <h2 className="text-sm font-semibold text-[#1d1d1f]">
                 학생별 학습 진도
-                <span className="ml-2 text-xs font-normal text-gray-400">{rows.length}명</span>
+                <span className="ml-2 text-xs font-normal text-[#6e6e73]">{rows.length}명</span>
               </h2>
-              <div className="flex items-center gap-3 text-xs text-gray-400">
+              <div className="flex items-center gap-3 text-xs text-[#6e6e73]">
                 <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500 inline-block" />오늘</span>
                 <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" />1~2일 전</span>
                 <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-400 inline-block" />3일+ 미학습</span>
@@ -244,19 +244,19 @@ export default async function AdminProgressPage({
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-gray-50 border-b border-gray-200">
+                <thead className="bg-[#f5f5f7] border-b border-[#e5e5ea]">
                   <tr>
-                    <th className="text-left px-4 py-3 text-gray-600 font-medium">학생</th>
-                    <th className="text-left px-3 py-3 text-gray-600 font-medium">반</th>
-                    <th className="text-left px-3 py-3 text-gray-600 font-medium w-36">어휘 진도</th>
-                    <th className="text-left px-3 py-3 text-gray-600 font-medium w-36">관련 단어</th>
-                    <th className="text-left px-3 py-3 text-gray-600 font-medium">최근 학습</th>
+                    <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">학생</th>
+                    <th className="text-left px-3 py-3 text-[#6e6e73] font-medium">반</th>
+                    <th className="text-left px-3 py-3 text-[#6e6e73] font-medium w-36">어휘 진도</th>
+                    <th className="text-left px-3 py-3 text-[#6e6e73] font-medium w-36">관련 단어</th>
+                    <th className="text-left px-3 py-3 text-[#6e6e73] font-medium">최근 학습</th>
                     <th className="px-3 py-3 w-10" />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-[#f5f5f7]">
                   {rows.map((r) => (
-                    <tr key={r.id} className="hover:bg-gray-50">
+                    <tr key={r.id} className="hover:bg-[#f5f5f7]">
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2">
                           <span className={`w-2 h-2 rounded-full shrink-0 ${
@@ -265,31 +265,31 @@ export default async function AdminProgressPage({
                             r.risk === 'danger'  ? 'bg-red-400' : 'bg-gray-200'
                           }`} />
                           <div>
-                            <p className="font-medium text-gray-900">{r.name}</p>
-                            <p className="text-xs text-gray-400">{r.exam_no}</p>
+                            <p className="font-medium text-[#1d1d1f]">{r.name}</p>
+                            <p className="text-xs text-[#6e6e73]">{r.exam_no}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-3 py-3 text-gray-500 text-xs whitespace-nowrap">{r.className}</td>
+                      <td className="px-3 py-3 text-[#6e6e73] text-xs whitespace-nowrap">{r.className}</td>
                       <td className="px-3 py-3">
                         <div className="flex items-center gap-2">
-                          <div className="w-16 bg-gray-100 rounded-full h-1.5">
+                          <div className="w-16 bg-[#f5f5f7] rounded-full h-1.5">
                             <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${r.vRate}%` }} />
                           </div>
-                          <span className="text-xs text-gray-600 whitespace-nowrap">{r.vRate}%</span>
+                          <span className="text-xs text-[#6e6e73] whitespace-nowrap">{r.vRate}%</span>
                         </div>
-                        <p className="text-xs text-gray-400 mt-0.5">{r.vStudied}/{totalVocabCount}단어</p>
+                        <p className="text-xs text-[#6e6e73] mt-0.5">{r.vStudied}/{totalVocabCount}단어</p>
                       </td>
                       <td className="px-3 py-3">
                         <div className="flex items-center gap-2">
-                          <div className="w-16 bg-gray-100 rounded-full h-1.5">
+                          <div className="w-16 bg-[#f5f5f7] rounded-full h-1.5">
                             <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: `${r.rRate}%` }} />
                           </div>
-                          <span className="text-xs text-gray-600 whitespace-nowrap">{r.rRate}%</span>
+                          <span className="text-xs text-[#6e6e73] whitespace-nowrap">{r.rRate}%</span>
                         </div>
-                        <p className="text-xs text-gray-400 mt-0.5">{r.rStudied}/{totalRelated}개</p>
+                        <p className="text-xs text-[#6e6e73] mt-0.5">{r.rStudied}/{totalRelated}개</p>
                       </td>
-                      <td className="px-3 py-3 text-xs text-gray-500 whitespace-nowrap">
+                      <td className="px-3 py-3 text-xs text-[#6e6e73] whitespace-nowrap">
                         {r.daysSince === null ? '-'
                           : r.daysSince === 0 ? '오늘'
                           : r.daysSince === 1 ? '어제'
@@ -297,7 +297,7 @@ export default async function AdminProgressPage({
                       </td>
                       <td className="px-3 py-3 text-right">
                         <Link href={`/admin/progress/${r.id}`}
-                          className="text-xs text-blue-600 hover:text-blue-800 font-medium">
+                          className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity">
                           상세
                         </Link>
                       </td>

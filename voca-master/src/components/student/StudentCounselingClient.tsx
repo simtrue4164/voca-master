@@ -23,13 +23,13 @@ const STATUS_LABELS: Record<string, string> = {
   cancelled: '취소',
   dismissed: '취소',
 };
-const STATUS_COLORS: Record<string, string> = {
-  pending:   'bg-yellow-50 text-yellow-700',
-  scheduled: 'bg-blue-50 text-blue-700',
-  confirmed: 'bg-indigo-50 text-indigo-700',
-  completed: 'bg-green-50 text-green-700',
-  cancelled: 'bg-gray-100 text-gray-500',
-  dismissed: 'bg-gray-100 text-gray-500',
+const STATUS_STYLES: Record<string, string> = {
+  pending:   'bg-[#f5f5f7] text-[#6e6e73]',
+  scheduled: 'bg-[#1d1d1f] text-white',
+  confirmed: 'bg-[#1d1d1f] text-white',
+  completed: 'bg-[#f5f5f7] text-[#6e6e73]',
+  cancelled: 'bg-[#f5f5f7] text-[#c7c7cc]',
+  dismissed: 'bg-[#f5f5f7] text-[#c7c7cc]',
 };
 
 export default function StudentCounselingClient({
@@ -52,14 +52,12 @@ export default function StudentCounselingClient({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [msg, setMsg] = useState('');
 
-  // 편집 중인 요청 ID
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editDate, setEditDate] = useState('');
   const [editSlotId, setEditSlotId] = useState('');
   const [editNote, setEditNote] = useState('');
   const [isEditing, setIsEditing] = useState(false);
 
-  // 날짜별 슬롯 맵 (신규 신청용)
   const slotsByDate: Record<string, Slot[]> = {};
   for (const s of availableSlots) {
     slotsByDate[s.slot_date] = [...(slotsByDate[s.slot_date] ?? []), s];
@@ -86,7 +84,7 @@ export default function StudentCounselingClient({
         }),
       });
       if (res.ok) {
-        setMsg('상담 신청이 완료되었습니다!');
+        setMsg('상담 신청이 완료되었습니다.');
         setNote('');
         setSelectedDate('');
         setSelectedSlotId('');
@@ -114,10 +112,8 @@ export default function StudentCounselingClient({
     setEditNote('');
   }
 
-  // 편집 모드용 슬롯 맵: 현재 예약된 슬롯도 포함 (본인 것이니 선택 가능)
   function getEditSlotsForRequest(req: Request) {
     const slots = [...availableSlots];
-    // 현재 예약 슬롯이 available에 없으면 추가
     if (req.slot_id && req.slot && !slots.find((s) => s.id === req.slot_id)) {
       slots.push({ id: req.slot_id, slot_date: req.slot.slot_date, slot_hour: req.slot.slot_hour });
     }
@@ -175,23 +171,25 @@ export default function StudentCounselingClient({
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {!adminProfile ? (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-sm text-yellow-800">
+        <div className="bg-white rounded-2xl shadow-sm p-5 text-[13px] text-[#6e6e73]">
           담당 선생님이 배정되어 있지 않습니다. 관리자에게 문의해주세요.
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="text-sm font-semibold text-gray-700 mb-1">상담 신청</h2>
-          <p className="text-xs text-gray-400 mb-4">담당 선생님: {adminProfile.name}</p>
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <div className="mb-4">
+            <h2 className="text-[13px] font-semibold text-[#1d1d1f]">상담 신청</h2>
+            <p className="text-[12px] text-[#6e6e73] mt-0.5">담당 선생님: {adminProfile.name}</p>
+          </div>
 
           {availableSlots.length === 0 ? (
-            <p className="text-sm text-gray-400 py-4 text-center">
+            <p className="text-[13px] text-[#6e6e73] py-4 text-center">
               현재 예약 가능한 상담 시간이 없습니다.
             </p>
           ) : (
             <>
-              <p className="text-xs font-medium text-gray-600 mb-2">날짜 선택</p>
+              <p className="text-[12px] font-medium text-[#1d1d1f] mb-2">날짜 선택</p>
               <SlotCalendar
                 availableDates={availableDates}
                 selectedDate={selectedDate}
@@ -200,21 +198,21 @@ export default function StudentCounselingClient({
 
               {selectedDate && (
                 <div className="mt-4">
-                  <p className="text-xs font-medium text-gray-600 mb-2">
+                  <p className="text-[12px] font-medium text-[#1d1d1f] mb-2">
                     {selectedDate} 예약 가능 시간
                   </p>
                   {hoursForDate.length === 0 ? (
-                    <p className="text-sm text-gray-400">해당 날짜에 가능한 시간이 없습니다.</p>
+                    <p className="text-[13px] text-[#6e6e73]">해당 날짜에 가능한 시간이 없습니다.</p>
                   ) : (
                     <div className="flex flex-wrap gap-2">
                       {hoursForDate.map((slot) => (
                         <button
                           key={slot.id}
                           onClick={() => setSelectedSlotId(slot.id)}
-                          className={`px-4 py-2 rounded-lg text-sm border-2 font-medium transition-colors ${
+                          className={`px-4 py-2 rounded-xl text-[13px] font-medium transition-opacity ${
                             selectedSlotId === slot.id
-                              ? 'border-blue-600 bg-blue-600 text-white'
-                              : 'border-gray-200 text-gray-600 hover:border-blue-300'
+                              ? 'bg-[#1d1d1f] text-white'
+                              : 'bg-[#f5f5f7] text-[#1d1d1f] hover:opacity-80'
                           }`}
                         >
                           {slot.slot_hour}:00
@@ -226,26 +224,26 @@ export default function StudentCounselingClient({
               )}
 
               {selectedSlot && (
-                <p className="mt-3 text-sm text-blue-700 font-medium">
+                <p className="mt-3 text-[12px] text-[#0071e3] font-medium">
                   선택: {selectedDate} {selectedSlot.slot_hour}:00
                 </p>
               )}
 
               <div className="mt-4">
-                <p className="text-xs font-medium text-gray-600 mb-2">상담 요청 내용 (선택)</p>
+                <p className="text-[12px] font-medium text-[#1d1d1f] mb-2">상담 요청 내용 (선택)</p>
                 <textarea
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   placeholder="상담을 신청하는 이유나 어려운 점을 적어주세요..."
                   rows={3}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full border border-[#e5e5ea] rounded-xl px-3 py-2 text-[13px] text-[#1d1d1f] placeholder-[#c7c7cc] focus:outline-none focus:border-[#1d1d1f] resize-none"
                 />
               </div>
 
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting || !selectedSlotId}
-                className="mt-3 w-full py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                className="mt-3 w-full py-3.5 bg-[#1d1d1f] text-white text-[14px] font-semibold rounded-xl hover:opacity-80 disabled:opacity-40 transition-opacity"
               >
                 {isSubmitting ? '신청 중...' : '상담 신청하기'}
               </button>
@@ -253,8 +251,8 @@ export default function StudentCounselingClient({
           )}
 
           {msg && (
-            <div className={`mt-3 p-3 rounded-lg text-sm ${
-              msg.includes('오류') ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'
+            <div className={`mt-3 p-3 rounded-xl text-[13px] ${
+              msg.includes('오류') ? 'bg-[#fff5f5] text-[#ff3b30]' : 'bg-[#f0faf4] text-[#34c759]'
             }`}>
               {msg}
             </div>
@@ -264,8 +262,8 @@ export default function StudentCounselingClient({
 
       {/* 신청 이력 */}
       {myRequests.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="text-sm font-semibold text-gray-700 mb-3">신청 이력</h2>
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <h2 className="text-[13px] font-semibold text-[#1d1d1f] mb-3">신청 이력</h2>
           <div className="space-y-3">
             {myRequests.map((req) => {
               const isEditMode = editingId === req.id;
@@ -278,10 +276,10 @@ export default function StudentCounselingClient({
                 const editSelectedSlot = editHours.find((s) => s.id === editSlotId);
 
                 return (
-                  <div key={req.id} className="border border-blue-200 rounded-xl p-4 bg-blue-50">
-                    <p className="text-xs font-semibold text-blue-700 mb-3">상담 내용 수정</p>
+                  <div key={req.id} className="border border-[#e5e5ea] rounded-2xl p-4 bg-[#f5f5f7]">
+                    <p className="text-[12px] font-semibold text-[#1d1d1f] mb-3">상담 내용 수정</p>
 
-                    <p className="text-xs font-medium text-gray-600 mb-2">날짜 선택</p>
+                    <p className="text-[12px] font-medium text-[#1d1d1f] mb-2">날짜 선택</p>
                     <SlotCalendar
                       availableDates={editAvailableDates}
                       selectedDate={editDate}
@@ -290,19 +288,19 @@ export default function StudentCounselingClient({
 
                     {editDate && (
                       <div className="mt-3">
-                        <p className="text-xs font-medium text-gray-600 mb-2">{editDate} 가능 시간</p>
+                        <p className="text-[12px] font-medium text-[#1d1d1f] mb-2">{editDate} 가능 시간</p>
                         {editHours.length === 0 ? (
-                          <p className="text-sm text-gray-400">해당 날짜에 가능한 시간이 없습니다.</p>
+                          <p className="text-[13px] text-[#6e6e73]">해당 날짜에 가능한 시간이 없습니다.</p>
                         ) : (
                           <div className="flex flex-wrap gap-2">
                             {editHours.map((slot) => (
                               <button
                                 key={slot.id}
                                 onClick={() => setEditSlotId(slot.id)}
-                                className={`px-4 py-2 rounded-lg text-sm border-2 font-medium transition-colors ${
+                                className={`px-4 py-2 rounded-xl text-[13px] font-medium transition-opacity ${
                                   editSlotId === slot.id
-                                    ? 'border-blue-600 bg-blue-600 text-white'
-                                    : 'border-gray-200 text-gray-600 hover:border-blue-300'
+                                    ? 'bg-[#1d1d1f] text-white'
+                                    : 'bg-white text-[#1d1d1f] hover:opacity-80'
                                 }`}
                               >
                                 {slot.slot_hour}:00
@@ -314,18 +312,18 @@ export default function StudentCounselingClient({
                     )}
 
                     {editSelectedSlot && (
-                      <p className="mt-2 text-sm text-blue-700 font-medium">
+                      <p className="mt-2 text-[12px] text-[#0071e3] font-medium">
                         선택: {editDate} {editSelectedSlot.slot_hour}:00
                       </p>
                     )}
 
                     <div className="mt-3">
-                      <p className="text-xs font-medium text-gray-600 mb-1">상담 요청 내용</p>
+                      <p className="text-[12px] font-medium text-[#1d1d1f] mb-1">상담 요청 내용</p>
                       <textarea
                         value={editNote}
                         onChange={(e) => setEditNote(e.target.value)}
                         rows={3}
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none bg-white"
+                        className="w-full border border-[#e5e5ea] rounded-xl px-3 py-2 text-[13px] focus:outline-none focus:border-[#1d1d1f] resize-none bg-white"
                       />
                     </div>
 
@@ -333,14 +331,14 @@ export default function StudentCounselingClient({
                       <button
                         onClick={() => handleSaveEdit(req)}
                         disabled={isEditing}
-                        className="flex-1 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                        className="flex-1 py-2.5 bg-[#1d1d1f] text-white text-[13px] font-semibold rounded-xl hover:opacity-80 disabled:opacity-40 transition-opacity"
                       >
                         {isEditing ? '저장 중...' : '저장'}
                       </button>
                       <button
                         onClick={cancelEdit}
                         disabled={isEditing}
-                        className="px-4 py-2 bg-gray-100 text-gray-600 text-sm rounded-lg hover:bg-gray-200"
+                        className="px-4 py-2.5 bg-white text-[#1d1d1f] text-[13px] rounded-xl hover:opacity-80 transition-opacity"
                       >
                         취소
                       </button>
@@ -350,17 +348,17 @@ export default function StudentCounselingClient({
               }
 
               return (
-                <div key={req.id} className="py-2 border-b border-gray-100 last:border-0">
+                <div key={req.id} className="py-2.5 border-b border-[#f5f5f7] last:border-0">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-800">
+                      <p className="text-[13px] text-[#1d1d1f]">
                         {req.slot ? `${req.slot.slot_date} ${req.slot.slot_hour}:00` : '시간 미정'}
                       </p>
                       {req.request_note && (
-                        <p className="text-xs text-gray-400 truncate max-w-48">{req.request_note}</p>
+                        <p className="text-[12px] text-[#6e6e73] truncate max-w-48 mt-0.5">{req.request_note}</p>
                       )}
                     </div>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${STATUS_COLORS[req.status] ?? ''}`}>
+                    <span className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${STATUS_STYLES[req.status] ?? 'bg-[#f5f5f7] text-[#6e6e73]'}`}>
                       {STATUS_LABELS[req.status] ?? req.status}
                     </span>
                   </div>
@@ -368,14 +366,14 @@ export default function StudentCounselingClient({
                     <div className="flex gap-2 mt-2">
                       <button
                         onClick={() => startEdit(req)}
-                        className="text-xs px-3 py-1 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100"
+                        className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity"
                       >
                         수정
                       </button>
                       <button
                         onClick={() => handleCancel(req.id)}
                         disabled={isEditing}
-                        className="text-xs px-3 py-1 bg-gray-100 text-gray-500 rounded-lg hover:bg-red-50 hover:text-red-600 disabled:opacity-50"
+                        className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#6e6e73] rounded-lg hover:opacity-80 disabled:opacity-40 transition-opacity"
                       >
                         취소
                       </button>

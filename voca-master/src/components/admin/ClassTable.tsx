@@ -57,12 +57,12 @@ export default function ClassTable({
           type="text"
           required
           placeholder="반 이름 (예: A반)"
-          className="col-span-2 md:col-span-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="col-span-2 md:col-span-1 px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm focus:outline-none focus:border-[#1d1d1f]"
         />
         <select
           name="branch_id"
           required
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          className="px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm focus:outline-none focus:border-[#1d1d1f] bg-white"
         >
           <option value="">지점 선택</option>
           {branches.map((b) => (
@@ -74,18 +74,18 @@ export default function ClassTable({
           type="text"
           required
           placeholder="학년도 (예: 2026)"
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-2 border border-[#e5e5ea] rounded-lg text-sm focus:outline-none focus:border-[#1d1d1f]"
         />
         <div className="flex gap-2 items-center">
-          <label className="flex items-center gap-1.5 text-sm text-gray-600 cursor-pointer">
+          <label className="flex items-center gap-1.5 text-sm text-[#6e6e73] cursor-pointer">
             <input type="checkbox" name="is_active" value="true" defaultChecked
-              className="rounded border-gray-300 text-blue-600" />
+              className="rounded border-[#e5e5ea] text-[#0071e3]" />
             활성
           </label>
           <button
             type="submit"
             disabled={createPending}
-            className="flex-1 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 whitespace-nowrap"
+            className="flex-1 px-4 py-2 bg-[#1d1d1f] text-white text-sm font-medium rounded-lg hover:opacity-80 disabled:opacity-50 whitespace-nowrap"
           >
             {createPending ? '추가 중...' : '반 추가'}
           </button>
@@ -99,42 +99,42 @@ export default function ClassTable({
         <select
           value={filterBranch}
           onChange={(e) => setFilterBranch(e.target.value)}
-          className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none"
+          className="px-3 py-1.5 border border-[#e5e5ea] rounded-lg text-sm bg-white focus:outline-none"
         >
           <option value="">전체 지점</option>
           {branches.map((b) => (
             <option key={b.id} value={b.id}>{b.name}</option>
           ))}
         </select>
-        <span className="text-sm text-gray-400">{filtered.length}개 반</span>
+        <span className="text-sm text-[#6e6e73]">{filtered.length}개 반</span>
       </div>
 
       {/* 반 목록 */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-[#f5f5f7] border-b border-[#e5e5ea]">
             <tr>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">#</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">반 이름</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">소속 지점</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">학년도</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">담임</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">학생 수</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium">상태</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">#</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">반 이름</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">소속 지점</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">학년도</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">담임</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">학생 수</th>
+              <th className="text-left px-4 py-3 text-[#6e6e73] font-medium">상태</th>
               <th className="px-4 py-3" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-[#f5f5f7]">
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={8} className="text-center py-8 text-gray-400">
+                <td colSpan={8} className="text-center py-8 text-[#6e6e73]">
                   등록된 반이 없습니다
                 </td>
               </tr>
             )}
             {filtered.map((cls, i) => (
-              <tr key={cls.id} className="hover:bg-gray-50">
-                <td className="px-4 py-3 text-gray-400">{i + 1}</td>
+              <tr key={cls.id} className="hover:bg-[#f5f5f7]">
+                <td className="px-4 py-3 text-[#6e6e73]">{i + 1}</td>
                 <td className="px-4 py-3">
                   {editingId === cls.id ? (
                     <form action={editAction} className="flex gap-2 flex-wrap" onSubmit={() => setEditingId(null)}>
@@ -143,28 +143,28 @@ export default function ClassTable({
                         name="name"
                         defaultValue={cls.name}
                         autoFocus
-                        className="w-28 px-2 py-1 border border-gray-300 rounded text-sm"
+                        className="w-28 px-2 py-1 border border-[#e5e5ea] rounded text-sm"
                       />
                       <input
                         name="year"
                         defaultValue={cls.year}
                         placeholder="학년도"
-                        className="w-20 px-2 py-1 border border-gray-300 rounded text-sm"
+                        className="w-20 px-2 py-1 border border-[#e5e5ea] rounded text-sm"
                       />
-                      <label className="flex items-center gap-1 text-xs text-gray-600">
+                      <label className="flex items-center gap-1 text-xs text-[#6e6e73]">
                         <input type="checkbox" name="is_active" value="true" defaultChecked={cls.is_active}
-                          className="rounded border-gray-300 text-blue-600" />
+                          className="rounded border-[#e5e5ea] text-[#0071e3]" />
                         활성
                       </label>
-                      <button type="submit" disabled={editPending} className="text-blue-600 text-xs font-medium">저장</button>
-                      <button type="button" onClick={() => setEditingId(null)} className="text-gray-400 text-xs">취소</button>
+                      <button type="submit" disabled={editPending} className="text-[11px] px-3 py-1 bg-[#1d1d1f] text-white rounded-lg hover:opacity-80 disabled:opacity-40 transition-opacity">저장</button>
+                      <button type="button" onClick={() => setEditingId(null)} className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#6e6e73] rounded-lg hover:opacity-80 transition-opacity">취소</button>
                     </form>
                   ) : (
-                    <span className="text-gray-900">{cls.name}</span>
+                    <span className="text-[#1d1d1f]">{cls.name}</span>
                   )}
                 </td>
-                <td className="px-4 py-3 text-gray-500">{cls.branch_name}</td>
-                <td className="px-4 py-3 text-gray-500">{cls.year || '-'}</td>
+                <td className="px-4 py-3 text-[#6e6e73]">{cls.branch_name}</td>
+                <td className="px-4 py-3 text-[#6e6e73]">{cls.year || '-'}</td>
                 <td className="px-4 py-3">
                   <TeacherAssignCell
                     classId={cls.id}
@@ -172,17 +172,17 @@ export default function ClassTable({
                     candidates={getCandidates(cls.branch_id)}
                   />
                 </td>
-                <td className="px-4 py-3 text-gray-500">{cls.student_count}명</td>
+                <td className="px-4 py-3 text-[#6e6e73]">{cls.student_count}명</td>
                 <td className="px-4 py-3">
                   <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                    cls.is_active ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-400'
+                    cls.is_active ? 'bg-green-50 text-green-700' : 'bg-[#f5f5f7] text-[#6e6e73]'
                   }`}>
                     {cls.is_active ? '활성' : '비활성'}
                   </span>
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex gap-3 justify-end">
-                    <button onClick={() => setEditingId(cls.id)} className="text-xs text-gray-500 hover:text-blue-600">
+                    <button onClick={() => setEditingId(cls.id)} className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity">
                       수정
                     </button>
                     <form action={deleteAction} onSubmit={(e) => {
@@ -192,7 +192,7 @@ export default function ClassTable({
                       <button
                         type="submit"
                         disabled={deletePending || cls.student_count > 0}
-                        className="text-xs text-gray-400 hover:text-red-500 disabled:cursor-not-allowed disabled:opacity-40"
+                        className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#6e6e73] rounded-lg hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
                         title={cls.student_count > 0 ? '소속 학생이 있어 삭제 불가' : ''}
                       >
                         삭제
@@ -248,13 +248,13 @@ function TeacherAssignCell({
     return (
       <div className="flex items-center gap-2">
         {currentTeacher ? (
-          <span className="text-gray-800 text-sm">{currentTeacher.name}</span>
+          <span className="text-[#1d1d1f] text-sm">{currentTeacher.name}</span>
         ) : (
-          <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">미배정</span>
+          <span className="text-xs text-[#6e6e73] bg-[#f5f5f7] px-2 py-0.5 rounded-full">미배정</span>
         )}
         <button
           onClick={() => setIsEditing(true)}
-          className="text-xs text-blue-500 hover:text-blue-700"
+          className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity"
         >
           배정
         </button>
@@ -269,7 +269,7 @@ function TeacherAssignCell({
           value={selectedId}
           onChange={(e) => setSelectedId(e.target.value)}
           disabled={isPending}
-          className="px-2 py-1 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 max-w-36"
+          className="px-2 py-1 border border-[#e5e5ea] rounded text-sm bg-white focus:outline-none focus:ring-1 focus:border-[#1d1d1f] max-w-36"
         >
           <option value="">담임 없음</option>
           {candidates.map((t) => (
@@ -279,21 +279,21 @@ function TeacherAssignCell({
         <button
           onClick={handleSave}
           disabled={isPending}
-          className="text-xs text-white bg-blue-600 px-2 py-1 rounded hover:bg-blue-700 disabled:opacity-50"
+          className="text-[11px] px-3 py-1 bg-[#1d1d1f] text-white rounded-lg hover:opacity-80 disabled:opacity-40 transition-opacity"
         >
           {isPending ? '저장 중' : '저장'}
         </button>
         <button
           onClick={handleCancel}
           disabled={isPending}
-          className="text-xs text-gray-400 hover:text-gray-600"
+          className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#6e6e73] rounded-lg hover:opacity-80 transition-opacity"
         >
           취소
         </button>
       </div>
       {error && <p className="text-xs text-red-500">{error}</p>}
       {candidates.length === 0 && (
-        <p className="text-xs text-gray-400">이 지점에 배정 가능한 담임이 없습니다</p>
+        <p className="text-xs text-[#6e6e73]">이 지점에 배정 가능한 담임이 없습니다</p>
       )}
     </div>
   );
