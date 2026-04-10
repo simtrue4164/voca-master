@@ -4,7 +4,6 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   reserveSlot,
-  confirmAppointment,
   completeSession,
   cancelRequest,
 } from '@/app/actions/counseling';
@@ -15,19 +14,15 @@ type Record_ = { id: string; content: string; outcome: string | null; created_at
 type History = { id: string; content: string; outcome: string | null; created_at: string };
 
 const STATUS_LABEL: Record<string, string> = {
-  pending: '대기',
+  pending:   '대기',
   scheduled: '예약',
-  confirmed: '확정',
   completed: '완료',
-  cancelled: '취소',
   dismissed: '취소',
 };
 const STATUS_COLOR: Record<string, string> = {
   pending:   'bg-yellow-50 text-yellow-700',
   scheduled: 'bg-blue-50 text-blue-700',
-  confirmed: 'bg-indigo-50 text-indigo-700',
   completed: 'bg-green-50 text-green-700',
-  cancelled: 'bg-[#f5f5f7] text-[#6e6e73]',
   dismissed: 'bg-[#f5f5f7] text-[#6e6e73]',
 };
 
@@ -72,8 +67,8 @@ export default function CounselingDetail({
   const hoursForDate = selectedDate ? (slotsByDate[selectedDate] ?? []) : [];
   const selectedSlot = hoursForDate.find((s) => s.id === selectedSlotId);
 
-  const isEditable = request.status === 'pending' || request.status === 'scheduled' || request.status === 'confirmed';
-  const isFinal = request.status === 'completed' || request.status === 'cancelled' || request.status === 'dismissed';
+  const isEditable = request.status === 'pending' || request.status === 'scheduled';
+  const isFinal = request.status === 'completed' || request.status === 'dismissed';
 
   function run(fn: () => Promise<{ ok?: boolean; error?: string } | undefined>) {
     setMsg('');
@@ -185,28 +180,15 @@ export default function CounselingDetail({
           <div className="flex gap-2 mt-4 flex-wrap">
             <button
               onClick={() => {
-                const label = request.status === 'confirmed' ? '일정을 변경' : '예약을 진행';
                 const slotInfo = selectedSlot ? `${selectedDate} ${selectedSlot.slot_hour}:00` : '';
-                if (!confirm(`${slotInfo} 일정으로 ${label}하시겠습니까?`)) return;
+                if (!confirm(`${slotInfo} 일정으로 예약을 진행하시겠습니까?`)) return;
                 run(() => reserveSlot(request.id, selectedSlotId));
               }}
               disabled={!selectedSlotId || isPending}
               className="px-5 py-2 bg-[#1d1d1f] text-white text-sm font-semibold rounded-lg hover:opacity-80 disabled:opacity-40"
             >
-              {isPending ? '처리 중...' : request.status === 'confirmed' ? '일정 변경' : '예약'}
+              {isPending ? '처리 중...' : '예약'}
             </button>
-            {request.status === 'scheduled' && (
-              <button
-                onClick={() => {
-                  if (!confirm('상담 일정을 확정하시겠습니까?')) return;
-                  run(() => confirmAppointment(request.id));
-                }}
-                disabled={isPending}
-                className="px-5 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 disabled:opacity-40"
-              >
-                확정
-              </button>
-            )}
             <button
               onClick={() => {
                 if (!confirm('상담 신청을 취소하시겠습니까?')) return;
@@ -221,8 +203,8 @@ export default function CounselingDetail({
         </div>
       )}
 
-      {/* 확정 상태: 완료 처리 버튼 노출 */}
-      {request.status === 'confirmed' && !isFinal && (
+      {/* 예약 상태: 완료 처리 버튼 노출 */}
+      {request.status === 'scheduled' && !isFinal && (
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="mb-4">
             <h3 className="text-sm font-semibold text-[#1d1d1f]">상담 완료 처리</h3>

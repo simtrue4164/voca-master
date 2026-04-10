@@ -208,8 +208,8 @@ export async function submitExam(
 
 // 관리자 강제 종료
 export async function forceCloseExam(examId: string) {
-  const supabase = await createClient();
-  await supabase.from('exams').update({ status: 'closed' }).eq('id', examId);
+  const admin = createAdminClient();
+  await admin.from('exams').update({ status: 'closed' }).eq('id', examId);
   revalidatePath(`/admin/exams/${examId}`);
 }
 

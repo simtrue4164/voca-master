@@ -89,7 +89,7 @@ export default async function CounselingDetailPage({
     admin
       .from('counseling_requests')
       .select('slot_id')
-      .in('status', ['scheduled', 'confirmed'])
+      .eq('status', 'scheduled')
       .neq('id', id)
       .not('slot_id', 'is', null),
   ]);

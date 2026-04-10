@@ -22,20 +22,7 @@ export async function reserveSlot(requestId: string, slotId: string) {
   return { ok: true };
 }
 
-// 예약 → 확정
-export async function confirmAppointment(requestId: string) {
-  if (!requestId) return { error: '필수 값이 없습니다.' };
-  const admin = createAdminClient();
-  const { error } = await admin
-    .from('counseling_requests')
-    .update({ status: 'confirmed' })
-    .eq('id', requestId);
-  if (error) return { error: error.message };
-  revalidate(requestId);
-  return { ok: true };
-}
-
-// 확정 → 완료 (상담 기록 저장)
+// 예약 → 완료 (상담 기록 저장)
 export async function completeSession(
   requestId: string,
   recordId: string | undefined,
@@ -75,25 +62,9 @@ export async function cancelRequest(requestId: string) {
   const admin = createAdminClient();
   const { error } = await admin
     .from('counseling_requests')
-    .update({ status: 'cancelled', slot_id: null })
+    .update({ status: 'dismissed', slot_id: null })
     .eq('id', requestId);
   if (error) return { error: error.message };
   revalidate(requestId);
   return { ok: true };
-}
-
-// 하위 호환 (기존 코드에서 사용 중인 경우)
-export async function confirmSchedule(requestId: string, slotId: string) {
-  return reserveSlot(requestId, slotId);
-}
-export async function dismissRequest(requestId: string) {
-  return cancelRequest(requestId);
-}
-export async function saveCounselingRecord(
-  requestId: string,
-  recordId: string | undefined,
-  content: string,
-  outcome: string | null
-) {
-  return completeSession(requestId, recordId, content, outcome);
 }

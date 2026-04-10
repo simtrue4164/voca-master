@@ -78,27 +78,6 @@ export type StudentProgress = {
   current_day: number;
 };
 
-// ── 학생 대시보드 AI ──────────────────────────
-export type StudentCoaching = {
-  message: string;          // Gemini 생성 코멘트 (한국어 3문장 이내)
-  generated_at: string;
-};
-
-export type StudyRecommendation = {
-  steps: Array<{
-    order: number;
-    action: 'review' | 'study' | 'self_test';
-    label: string;           // "복습 (12단어)"
-    path: string;            // 클라이언트 라우팅 경로
-  }>;
-};
-
-export type StudentGoalPrediction = {
-  predicted_rate_current: number;   // 현재 추이 유지 시 예측 달성률
-  predicted_rate_daily: number;     // 매일 학습 시 예측 달성률
-  weak_exam_days: number[];         // 다음 시험 범위 중 학습율 70% 미만 day
-};
-
 // ── 시험 ─────────────────────────────────────────
 export type ExamStatus = 'scheduled' | 'active' | 'closed';
 
@@ -231,14 +210,3 @@ export type DashboardInsight = {
   generated_at: string;
 };
 
-export type AnomalyAlert = {
-  student_id: string;
-  student_name: string;
-  description: string;           // "3일 전까지 상위권 → 2일 연속 미학습"
-};
-
-export type GoalPrediction = {
-  predicted_rate: number;        // 전체 예측 달성률
-  at_risk_count: number;
-  predicted_rate_excl_risk: number;
-};
