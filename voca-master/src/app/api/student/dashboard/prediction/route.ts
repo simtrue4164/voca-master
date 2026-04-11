@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
     });
 
     // 캐시 저장
-    const today = new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
+    const today = new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
     await admin.from('dashboard_cache').upsert({
       user_id: user.id,
       cache_type: 'student_prediction',
@@ -83,7 +83,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(object);
   } catch (err: any) {
-    console.error('성과 예측 오류:', err);
     return NextResponse.json({ error: err.message ?? 'AI 생성 실패' }, { status: 500 });
   }
 }

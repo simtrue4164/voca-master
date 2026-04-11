@@ -4,10 +4,12 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   reserveSlot,
+  confirmSchedule,
   completeSession,
   cancelRequest,
 } from '@/app/actions/counseling';
 import SlotCalendar from '@/components/ui/SlotCalendar';
+import { useConfirmModal } from '@/components/ui/ConfirmModal';
 
 type Slot = { id: string; slot_date: string; slot_hour: number; is_active: boolean };
 type Record_ = { id: string; content: string; outcome: string | null; created_at: string };
@@ -16,14 +18,18 @@ type History = { id: string; content: string; outcome: string | null; created_at
 const STATUS_LABEL: Record<string, string> = {
   pending:   '대기',
   scheduled: '예약',
+  confirmed: '확정',
   completed: '완료',
   dismissed: '취소',
+  cancelled: '취소',
 };
 const STATUS_COLOR: Record<string, string> = {
   pending:   'bg-yellow-50 text-yellow-700',
   scheduled: 'bg-blue-50 text-blue-700',
+  confirmed: 'bg-indigo-50 text-indigo-700',
   completed: 'bg-green-50 text-green-700',
   dismissed: 'bg-[#f5f5f7] text-[#6e6e73]',
+  cancelled: 'bg-[#f5f5f7] text-[#6e6e73]',
 };
 
 export default function CounselingDetail({
@@ -31,16 +37,15 @@ export default function CounselingDetail({
   record,
   history,
   availableSlots,
-  currentAdminId,
 }: {
   request: any;
   record: Record_ | null;
   history: History[];
   availableSlots: Slot[];
-  currentAdminId: string;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const { confirmModal, openConfirm } = useConfirmModal();
   const [msg, setMsg] = useState('');
   const [content, setContent] = useState(record?.content ?? '');
   const [outcome, setOutcome] = useState<string>(record?.outcome ?? '');
@@ -68,7 +73,7 @@ export default function CounselingDetail({
   const selectedSlot = hoursForDate.find((s) => s.id === selectedSlotId);
 
   const isEditable = request.status === 'pending' || request.status === 'scheduled';
-  const isFinal = request.status === 'completed' || request.status === 'dismissed';
+  const isFinal = request.status === 'completed' || request.status === 'dismissed' || request.status === 'cancelled';
 
   function run(fn: () => Promise<{ ok?: boolean; error?: string } | undefined>) {
     setMsg('');
@@ -81,6 +86,7 @@ export default function CounselingDetail({
 
   return (
     <div className="space-y-5 max-w-2xl">
+      {confirmModal}
       {/* 기본 정보 */}
       <div className="bg-white rounded-2xl shadow-sm p-5">
         <div className="flex items-start justify-between mb-4">
@@ -178,20 +184,54 @@ export default function CounselingDetail({
 
           {/* 액션 버튼 */}
           <div className="flex gap-2 mt-4 flex-wrap">
+            {request.status === 'pending' && (
+              <button
+                onClick={async () => {
+                  const slotInfo = selectedSlot ? `${selectedDate} ${selectedSlot.slot_hour}:00` : '';
+                  const ok = await openConfirm({ message: `${slotInfo} 일정으로 예약을 진행하시겠습니까?` });
+                  if (!ok) return;
+                  run(() => reserveSlot(request.id, selectedSlotId));
+                }}
+                disabled={!selectedSlotId || isPending}
+                className="px-5 py-2 bg-[#1d1d1f] text-white text-sm font-semibold rounded-lg hover:opacity-80 disabled:opacity-40"
+              >
+                {isPending ? '처리 중...' : '예약'}
+              </button>
+            )}
+            {request.status === 'scheduled' && (
+              <>
+                <button
+                  onClick={async () => {
+                    const slotInfo = selectedSlot ? `${selectedDate} ${selectedSlot.slot_hour}:00` : '';
+                    const ok = await openConfirm({ message: `${slotInfo} 일정으로 예약을 변경하시겠습니까?` });
+                    if (!ok) return;
+                    run(() => reserveSlot(request.id, selectedSlotId));
+                  }}
+                  disabled={!selectedSlotId || isPending}
+                  className="px-5 py-2 bg-[#1d1d1f] text-white text-sm font-semibold rounded-lg hover:opacity-80 disabled:opacity-40"
+                >
+                  {isPending ? '처리 중...' : '예약변경'}
+                </button>
+                <button
+                  onClick={async () => {
+                    const slotInfo = request.slot
+                      ? `${request.slot.slot_date} ${request.slot.slot_hour}:00`
+                      : '';
+                    const ok = await openConfirm({ message: `${slotInfo} 일정으로 확정하시겠습니까?` });
+                    if (!ok) return;
+                    run(() => confirmSchedule(request.id));
+                  }}
+                  disabled={isPending}
+                  className="px-5 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 disabled:opacity-40"
+                >
+                  {isPending ? '처리 중...' : '확정'}
+                </button>
+              </>
+            )}
             <button
-              onClick={() => {
-                const slotInfo = selectedSlot ? `${selectedDate} ${selectedSlot.slot_hour}:00` : '';
-                if (!confirm(`${slotInfo} 일정으로 예약을 진행하시겠습니까?`)) return;
-                run(() => reserveSlot(request.id, selectedSlotId));
-              }}
-              disabled={!selectedSlotId || isPending}
-              className="px-5 py-2 bg-[#1d1d1f] text-white text-sm font-semibold rounded-lg hover:opacity-80 disabled:opacity-40"
-            >
-              {isPending ? '처리 중...' : '예약'}
-            </button>
-            <button
-              onClick={() => {
-                if (!confirm('상담 신청을 취소하시겠습니까?')) return;
+              onClick={async () => {
+                const ok = await openConfirm({ message: '상담 신청을 취소하시겠습니까?', danger: true, confirmLabel: '취소하기', cancelLabel: '닫기' });
+                if (!ok) return;
                 run(() => cancelRequest(request.id));
               }}
               disabled={isPending}
@@ -203,11 +243,12 @@ export default function CounselingDetail({
         </div>
       )}
 
-      {/* 예약 상태: 완료 처리 버튼 노출 */}
-      {request.status === 'scheduled' && !isFinal && (
+      {/* 확정 상태: 완료 처리 */}
+      {request.status === 'confirmed' && (
         <div className="bg-white rounded-2xl shadow-sm p-5">
           <div className="mb-4">
             <h3 className="text-sm font-semibold text-[#1d1d1f]">상담 완료 처리</h3>
+            <p className="text-xs text-[#6e6e73] mt-0.5">상담 내용을 기록하고 완료 처리하세요.</p>
           </div>
           <RecordForm
             content={content}
@@ -216,8 +257,35 @@ export default function CounselingDetail({
             onChange={(c, o) => { setContent(c); setOutcome(o); }}
           />
           <button
-            onClick={() => {
-              if (!confirm('상담을 완료 처리하시겠습니까?')) return;
+            onClick={async () => {
+              const ok = await openConfirm({ message: '상담을 완료 처리하시겠습니까?' });
+              if (!ok) return;
+              run(() => completeSession(request.id, record?.id, content.trim(), outcome || null));
+            }}
+            disabled={!content.trim() || isPending}
+            className="mt-4 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 disabled:opacity-40"
+          >
+            {isPending ? '저장 중...' : '완료 저장'}
+          </button>
+        </div>
+      )}
+
+      {/* 예약 상태: 완료 처리 (상세 메모) */}
+      {request.status === 'scheduled' && !isFinal && (
+        <div className="bg-white rounded-2xl shadow-sm p-5">
+          <div className="mb-4">
+            <h3 className="text-sm font-semibold text-[#1d1d1f]">상담 메모 저장</h3>
+          </div>
+          <RecordForm
+            content={content}
+            outcome={outcome}
+            readonly={false}
+            onChange={(c, o) => { setContent(c); setOutcome(o); }}
+          />
+          <button
+            onClick={async () => {
+              const ok = await openConfirm({ message: '상담을 완료 처리하시겠습니까?' });
+              if (!ok) return;
               run(() => completeSession(request.id, record?.id, content.trim(), outcome || null));
             }}
             disabled={!content.trim() || isPending}

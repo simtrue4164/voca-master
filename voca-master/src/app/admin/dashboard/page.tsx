@@ -60,7 +60,7 @@ export default async function AdminDashboardPage() {
 
   // ── 요약 통계 ────────────────────────────────────────────
   // 한국 시간(UTC+9) 기준 오늘 날짜
-  const today = new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const today = new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
 
   // 총 학생 수
   const totalStudents = studentIds.length;
@@ -194,8 +194,6 @@ export default async function AdminDashboardPage() {
       }
     }
   }
-
-  const todayCounselingCount = todayCounselings.length;
 
   // ── 위험 학생 감지 (최근 3일 연속 미학습) ──────────────
   const atRiskStudents: { id: string; name: string; exam_no: string | null; className: string; missedDays: number }[] = [];

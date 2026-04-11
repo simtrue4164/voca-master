@@ -120,7 +120,6 @@ export default async function StudentDetailPage({
     admin.from('related_word_logs').select('related_id, related_type, status').eq('student_id', id),
   ]);
 
-  const studiedRelatedIds = new Set((relatedLogs ?? []).map((r) => r.related_id));
   const studiedSynonymIds = new Set((relatedLogs ?? []).filter((r) => r.related_type === 'synonym').map((r) => r.related_id));
   const studiedSimilarIds = new Set((relatedLogs ?? []).filter((r) => r.related_type === 'similar').map((r) => r.related_id));
   const studiedAntonymIds = new Set((relatedLogs ?? []).filter((r) => r.related_type === 'antonym').map((r) => r.related_id));
@@ -183,7 +182,7 @@ export default async function StudentDetailPage({
   let streakDays = 0;
   if (logs && logs.length > 0) {
     const dates = [...new Set(logs.map((l) => new Date(l.reviewed_at).toDateString()))];
-    let cursor = new Date();
+    const cursor = new Date(new Date().getTime() + 9 * 60 * 60 * 1000); // KST
     for (let i = 0; i < 60; i++) {
       if (dates.includes(cursor.toDateString())) {
         streakDays++;

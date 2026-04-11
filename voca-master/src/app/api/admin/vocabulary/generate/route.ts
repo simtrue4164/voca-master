@@ -124,7 +124,6 @@ ${batch.map((w) => w.word).join('\n')}
 
     return NextResponse.json({ generated: result.length });
   } catch (err: any) {
-    console.error('AI 생성 오류:', err);
     return NextResponse.json({ error: err.message ?? 'AI 생성 실패' }, { status: 500 });
   }
 }

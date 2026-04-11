@@ -62,7 +62,6 @@ export async function POST(
 
     return NextResponse.json({ message: text });
   } catch (err: any) {
-    console.error('AI 코칭 메시지 오류:', err);
     return NextResponse.json({ error: err.message ?? 'AI 생성 실패' }, { status: 500 });
   }
 }

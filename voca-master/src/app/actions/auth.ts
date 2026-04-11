@@ -47,9 +47,9 @@ export async function loginStudent(
     return { error: `${thisMonth.replace('-', '년 ')}월 수강 등록이 되어 있지 않습니다. 담당 선생님께 문의해주세요.` };
   }
 
-  // next가 유효한 학생 경로면 그쪽으로, 아니면 대시보드
-  const safePath = next?.startsWith('/student/') ? next : '/student/dashboard';
-  redirect(safePath);
+  // next가 유효한 내부 학생 경로면 그쪽으로, 아니면 대시보드 (Open Redirect 방지)
+  const isValidNext = next && next.startsWith('/student/') && !next.startsWith('//');
+  redirect(isValidNext ? next : '/student/dashboard');
 }
 
 // 관리자 로그인: 사번 → {employee_no}@voca-master.internal 변환

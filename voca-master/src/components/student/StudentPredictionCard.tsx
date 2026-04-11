@@ -48,7 +48,10 @@ export default function StudentPredictionCard({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ progressRate, learningRate, streakDays, currentDay, failedCount }),
       });
-      if (!res.ok) throw new Error('생성 실패');
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error ?? '생성 실패');
+      }
       const json = await res.json();
       setPrediction(json);
     } catch {

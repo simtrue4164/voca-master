@@ -1,7 +1,6 @@
 'use server';
 
 import { createAdminClient } from '@/lib/supabase/admin';
-import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 export type StudentActionState = {
@@ -289,7 +288,7 @@ export async function toggleStudentMonth(
     );
     if (error) return { error: error.message };
     const thisMonth = new Date().toISOString().slice(0, 7);
-    if (yearMonth === thisMonth) {
+    if (yearMonth === thisMonth && classIds.length > 0) {
       await admin.from('profiles').update({ class_id: classIds[0] }).eq('id', studentId);
     }
   }

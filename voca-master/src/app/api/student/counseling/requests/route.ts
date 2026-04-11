@@ -16,6 +16,25 @@ export async function POST(req: NextRequest) {
 
   const admin = createAdminClient();
 
+  // admin_id가 학생의 담당 관리자인지 확인
+  const { data: profile } = await admin
+    .from('profiles')
+    .select('class_id')
+    .eq('id', student_id)
+    .single();
+
+  if (profile?.class_id) {
+    const { data: assignment } = await admin
+      .from('admin_class_assignments')
+      .select('admin_id')
+      .eq('class_id', profile.class_id)
+      .maybeSingle();
+
+    if (assignment && assignment.admin_id !== admin_id) {
+      return NextResponse.json({ error: '담당 관리자가 아닙니다.' }, { status: 403 });
+    }
+  }
+
   // 중복 신청 방지 (pending/scheduled 상태인 기존 요청 확인)
   const { data: existing } = await admin
     .from('counseling_requests')

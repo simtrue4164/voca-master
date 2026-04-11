@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import QRCode from 'react-qr-code';
 
 export default function ExamQRButton({
@@ -11,12 +11,10 @@ export default function ExamQRButton({
   examTitle: string;
 }) {
   const [open, setOpen] = useState(false);
-  const [origin, setOrigin] = useState('');
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    setOrigin(window.location.origin);
-  }, []);
+  // 클라이언트 컴포넌트이므로 window 직접 접근 가능
+  const origin = typeof window !== 'undefined' ? window.location.origin : '';
 
   const examUrl = `${origin}/student/exam/${examId}`;
 

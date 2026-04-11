@@ -90,13 +90,15 @@ export async function createExam(
 
   const { error: qError } = await supabase.from('exam_questions').insert(questions);
   if (qError) {
-    await supabase.from('exams').delete().eq('id', exam.id);
+    // 문항 생성 실패 시 exam 롤백 (실패해도 에러 메시지는 qError 기준으로 반환)
+    await adminDb.from('exams').delete().eq('id', exam.id);
     return { error: qError.message, success: false };
   }
 
   // exam_count 증가
   const allVocabIds = allWords.map((w) => w.id);
-  await adminDb.rpc('increment_exam_count', { vocab_ids: allVocabIds });
+  const { error: rpcError } = await adminDb.rpc('increment_exam_count', { vocab_ids: allVocabIds });
+  if (rpcError) return { error: rpcError.message, success: false };
 
   revalidatePath('/admin/exams');
   return { error: null, success: true };
@@ -104,14 +106,47 @@ export async function createExam(
 
 // 시험 상태 변경 (active / closed)
 export async function updateExamStatus(examId: string, status: 'active' | 'closed') {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Unauthorized');
+
   const admin = createAdminClient();
+
+  // 호출자가 해당 시험을 담당하는 관리자인지 확인
+  const { data: profile } = await admin
+    .from('profiles')
+    .select('role, branch_id')
+    .eq('id', user.id)
+    .single();
+
+  if (!profile || !['admin_super', 'admin_branch', 'admin_class'].includes(profile.role)) {
+    throw new Error('Forbidden');
+  }
+
+  // admin_super가 아니면 담당 지점/반의 시험인지 확인
+  if (profile.role !== 'admin_super') {
+    const { data: exam } = await admin
+      .from('exams')
+      .select('class_id, classes(branch_id)')
+      .eq('id', examId)
+      .single();
+
+    const examBranchId = (exam?.classes as any)?.branch_id;
+    if (!exam || examBranchId !== profile.branch_id) throw new Error('Forbidden');
+  }
 
   const updates: Record<string, unknown> = { status };
 
-  // 시작 버튼을 누른 시점을 실제 starts_at / ends_at 으로 설정
+  // 시작 버튼을 누른 시점을 실제 starts_at / ends_at 으로 설정 (DB의 duration_min 사용)
   if (status === 'active') {
+    const { data: examData } = await admin
+      .from('exams')
+      .select('duration_min')
+      .eq('id', examId)
+      .single();
     const now = new Date();
-    const endsAt = new Date(now.getTime() + 8 * 60 * 1000); // 8분 후
+    const durationMin = examData?.duration_min ?? 8;
+    const endsAt = new Date(now.getTime() + durationMin * 60 * 1000);
     updates.starts_at = now.toISOString();
     updates.ends_at = endsAt.toISOString();
   }
@@ -177,13 +212,15 @@ export async function submitExam(
     const studentAnswer = (answers[q.id] ?? '').trim().toLowerCase();
     const accepted = q.accepted_answers as Array<{ pos: string; meaning_ko: string }>;
 
+    // 학생 답안을 구분자로 분리하여 키워드와 정확히 일치하는 토큰이 있는지 확인 (부분 문자열 오채점 방지)
+    const answerTokens = studentAnswer.split(/[\s,，、\/]+/).map((t) => t.trim()).filter(Boolean);
     const isCorrect = accepted.some((a) =>
       a.meaning_ko
         .toLowerCase()
         .split(/[,，、\/]/)
         .map((kw) => kw.trim())
         .filter((kw) => kw.length > 0)
-        .some((kw) => studentAnswer.includes(kw))
+        .some((kw) => answerTokens.includes(kw) || studentAnswer === kw)
     );
 
     scores[q.id] = isCorrect;

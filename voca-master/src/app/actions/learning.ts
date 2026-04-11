@@ -59,7 +59,7 @@ export async function getStudentProgress(): Promise<StudentProgress> {
 
     if (cls) {
       const start = new Date(cls.start_date);
-      const today = new Date();
+      const today = new Date(new Date().getTime() + 9 * 60 * 60 * 1000); // KST
       const diff = Math.floor((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
       currentDay = Math.max(1, Math.min(60, diff + 1));
     }
@@ -90,9 +90,8 @@ export async function getStudentProgress(): Promise<StudentProgress> {
     const dates = [...new Set(
       recentLogs.map((l) => new Date(l.reviewed_at).toDateString())
     )];
-    const today = new Date().toDateString();
-    let cursor = new Date();
-    for (const _ of dates) {
+    const cursor = new Date(new Date().getTime() + 9 * 60 * 60 * 1000); // KST
+    for (let i = 0; i < dates.length; i++) {
       if (dates.includes(cursor.toDateString())) {
         streakDays++;
         cursor.setDate(cursor.getDate() - 1);

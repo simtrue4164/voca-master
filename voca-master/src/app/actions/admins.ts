@@ -40,6 +40,12 @@ export async function createAdmin(
 
   const admin = createAdminClient();
 
+  // branchId가 실제 존재하는 지점인지 확인
+  if (branchId) {
+    const { data: branch } = await admin.from('branches').select('id').eq('id', branchId).single();
+    if (!branch) return { error: '존재하지 않는 지점입니다.', success: false };
+  }
+
   // Auth 유저 생성
   const { data: authData, error: authError } = await admin.auth.admin.createUser({
     email,

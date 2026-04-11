@@ -18,7 +18,7 @@ export default async function StudentDashboardPage() {
   const progress = await getStudentProgress();
 
   // AI 성과 예측 캐시 조회
-  const todayKST = new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const todayKST = new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
   const adminClient = createAdminClient();
   const { data: predictionCache } = await adminClient
     .from('dashboard_cache')
@@ -38,7 +38,8 @@ export default async function StudentDashboardPage() {
 
   const studiedPerDay: Record<number, number> = {};
   for (const log of studiedLogs ?? []) {
-    const day = (log.vocab as unknown as { day: number } | null)?.day;
+    const vocab = Array.isArray(log.vocab) ? log.vocab[0] : log.vocab;
+    const day = (vocab as { day: number } | null)?.day;
     if (day) studiedPerDay[day] = (studiedPerDay[day] ?? 0) + 1;
   }
 

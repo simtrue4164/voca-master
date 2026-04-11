@@ -21,7 +21,8 @@ export default async function ExamPage({ params }: { params: Promise<{ id: strin
     .single();
 
   if (!exam) redirect('/student/exam');
-  if (exam.class_id !== profile?.class_id) redirect('/student/exam');
+  if (!profile?.class_id) redirect('/student/exam');
+  if (exam.class_id !== profile.class_id) redirect('/student/exam');
 
   // 이미 제출했으면 결과 페이지로
   const { data: result } = await supabase
@@ -47,6 +48,9 @@ export default async function ExamPage({ params }: { params: Promise<{ id: strin
     question_no: q.question_no,
     word: q.vocabulary?.word ?? '',
   }));
+
+  // 단어 조회 실패한 문항이 있으면 시험 진행 불가
+  if (questionList.some((q) => !q.word)) redirect('/student/exam');
 
   return (
     <ExamRoom

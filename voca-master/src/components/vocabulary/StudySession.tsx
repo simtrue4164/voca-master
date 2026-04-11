@@ -59,7 +59,7 @@ export default function StudySession({
   const [relatedFlipped, setRelatedFlipped] = useState(false);
   const [relatedDone, setRelatedDone] = useState(false);
 
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   const router = useRouter();
 
   // 관련 단어 목록 (동의어 → 유의어 → 반의어 순)
@@ -258,21 +258,21 @@ export default function StudySession({
                   <p className="text-sm text-[#6e6e73]">탭하여 기준 단어 확인</p>
                 </div>
                 {/* 뒷면 */}
-                <div className="absolute inset-0 bg-purple-600 rounded-2xl shadow-sm flex flex-col justify-center p-5 gap-2"
+                <div className="absolute inset-0 bg-white rounded-2xl shadow-sm border border-[#e5e5ea] flex flex-col items-center justify-center p-5 gap-2"
                   style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                  <p className="text-lg font-bold text-white">{rw.baseWord}</p>
-                  <div className="space-y-0.5">
+                  <p className="text-lg font-bold text-[#1d1d1f] text-center">{rw.baseWord}</p>
+                  <div className="space-y-0.5 w-full">
                     {rw.baseMeanings.map((m) => (
-                      <div key={m.id} className="flex gap-1.5">
-                        <span className="text-purple-200 text-xs shrink-0 pt-0.5">{m.pos}</span>
-                        <span className="text-white text-xs">{m.meaning_ko}</span>
+                      <div key={m.id} className="flex gap-1.5 justify-center">
+                        <span className="text-[#6e6e73] text-[15px] shrink-0 pt-0.5">{m.pos}</span>
+                        <span className="text-[#1d1d1f] text-[15px]">{m.meaning_ko}</span>
                       </div>
                     ))}
                   </div>
-                  <div className="border-t border-purple-500 pt-2 mt-1">
+                  <div className="border-t border-[#e5e5ea] pt-2 mt-1 w-full flex justify-center">
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                      rw.type === 'synonym' ? 'bg-blue-200 text-blue-900' :
-                      rw.type === 'similar' ? 'bg-teal-200 text-teal-900' : 'bg-orange-200 text-orange-900'
+                      rw.type === 'synonym' ? 'bg-blue-100 text-blue-800' :
+                      rw.type === 'similar' ? 'bg-teal-100 text-teal-800' : 'bg-orange-100 text-orange-800'
                     }`}>
                       {typeLabel[rw.type]}: {rw.word}
                     </span>
@@ -363,35 +363,35 @@ function FlashCard({ word, flipped, onFlip, onKnow, onDontKnow }: {
             <p className="text-3xl font-bold text-[#1d1d1f] text-center">{word.word}</p>
             <p className="text-sm text-[#6e6e73] mt-3">탭하여 뜻 확인</p>
           </div>
-          <div className="absolute inset-0 bg-blue-600 rounded-2xl shadow-sm flex flex-col justify-center p-4 gap-1.5"
+          <div className="absolute inset-0 bg-white rounded-2xl shadow-sm border border-[#e5e5ea] flex flex-col items-center justify-center p-4 gap-1.5"
             style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-            <p className="text-base font-bold text-white">{word.word}</p>
-            <div className="space-y-0.5">
+            <p className="text-base font-bold text-[#1d1d1f] text-center">{word.word}</p>
+            <div className="space-y-0.5 w-full">
               {word.meanings.map((m) => (
-                <div key={m.id} className="flex gap-1.5">
-                  <span className="text-blue-200 text-xs shrink-0 pt-0.5">{m.pos}</span>
-                  <span className="text-white text-xs">{m.meaning_ko}</span>
+                <div key={m.id} className="flex gap-1.5 justify-center">
+                  <span className="text-[#6e6e73] text-[15px] shrink-0 pt-0.5">{m.pos}</span>
+                  <span className="text-[#1d1d1f] text-[15px]">{m.meaning_ko}</span>
                 </div>
               ))}
             </div>
             {(word.synonyms?.length > 0 || word.similar?.length > 0 || word.antonyms?.length > 0) && (
-              <div className="border-t border-blue-500 pt-1.5 flex flex-col gap-1">
+              <div className="border-t border-[#e5e5ea] pt-1.5 flex flex-col gap-1 w-full items-center">
                 {word.synonyms?.length > 0 && (
-                  <div className="flex gap-1.5 items-baseline">
-                    <span className="text-blue-200 text-xs shrink-0">동의어</span>
-                    <span className="text-white text-xs">{word.synonyms.map((s) => s.synonym).join(', ')}</span>
+                  <div className="flex gap-1.5 items-baseline justify-center">
+                    <span className="text-[#6e6e73] text-[15px] shrink-0">동의어</span>
+                    <span className="text-[#1d1d1f] text-[15px]">{word.synonyms.map((s) => s.synonym).join(', ')}</span>
                   </div>
                 )}
                 {word.similar?.length > 0 && (
-                  <div className="flex gap-1.5 items-baseline">
-                    <span className="text-teal-200 text-xs shrink-0">유의어</span>
-                    <span className="text-teal-100 text-xs">{word.similar.map((s) => s.similar_word).join(', ')}</span>
+                  <div className="flex gap-1.5 items-baseline justify-center">
+                    <span className="text-[#6e6e73] text-[15px] shrink-0">유의어</span>
+                    <span className="text-[#1d1d1f] text-[15px]">{word.similar.map((s) => s.similar_word).join(', ')}</span>
                   </div>
                 )}
                 {word.antonyms?.length > 0 && (
-                  <div className="flex gap-1.5 items-baseline">
-                    <span className="text-orange-200 text-xs shrink-0">반의어</span>
-                    <span className="text-orange-100 text-xs">{word.antonyms.map((a) => a.antonym).join(', ')}</span>
+                  <div className="flex gap-1.5 items-baseline justify-center">
+                    <span className="text-[#6e6e73] text-[15px] shrink-0">반의어</span>
+                    <span className="text-[#1d1d1f] text-[15px]">{word.antonyms.map((a) => a.antonym).join(', ')}</span>
                   </div>
                 )}
               </div>

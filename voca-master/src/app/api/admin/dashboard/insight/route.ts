@@ -40,6 +40,10 @@ export async function POST(req: NextRequest) {
       prompt,
     });
 
+    if (!text) {
+      return NextResponse.json({ error: 'AI 응답이 비어있습니다.' }, { status: 500 });
+    }
+
     // 캐시 저장
     const admin = createAdminClient();
     await admin.from('dashboard_cache').upsert({
@@ -51,7 +55,10 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ summary: text });
   } catch (err: any) {
-    console.error('AI 인사이트 생성 오류:', err);
-    return NextResponse.json({ error: err.message ?? 'AI 생성 실패' }, { status: 500 });
+    // Gemini API 오류 상세 메시지 포함
+    const message = err?.responseBody
+      ? `AI 생성 실패: ${JSON.stringify(err.responseBody)}`
+      : (err?.message ?? 'AI 생성 실패');
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

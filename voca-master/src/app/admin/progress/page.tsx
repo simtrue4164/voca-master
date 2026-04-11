@@ -132,7 +132,7 @@ export default async function AdminProgressPage({
     (allClasses ?? []).map((c: any) => [c.id, c.name])
   );
 
-  const today = new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
+  const today = new Date(new Date().getTime() + 9 * 60 * 60 * 1000).toISOString().split('T')[0];
 
   const rows = (students ?? []).map((s) => {
     const vStudied  = vocabCountMap[s.id]   ?? 0;

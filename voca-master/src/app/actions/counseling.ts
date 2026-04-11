@@ -56,6 +56,41 @@ export async function completeSession(
   return { ok: true };
 }
 
+// 예약 → 확정 (scheduled → confirmed)
+export async function confirmSchedule(requestId: string) {
+  if (!requestId) return { error: '필수 값이 없습니다.' };
+  const admin = createAdminClient();
+  const { error } = await admin
+    .from('counseling_requests')
+    .update({ status: 'confirmed' })
+    .eq('id', requestId);
+  if (error) return { error: error.message };
+  revalidate(requestId);
+  return { ok: true };
+}
+
+// 예약 → 확정 완료 (메모 없이 빠른 완료 처리)
+export async function confirmComplete(requestId: string) {
+  if (!requestId) return { error: '필수 값이 없습니다.' };
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const admin = createAdminClient();
+
+  const { error: recordError } = await admin
+    .from('counseling_records')
+    .insert({ request_id: requestId, admin_id: user!.id, content: '상담 완료', outcome: null });
+  if (recordError) return { error: recordError.message };
+
+  const { error } = await admin
+    .from('counseling_requests')
+    .update({ status: 'completed' })
+    .eq('id', requestId);
+  if (error) return { error: error.message };
+
+  revalidate(requestId);
+  return { ok: true };
+}
+
 // 취소
 export async function cancelRequest(requestId: string) {
   if (!requestId) return { error: '필수 값이 없습니다.' };

@@ -89,7 +89,7 @@ export default async function CounselingDetailPage({
     admin
       .from('counseling_requests')
       .select('slot_id')
-      .eq('status', 'scheduled')
+      .in('status', ['scheduled', 'confirmed', 'completed'])
       .neq('id', id)
       .not('slot_id', 'is', null),
   ]);
@@ -112,7 +112,6 @@ export default async function CounselingDetailPage({
         record={record as any}
         history={(history ?? []) as any[]}
         availableSlots={(availableSlots ?? []) as any[]}
-        currentAdminId={user!.id}
       />
     </div>
   );

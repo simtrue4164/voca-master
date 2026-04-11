@@ -50,7 +50,7 @@ export default async function StudentCounselingPage() {
     admin
       .from('counseling_requests')
       .select('slot_id')
-      .in('status', ['scheduled', 'confirmed'])
+      .in('status', ['scheduled', 'confirmed', 'completed'])
       .not('slot_id', 'is', null),
   ]);
 

@@ -2,6 +2,8 @@
 
 import { useState, useActionState, useTransition } from 'react';
 import { updateAdmin, activateAdmin, deactivateAdmin } from '@/app/actions/admins';
+import { useConfirmModal } from '@/components/ui/ConfirmModal';
+
 
 type Branch = { id: string; name: string };
 type AdminRow = {
@@ -82,12 +84,14 @@ const ROLE_LABEL: Record<string, string> = {
 
 function AdminRow({ adm, isSelf, onEdit }: { adm: AdminRow; isSelf: boolean; onEdit: () => void }) {
   const [isPending, startTransition] = useTransition();
+  const { confirmModal, openConfirm } = useConfirmModal();
 
-  function handleToggle() {
+  async function handleToggle() {
     const msg = adm.is_active
       ? `${adm.name} 관리자를 비활성화하시겠습니까?`
       : `${adm.name} 관리자를 활성화하시겠습니까?`;
-    if (!confirm(msg)) return;
+    const ok = await openConfirm({ message: msg });
+    if (!ok) return;
     const fd = new FormData();
     fd.set('id', adm.id);
     startTransition(async () => {
@@ -100,41 +104,44 @@ function AdminRow({ adm, isSelf, onEdit }: { adm: AdminRow; isSelf: boolean; onE
   }
 
   return (
-    <tr className="hover:bg-[#f5f5f7]">
-      <td className="px-4 py-3 font-mono text-[#6e6e73] text-xs">{adm.employee_no ?? '-'}</td>
-      <td className="px-4 py-3 font-medium text-[#1d1d1f]">{adm.name}</td>
-      <td className="px-4 py-3 text-[#6e6e73]">{ROLE_LABEL[adm.role] ?? adm.role}</td>
-      <td className="px-4 py-3 text-[#6e6e73] text-xs">
-        {adm.branch_name ? (
-          <span className="font-medium text-[#1d1d1f]">{adm.branch_name}</span>
-        ) : (
-          <span className="text-[#c7c7cc]">전체</span>
-        )}
-      </td>
-      <td className="px-4 py-3">
-        <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-          adm.is_active ? 'bg-green-50 text-green-700' : 'bg-[#f5f5f7] text-[#6e6e73]'
-        }`}>
-          {adm.is_active ? '활성' : '비활성'}
-        </span>
-      </td>
-      <td className="px-4 py-3">
-        <div className="flex items-center gap-2 justify-end">
-          <button onClick={onEdit} className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity">
-            수정
-          </button>
-          {!isSelf && (
-            <button
-              onClick={handleToggle}
-              disabled={isPending}
-              className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#6e6e73] rounded-lg hover:opacity-80 disabled:opacity-40 transition-opacity"
-            >
-              {isPending ? '처리중...' : adm.is_active ? '비활성화' : '활성화'}
-            </button>
+    <>
+      {confirmModal}
+      <tr className="hover:bg-[#f5f5f7]">
+        <td className="px-4 py-3 font-mono text-[#6e6e73] text-xs">{adm.employee_no ?? '-'}</td>
+        <td className="px-4 py-3 font-medium text-[#1d1d1f]">{adm.name}</td>
+        <td className="px-4 py-3 text-[#6e6e73]">{ROLE_LABEL[adm.role] ?? adm.role}</td>
+        <td className="px-4 py-3 text-[#6e6e73] text-xs">
+          {adm.branch_name ? (
+            <span className="font-medium text-[#1d1d1f]">{adm.branch_name}</span>
+          ) : (
+            <span className="text-[#c7c7cc]">전체</span>
           )}
-        </div>
-      </td>
-    </tr>
+        </td>
+        <td className="px-4 py-3">
+          <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+            adm.is_active ? 'bg-green-50 text-green-700' : 'bg-[#f5f5f7] text-[#6e6e73]'
+          }`}>
+            {adm.is_active ? '활성' : '비활성'}
+          </span>
+        </td>
+        <td className="px-4 py-3">
+          <div className="flex items-center gap-2 justify-end">
+            <button onClick={onEdit} className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity">
+              수정
+            </button>
+            {!isSelf && (
+              <button
+                onClick={handleToggle}
+                disabled={isPending}
+                className="text-[11px] px-3 py-1 bg-[#f5f5f7] text-[#6e6e73] rounded-lg hover:opacity-80 disabled:opacity-40 transition-opacity"
+              >
+                {isPending ? '처리중...' : adm.is_active ? '비활성화' : '활성화'}
+              </button>
+            )}
+          </div>
+        </td>
+      </tr>
+    </>
   );
 }
 

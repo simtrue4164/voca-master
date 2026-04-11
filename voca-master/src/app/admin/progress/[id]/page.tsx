@@ -34,8 +34,9 @@ export default async function ProgressDetailPage({
   // 반 시작일 기준 현재 day
   let currentDay = 60;
   if (cls?.start_date) {
+    const nowKST = new Date(new Date().getTime() + 9 * 60 * 60 * 1000);
     const diff = Math.floor(
-      (Date.now() - new Date(cls.start_date).getTime()) / (1000 * 60 * 60 * 24)
+      (nowKST.getTime() - new Date(cls.start_date).getTime()) / (1000 * 60 * 60 * 24)
     );
     currentDay = Math.max(1, Math.min(60, diff + 1));
   }
