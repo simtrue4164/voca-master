@@ -695,12 +695,14 @@ PATCH /api/exams/[id]/status → { status: 'closed' }
 
 ## 11. 테스트 계정
 
+**접속 경로:** https://voca-master-5bkxfk7pe-simtrue4164s-projects.vercel.app/login?next=%2F
+
 | 역할 | 계정 | 비밀번호 |
 |---|---|---|
-| 전체관리자 | admin@voca-master.com | 1234 |
-| 지점관리자 | branch@voca-master.com | 1234 (대구본원) |
-| 반담임 | class@voca-master.com | 1234 (대구본원 A반) |
-| 학생 | 수험번호 1001~1004 | 1234 |
+| 전체관리자 | SUPER01 | 1234 |
+| 지점관리자 | A001 | 1234 |
+| 반담임 | A002 | 1234 |
+| 학생 | 수험번호 1007 | 1234 |
 
 ---
 
