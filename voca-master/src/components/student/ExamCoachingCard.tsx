@@ -45,10 +45,13 @@ export default function ExamCoachingCard({
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm p-5 mb-4">
+    <div className="bg-white rounded-2xl shadow-sm mb-4 border border-violet-100 overflow-hidden">
+      <div className="h-1 bg-gradient-to-r from-violet-500 to-indigo-400" />
+      <div className="p-5">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <h2 className="text-[13px] font-semibold text-[#1d1d1f]">AI 코칭 메시지</h2>
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-violet-100 text-violet-700 text-[11px] font-bold rounded-full">✦ AI</span>
+          <h2 className="text-[13px] font-semibold text-[#1d1d1f]">코칭 메시지</h2>
           {isGenerating && (
             <span className="text-[11px] text-[#6e6e73] animate-pulse">분석 중...</span>
           )}
@@ -56,7 +59,7 @@ export default function ExamCoachingCard({
         {!isGenerating && (
           <button
             onClick={generate}
-            className="text-[11px] px-3 py-1.5 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 transition-opacity"
+            className="text-[11px] px-3 py-1.5 bg-violet-50 text-violet-700 rounded-lg hover:opacity-80 transition-opacity"
           >
             재생성
           </button>
@@ -74,6 +77,7 @@ export default function ExamCoachingCard({
       ) : message ? (
         <p className="text-[13px] text-[#1d1d1f] leading-relaxed whitespace-pre-line">{message}</p>
       ) : null}
+      </div>
     </div>
   );
 }

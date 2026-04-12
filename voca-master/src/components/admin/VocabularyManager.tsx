@@ -123,13 +123,16 @@ export default function VocabularyManager({ day, words, totalDays }: {
           )}
         </span>
 
-        <button
-          onClick={handleGenerate}
-          disabled={isGenerating}
-          className="ml-auto px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          {isGenerating ? '생성 중...' : incompleteCount > 0 ? `AI 일괄 생성 (${incompleteCount}개)` : 'AI 일괄 생성'}
-        </button>
+        <div className="ml-auto flex flex-col items-end gap-1">
+          <p className="text-[11px] text-violet-600">✦ AI가 한국어 의미·동의어·유의어·반의어를 자동으로 생성합니다</p>
+          <button
+            onClick={handleGenerate}
+            disabled={isGenerating}
+            className="px-4 py-2 bg-violet-600 text-white text-sm font-medium rounded-lg hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {isGenerating ? '✦ 생성 중...' : incompleteCount > 0 ? `✦ AI 일괄 생성 (${incompleteCount}개)` : '✦ AI 일괄 생성'}
+          </button>
+        </div>
       </div>
 
       {generateMsg && (

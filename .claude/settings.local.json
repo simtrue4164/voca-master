@@ -7,7 +7,8 @@
       "Bash(npx tsc:*)",
       "Bash(cat:*)",
       "Bash(node -e \"const ai = require\\('ai'\\); console.log\\(Object.keys\\(ai\\).filter\\(k => k.includes\\('generate'\\) || k.includes\\('Generate'\\)\\)\\)\")",
-      "Bash(node -e \"const {generateObject} = require\\('ai'\\); console.log\\(generateObject.toString\\(\\).slice\\(0,200\\)\\)\")"
+      "Bash(node -e \"const {generateObject} = require\\('ai'\\); console.log\\(generateObject.toString\\(\\).slice\\(0,200\\)\\)\")",
+      "WebFetch(domain:koreaitacademy.com)"
     ]
   }
 }

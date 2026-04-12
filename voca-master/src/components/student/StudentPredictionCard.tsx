@@ -62,13 +62,19 @@ export default function StudentPredictionCard({
   }
 
   return (
-    <div className="bg-white rounded-2xl p-6 mb-3 shadow-sm">
+    <div className="bg-white rounded-2xl mb-3 shadow-sm border border-violet-100 overflow-hidden">
+      {/* AI 강조 상단 바 */}
+      <div className="h-1 bg-gradient-to-r from-violet-500 to-indigo-400" />
+      <div className="p-6">
       <div className="flex items-center justify-between mb-4">
-        <p className="text-[13px] text-[#6e6e73]">AI 성과 예측</p>
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-violet-100 text-violet-700 text-[11px] font-bold rounded-full">✦ AI</span>
+          <p className="text-[13px] font-semibold text-[#1d1d1f]">성과 예측</p>
+        </div>
         {!isGenerating && (
           <button
             onClick={generate}
-            className="text-[12px] text-[#0071e3] hover:opacity-70 transition-opacity"
+            className="text-[12px] text-violet-600 hover:opacity-70 transition-opacity"
           >
             새로 분석
           </button>
@@ -116,6 +122,7 @@ export default function StudentPredictionCard({
           </div>
         </div>
       ) : null}
+      </div>
     </div>
   );
 }

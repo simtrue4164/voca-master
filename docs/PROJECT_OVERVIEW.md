@@ -2,7 +2,7 @@
 
 > AI 기반 편입영어 통합 학습 관리 시스템  
 > KIT 바이브코딩 공모전 출품작 (2026)  
-> 최종 업데이트: 2026-04-09
+> 최종 업데이트: 2026-04-12
 
 ---
 
@@ -86,8 +86,8 @@
 └─────────────────┬───────────────────────────────────┘
                   │ Vercel AI SDK
 ┌─────────────────▼───────────────────────────────────┐
-│              Google Gemini 2.5 Flash / 1.5 Pro       │
-│  학급 인사이트 │ 어휘 의미 일괄 생성 │ 위험 학생 분석  │
+│                 Google Gemini 2.5 Flash               │
+│  학급 인사이트 │ 어휘 의미 생성 │ 위험 학생 분석 │ 학생 예측  │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -202,7 +202,7 @@ dashboard_cache (AI 인사이트 캐시)
 | **시험 출제** (DAY 2개 선택, 50문항 자동 생성) | admin_super, admin_branch, admin_class |
 | **시험 결과 조회** (학생별 점수·정오답) | admin_super, admin_branch, admin_class |
 | **어휘 관리** (편집, AI 의미 일괄 생성) | admin_super |
-| **상담 관리** (목록, 시간대, 상세) | 전체 역할 (상세는 admin_class 전용) |
+| **상담 관리** (목록, 시간대, 상세 / 상태흐름: pending→scheduled→confirmed→completed/dismissed) | 전체 역할 (상세는 admin_class 전용) |
 
 ---
 
@@ -256,11 +256,19 @@ dashboard_cache (AI 인사이트 캐시)
 | `ExamStatusButton` | 시험 상태 전환 버튼 (시작/종료/강제종료) |
 | `ExamQRButton` | QR 코드 표시 |
 
+### 공용 UI 컴포넌트
+
+| 컴포넌트 | 역할 |
+|---------|------|
+| `ConfirmModal` / `useConfirmModal` | 커스텀 확인 모달 훅 — native confirm()/alert() 대체, Promise 기반 |
+
 ### 학생 컴포넌트
 
 | 컴포넌트 | 역할 |
 |---------|------|
 | `StudySession` | 플래시카드 학습 + 셀프테스트 + 관련단어 학습 (mode: flash/test/related) |
+| `StudentPredictionCard` | AI 성과 예측 카드 (대시보드 최상단) |
+| `ExamCoachingCard` | AI 코칭 메시지 카드 (시험 결과 점수 카드 하단) |
 
 ---
 
@@ -269,10 +277,11 @@ dashboard_cache (AI 인사이트 캐시)
 | 기능 | 모델 | 상태 |
 |------|------|------|
 | **어휘 의미/관련단어 일괄 생성** | Gemini 2.5 Flash | ✅ 구현됨 |
-| **관리자 학급 인사이트** | Gemini 1.5 Pro | ✅ 구현됨 |
-| **상담 이력 요약** | Gemini 1.5 Pro | ✅ 구현됨 |
-| **AI 위험 학생 상담 추천** | Gemini 1.5 Pro | 미구현 |
-| **학생 AI 코칭 메시지** | Gemini 1.5 Pro | 미구현 |
+| **관리자 학급 인사이트** | Gemini 2.5 Flash | ✅ 구현됨 |
+| **AI 위험 학생 상담 추천** | Gemini 2.5 Flash | ✅ 구현됨 |
+| **상담 이력 요약** | Gemini 2.5 Flash | ✅ 구현됨 |
+| **학생 AI 코칭 메시지** | Gemini 2.5 Flash | ✅ 구현됨 |
+| **학생 AI 성과 예측** | Gemini 2.5 Flash | ✅ 구현됨 |
 
 ---
 

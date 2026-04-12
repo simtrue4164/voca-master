@@ -102,9 +102,11 @@ export default function CounselingDetail({
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div>
             <p className="text-xs text-[#6e6e73] mb-0.5">신청 구분</p>
-            <p className="font-medium text-[#1d1d1f]">
-              {request.source === 'ai' ? 'AI 추천' : '학생 직접 신청'}
-            </p>
+            {request.source === 'ai' ? (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-violet-100 text-violet-700 text-[12px] font-bold rounded-full">✦ AI 추천</span>
+            ) : (
+              <p className="font-medium text-[#1d1d1f]">학생 직접 신청</p>
+            )}
           </div>
           <div>
             <p className="text-xs text-[#6e6e73] mb-0.5">신청일</p>
@@ -123,11 +125,14 @@ export default function CounselingDetail({
         </div>
 
         {request.counseling_recommendations && (
-          <div className="mt-4 p-3 bg-purple-50 rounded-lg">
-            <p className="text-xs font-medium text-purple-700 mb-1">
-              AI 위험도 {Math.round(request.counseling_recommendations.risk_score * 100)}%
-            </p>
-            <p className="text-sm text-purple-800">{request.counseling_recommendations.reason}</p>
+          <div className="mt-4 p-3 bg-violet-50 rounded-lg border border-violet-100">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-violet-100 text-violet-700 text-[11px] font-bold rounded-full">✦ AI</span>
+              <p className="text-xs font-semibold text-violet-700">
+                위험도 {Math.round(request.counseling_recommendations.risk_score * 100)}%
+              </p>
+            </div>
+            <p className="text-sm text-violet-800">{request.counseling_recommendations.reason}</p>
           </div>
         )}
         {request.source === 'student' && request.request_note && (

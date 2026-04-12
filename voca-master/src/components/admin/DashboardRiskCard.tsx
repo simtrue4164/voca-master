@@ -69,19 +69,24 @@ export default function DashboardRiskCard({
 
   return (
     <div className="bg-white rounded-2xl shadow-sm p-5">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-start justify-between mb-3">
         <div>
           <h2 className="text-[13px] font-semibold text-[#1d1d1f]">위험 학생</h2>
           <p className="text-[12px] text-[#6e6e73] mt-0.5">3일 이상 미학습</p>
         </div>
         {atRiskStudents.length > 0 && (
-          <button
-            onClick={handleRecommend}
-            disabled={isGenerating}
-            className="text-[11px] px-3 py-1.5 bg-[#1d1d1f] text-white rounded-lg hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
-          >
-            {isGenerating ? 'AI 분석 중...' : 'AI 상담 추천'}
-          </button>
+          <div className="flex flex-col items-end gap-1">
+            <p className="text-[11px] text-violet-600 text-right leading-tight">
+              ✦ AI가 학습 데이터를 분석해<br />위험도 및 상담 필요성을 판단합니다
+            </p>
+            <button
+              onClick={handleRecommend}
+              disabled={isGenerating}
+              className="text-[11px] px-3 py-1.5 bg-violet-600 text-white rounded-lg hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+            >
+              {isGenerating ? '✦ AI 분석 중...' : '✦ AI 상담 추천'}
+            </button>
+          </div>
         )}
       </div>
 

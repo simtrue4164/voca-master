@@ -73,10 +73,13 @@ export default function DashboardInsightCard({
     : null;
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm p-5">
+    <div className="bg-white rounded-2xl shadow-sm border border-violet-100 overflow-hidden">
+      <div className="h-1 bg-gradient-to-r from-violet-500 to-indigo-400" />
+      <div className="p-5">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <h2 className="text-[13px] font-semibold text-[#1d1d1f]">AI 학급 인사이트</h2>
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-violet-100 text-violet-700 text-[11px] font-bold rounded-full">✦ AI</span>
+          <h2 className="text-[13px] font-semibold text-[#1d1d1f]">학급 인사이트</h2>
           {isGenerating && (
             <span className="text-[11px] text-[#6e6e73] animate-pulse">생성 중...</span>
           )}
@@ -88,7 +91,7 @@ export default function DashboardInsightCard({
           <button
             onClick={generateInsight}
             disabled={isGenerating}
-            className="text-[11px] px-3 py-1.5 bg-[#f5f5f7] text-[#1d1d1f] rounded-lg hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+            className="text-[11px] px-3 py-1.5 bg-violet-50 text-violet-700 rounded-lg hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
           >
             {isGenerating ? '생성 중...' : '재생성'}
           </button>
@@ -113,6 +116,7 @@ export default function DashboardInsightCard({
           인사이트를 불러올 수 없습니다. 재생성 버튼을 눌러주세요.
         </p>
       )}
+      </div>
     </div>
   );
 }

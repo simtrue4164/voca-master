@@ -7,17 +7,16 @@
 
 ## CRITICAL — 즉시 수정 필수
 
-### C-01. Gemini API 모델명 오류
-- **영향**: AI 기능 전체 동작 불가
+### C-01. Gemini API 모델명 검증
+- **영향**: AI 기능 전체 동작 가능 여부
 - **파일 5곳 모두 동일**:
   - `src/app/api/admin/counseling/recommend/route.ts`
   - `src/app/api/admin/dashboard/insight/route.ts`
   - `src/app/api/admin/vocabulary/generate/route.ts`
   - `src/app/api/student/exam/[id]/coaching/route.ts`
   - `src/app/api/student/dashboard/prediction/route.ts`
-- **문제**: `google('gemini-2.5-flash')` — 존재하지 않는 모델명
-- **수정**: 공식 모델명(`gemini-1.5-flash` 또는 `gemini-2.0-flash`) 으로 교체
-- [x] 완료
+- **현황**: `google('gemini-2.5-flash')` — 현재 사용 중인 모델명. 실제 API 호출 성공 확인됨.
+- [x] 완료 (gemini-2.5-flash 유효한 모델명으로 확인)
 
 ---
 
@@ -146,7 +145,7 @@
   - `src/app/api/student/exam/[id]/coaching/route.ts`
   - `src/app/api/student/dashboard/prediction/route.ts`
 - **수정**: 제거하거나 로깅 시스템으로 대체
-- [ ] 완료
+- [x] 완료
 
 ---
 
@@ -399,4 +398,4 @@
 
 ---
 
-*마지막 갱신: 2026-04-11*
+*마지막 갱신: 2026-04-12*

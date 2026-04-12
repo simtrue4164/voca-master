@@ -17,7 +17,7 @@
 
 ---
 
-## 현재 구현 상태 (2026-04-09 기준, 최종)
+## 현재 구현 상태 (2026-04-12 기준, 최종)
 
 ### 완료된 항목
 - [x] `docs/SDD.md` — 전체 설계 확정 (DB 스키마, 타입, API, 페이지 구조)
@@ -41,8 +41,8 @@
 - [x] `/admin/students` — 학생 관리 (추가/목록)
 - [x] `/admin/exams` + `/admin/exams/[id]` — 시험 출제/관리 + 결과 조회
 - [x] `/admin/vocabulary` — 어휘 관리 (Day 필터, AI 의미 일괄 생성, 편집 모달)
-- [x] `/admin/counseling` + `/admin/counseling/[id]` — 상담 관리 (목록/시간대/상세)
-- [x] `docs/seed_test_data.js` — 테스트 데이터 시드 (지점 2, 반 3, 관리자 2, 학생 4)
+- [x] `/admin/counseling` + `/admin/counseling/[id]` — 상담 관리 (목록/시간대/상세, 상태흐름: pending→scheduled→confirmed→completed/dismissed)
+- [x] `src/components/ui/ConfirmModal.tsx` — 커스텀 확인 모달 (`useConfirmModal` hook, native confirm/alert 대체)
 
 ### AI 기능 구현 현황
 - [x] `POST /api/admin/vocabulary/generate` — 어휘 AI 자동 채우기 (Gemini, generateObject)
@@ -87,17 +87,18 @@ $$;
 voca-master/              ← 리포지토리 루트
 ├── docs/
 │   ├── SDD.md            ← ★ 핵심 설계 문서 (반드시 먼저 읽기)
-│   ├── supabase_ddl.sql  ← 실행 완료된 DDL
-│   ├── supabase_seed_vocabulary.sql ← 실행 완료된 시드
 │   └── issues/           ← 이슈 추적
 ├── VOCA.csv              ← 3,000단어 원본
 └── voca-master/          ← Next.js 앱 루트 (여기서 npm run dev)
     ├── src/
     │   ├── app/
     │   │   ├── (auth)/login/page.tsx
-    │   │   ├── (student)/         ← 미구현
-    │   │   ├── (admin)/           ← 미구현
-    │   │   └── actions/auth.ts
+    │   │   ├── student/           ← 전체 구현 완료
+    │   │   ├── admin/             ← 전체 구현 완료
+    │   │   ├── api/               ← AI Route Handlers
+    │   │   └── actions/           ← Server Actions
+    │   ├── components/
+    │   │   └── ui/ConfirmModal.tsx ← 커스텀 확인 모달
     │   ├── lib/supabase/
     │   ├── types/index.ts
     │   └── proxy.ts               ← Next.js 16 Proxy 파일
